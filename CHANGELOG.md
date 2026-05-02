@@ -8,6 +8,14 @@
 
 ---
 
+## v0.2 — 2026-05-03 — Restraint pivot (in progress)
+
+Surgical homepage + global-layout changes. Each bullet is one git commit; revert with `git revert <sha>` or roll the working tree back with `git checkout v0.1`.
+
+- **hero**: replaced single long sentence with restrained 3-line title (Geist + two Instrument-Serif italic lines). Removed the Amber/FamPay sub-paragraph and the in-hero status pill. Extracted CTAs to a separate `HeroCTAs` component below the title with 64px+ breathing room. Resolves BUG-002 (hero too long) and BUG-003 (Amber-as-identity overclaim).
+
+---
+
 ## v0.1 — 2026-05-01 — Foundation chunk
 
 Baseline scaffold. Everything below ships as a working Next.js 14 site with placeholder content.

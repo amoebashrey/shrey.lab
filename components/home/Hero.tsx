@@ -1,18 +1,13 @@
-import Link from 'next/link';
-import { ResumeButton } from '@/components/ResumeButton';
-import { StatusPill } from '@/components/StatusPill';
-
 /**
- * Hero — the 60-second skim's first 5 seconds.
+ * Hero — title-only block. Restraint is the point.
  *
- * Format LOCKED: credibility-first "I'm an X who shipped Y for Z."
- * No personality flex. No "one foot in chaos." State what it is.
+ * Three lines at the same display size: a Geist sentence and two
+ * Instrument-Serif italic sentences. No body line, no role-targeting line,
+ * no CTAs in this position. CTAs live in HeroCTAs below the title with
+ * generous breathing room. Biographical / current-state content lives in
+ * the rolling status pill in the footer.
  *
- * The actual hero copy will come from siteSettings in Sanity once wired.
- * The placeholder below is the v0 — it gets replaced with one of three drafted
- * variants once the inventory dump is in. See PROJECT_BRIEF.md > Pending decisions.
- *
- * Two CTAs: "View work →" (primary, lime) and "Resume" (secondary, opens modal).
+ * Locked structure per docs/PROJECT_BRIEF.md (v0.2 update).
  */
 export function Hero() {
   return (
@@ -21,49 +16,22 @@ export function Hero() {
       className="relative pt-16 md:pt-24 pb-16 md:pb-20"
     >
       <div className="mx-auto max-w-[1280px] px-6 md:px-8">
-        {/* Eyebrow */}
         <p className="eyebrow mb-6 md:mb-8" aria-hidden="true">
           // product manager · pune
         </p>
 
-        {/* Hero sentence — Geist with one Instrument Serif italic phrase */}
         <h1
           id="hero-heading"
-          className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tightest text-fg max-w-4xl"
+          className="text-fg max-w-5xl font-medium text-[clamp(48px,7vw,96px)] leading-[0.98] tracking-[-0.035em]"
         >
-          I&apos;m a product manager{' '}
-          <span className="italic-break text-fg-muted">who ships</span> growth, conversion,
-          and internal tools at a global student housing marketplace.
+          <span className="block">Product manager.</span>
+          <span className="block italic-break">
+            I build internal tools, AI agents,
+          </span>
+          <span className="block italic-break">
+            and systems that help product teams move.
+          </span>
         </h1>
-
-        {/* Supporting line */}
-        <p className="mt-6 md:mt-8 text-lg md:text-xl text-fg-muted max-w-2xl leading-relaxed">
-          Currently at Amber Student. Previously: FamPay, three founder ventures, a kombucha brand,
-          a fermentation school, and a discussion community in four countries.
-        </p>
-
-        {/* CTAs */}
-        <div className="mt-8 md:mt-10 flex flex-wrap items-center gap-3">
-          <Link
-            href="/work"
-            className="group inline-flex items-center gap-2 h-11 px-5 rounded-md bg-accent text-[var(--accent-fg)] font-medium text-sm transition-all duration-fast hover:bg-accent-hover hover:-translate-y-px active:translate-y-0"
-          >
-            View work
-            <span
-              className="inline-block transition-transform duration-fast group-hover:translate-x-0.5"
-              aria-hidden="true"
-            >
-              →
-            </span>
-          </Link>
-
-          <ResumeButton variant="ghost" />
-        </div>
-
-        {/* Status pill — alive-and-shipping signal */}
-        <div className="mt-10 md:mt-12">
-          <StatusPill text="currently building shrey.lab · pune" />
-        </div>
       </div>
     </section>
   );
