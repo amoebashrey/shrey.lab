@@ -13,6 +13,7 @@
 Surgical homepage + global-layout changes. Each bullet is one git commit; revert with `git revert <sha>` or roll the working tree back with `git checkout v0.1`.
 
 - **hero**: replaced single long sentence with restrained 3-line title (Geist + two Instrument-Serif italic lines). Removed the Amber/FamPay sub-paragraph and the in-hero status pill. Extracted CTAs to a separate `HeroCTAs` component below the title with 64px+ breathing room. Resolves BUG-002 (hero too long) and BUG-003 (Amber-as-identity overclaim).
+  - **hero (correction)**: hierarchy fix — only "Product manager." stays at display scale; the supporting sentence drops to ~28px italic Instrument Serif as one flowing line. Earlier version had all three lines at display scale, which made the hero consume the entire fold.
 
 ---
 
