@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80" role="img" aria-label="shrey.lab monogram">
+  <!-- Soft-rounded square plate, premium feel -->
+  <rect x="2" y="2" width="76" height="76" rx="16" ry="16"
+        fill="#181815" stroke="#A8E10C" stroke-width="1.5"/>
+  <!-- Lowercase 's' in Instrument Serif italic — editorial moment -->
+  <text x="40" y="58"
+        font-family="Instrument Serif, serif"
+        font-style="italic"
+        font-size="58"
+        text-anchor="middle"
+        fill="#FBFAF7">s</text>
+  <!-- Lime degree dot — the recurring signal -->
+  <circle cx="61" cy="58" r="3" fill="#A8E10C"/>
+</svg>

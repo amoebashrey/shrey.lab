@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="320" height="80" role="img" aria-label="shrey.lab">
+  <defs>
+    <style>
+      .wm-text { font-family: 'Geist', system-ui, sans-serif; font-weight: 500; letter-spacing: -0.04em; }
+    </style>
+  </defs>
+  <text x="20" y="56" class="wm-text" font-size="48" fill="currentColor">shrey</text>
+  <circle cx="173" cy="51" r="6" fill="#A8E10C"/>
+  <text x="186" y="56" class="wm-text" font-size="48" fill="currentColor">lab</text>
+</svg>
