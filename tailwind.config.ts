@@ -22,7 +22,8 @@ const config: Config = {
     './lib/**/*.{ts,tsx}',
     './shrey-lab/components/**/*.{ts,tsx}',
   ],
-  darkMode: 'class',
+  // Match tokens.css: dark values key off the [data-theme="dark"] attribute.
+  darkMode: ['class', '[data-theme="dark"]'],
 };
 
 export default config;

@@ -36,8 +36,9 @@ function Wordmark() {
 }
 
 /**
- * Inline theme toggle. Persists to localStorage, toggles `dark` class on <html>.
- * The init script in layout.tsx prevents FOUC.
+ * Inline theme toggle. Persists to localStorage and sets the `data-theme`
+ * attribute on <html> — the selector tokens.css responds to. The init script
+ * in layout.tsx applies the same attribute before paint to prevent FOUC.
  */
 function ThemeToggle() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
@@ -53,7 +54,7 @@ function ThemeToggle() {
   function toggle() {
     const next = theme === 'light' ? 'dark' : 'light';
     setTheme(next);
-    document.documentElement.classList.toggle('dark', next === 'dark');
+    document.documentElement.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
   }
 

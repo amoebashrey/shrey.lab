@@ -54,8 +54,12 @@ export const viewport: Viewport = {
 
 /**
  * Theme initialization script — runs synchronously before any paint to
- * prevent FOUC (flash of unstyled / wrong-themed content). Reads stored
- * preference, falls back to system preference.
+ * prevent FOUC (flash of unstyled / wrong-themed content).
+ *
+ * Sets the `data-theme` attribute on <html> — the selector the brand kit's
+ * tokens.css actually responds to ([data-theme="dark"] / [data-theme="light"]).
+ * Reads the saved choice; with none, resolves the OS preference. Setting the
+ * attribute explicitly (incl. "light") makes a manual choice beat the OS.
  */
 const themeScript = `
   (function() {
@@ -63,9 +67,7 @@ const themeScript = `
       var stored = localStorage.getItem('theme');
       var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       var theme = stored || (prefersDark ? 'dark' : 'light');
-      if (theme === 'dark') {
-        document.documentElement.classList.add('dark');
-      }
+      document.documentElement.setAttribute('data-theme', theme);
     } catch (e) {}
   })();
 `;
