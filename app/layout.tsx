@@ -96,6 +96,8 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="bg-bg text-fg antialiased">
+        {/* Fixed canvas texture (dot-grid + grain) — behind all content, inert. */}
+        <div className="site-texture" aria-hidden="true" />
         <a href="#main" className="skip-to-content">
           Skip to content
         </a>

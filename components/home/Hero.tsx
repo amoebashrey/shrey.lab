@@ -25,7 +25,7 @@ export function Hero() {
 
         <h1
           id="hero-heading"
-          className="text-fg font-medium text-[clamp(48px,7vw,96px)] leading-[0.98] tracking-[-0.035em]"
+          className="hero-depth text-fg font-medium text-[clamp(48px,7vw,96px)] leading-[0.98] tracking-[-0.035em]"
         >
           Product manager.
         </h1>

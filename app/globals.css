@@ -120,3 +120,69 @@ html.lenis body {
 .nav-link-active {
   background: rgba(168, 225, 12, 0.12); /* --lime-400 at low alpha */
 }
+
+/* ============================================================================
+   HERO TYPE DEPTH + CANVAS TEXTURE (the "expensive landing" pass — BUG-004)
+   Theme-aware, derived from brand ink/lime tokens, very low contrast. The
+   texture sits behind content (z-index:-10), so text color is unchanged and AA
+   contrast is preserved in both themes (verified). No image assets — the grain
+   is an inline, generated SVG (feTurbulence) data URI, not a file.
+   ============================================================================ */
+
+/* Soft, low-opacity depth behind the hero heading. Not a hard drop-shadow:
+   light = faint warm-ink shadow; dark = soft lift + a whisper of lime glow. */
+.hero-depth {
+  text-shadow:
+    0 1px 1px rgba(24, 24, 21, 0.05),
+    0 12px 32px rgba(24, 24, 21, 0.06);
+}
+[data-theme='dark'] .hero-depth {
+  text-shadow:
+    0 1px 24px rgba(255, 255, 255, 0.06),
+    0 2px 44px rgba(168, 225, 12, 0.05);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .hero-depth {
+    text-shadow:
+      0 1px 24px rgba(255, 255, 255, 0.06),
+      0 2px 44px rgba(168, 225, 12, 0.05);
+  }
+}
+
+/* Canvas texture vars — flip per theme (same selector tokens.css uses). */
+:root {
+  --canvas-dot: rgba(24, 24, 21, 0.035); /* warm-ink dots on paper */
+  --canvas-grain-opacity: 0.03;
+}
+[data-theme='dark'] {
+  --canvas-dot: rgba(255, 255, 255, 0.018); /* faint light dots on charcoal */
+  --canvas-grain-opacity: 0.025;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --canvas-dot: rgba(255, 255, 255, 0.018);
+    --canvas-grain-opacity: 0.025;
+  }
+}
+
+/* Fixed full-canvas layer: dot-grid (radial-gradient) + grain (::after).
+   pointer-events:none and z-index:-10 keep it inert and behind all content. */
+.site-texture {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  pointer-events: none;
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    var(--canvas-dot) 1px,
+    transparent 0
+  );
+  background-size: 22px 22px;
+}
+.site-texture::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: var(--canvas-grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
