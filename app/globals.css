@@ -60,3 +60,63 @@ html.lenis body {
 .lenis.lenis-smooth iframe {
   pointer-events: none;
 }
+
+/* ============================================================================
+   FLOATING GLASS NAV
+   Theme-aware glass that tracks the [data-theme] selector (the one tokens.css
+   responds to). Derived from brand tokens: dark reuses the kit's --glass-bg-dark
+   (warm charcoal), light is translucent warm paper (--ink-25 = #FBFAF7). Never
+   pure black/white. Falls back to the OS media query for the no-JS case.
+   ============================================================================ */
+:root {
+  --nav-glass-bg: rgba(251, 250, 247, 0.72); /* warm paper (#FBFAF7 / --ink-25) */
+  --nav-glass-border: rgba(24, 24, 21, 0.08); /* faint warm-ink hairline */
+}
+[data-theme='dark'] {
+  --nav-glass-bg: var(--glass-bg-dark); /* rgba(24,24,21,0.55) — warm charcoal */
+  --nav-glass-border: rgba(255, 255, 255, 0.1);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --nav-glass-bg: var(--glass-bg-dark);
+    --nav-glass-border: rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* Shared glass surface for the pill and the mobile dropdown panel. */
+.nav-glass {
+  background: var(--nav-glass-bg);
+  border: 1px solid var(--nav-glass-border);
+  -webkit-backdrop-filter: var(--glass-blur); /* blur(20px) saturate(1.4) */
+  backdrop-filter: var(--glass-blur);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18), /* subtle inset top highlight */
+    0 8px 24px -8px rgba(24, 24, 21, 0.25); /* soft drop shadow */
+}
+
+/* Entrance: fade + slight slide-down on mount. The keyframe keeps the -50%
+   horizontal centering; with fill `both` the final state stays centered, and
+   the Tailwind -translate-x-1/2 covers the reduced-motion (no-animation) case. */
+@keyframes nav-enter {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -12px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+.nav-enter {
+  animation: nav-enter 400ms var(--ease-out) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-enter {
+    animation: none;
+  }
+}
+
+/* Active-route tint — faint lime wash behind the current link. Lime = accent only. */
+.nav-link-active {
+  background: rgba(168, 225, 12, 0.12); /* --lime-400 at low alpha */
+}

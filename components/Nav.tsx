@@ -14,20 +14,24 @@ const NAV_ITEMS = [
   { label: 'Contact', href: '/contact' },
 ] as const;
 
+function isActiveHref(pathname: string, href: string) {
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 /**
  * Inline wordmark — renders shrey°lab with the lime dot in place of the period.
- * Brand kit's Wordmark component should replace this when available.
+ * The dot is the separator and the home affordance — there is no "Home" item.
  */
 function Wordmark() {
   return (
     <Link
       href="/"
-      className="group inline-flex items-center gap-1 font-sans font-medium text-fg hover:text-fg transition-colors duration-fast"
+      className="group inline-flex h-11 items-center gap-1 rounded-full px-3 font-sans font-medium text-fg transition-colors duration-fast"
       aria-label="shrey.lab — home"
     >
       <span className="text-base tracking-tight">shrey</span>
       <span
-        className="inline-block w-1.5 h-1.5 rounded-full bg-accent transition-transform duration-fast group-hover:scale-125"
+        className="inline-block h-1.5 w-1.5 rounded-full bg-accent transition-transform duration-fast group-hover:scale-125"
         aria-hidden="true"
       />
       <span className="text-base tracking-tight">lab</span>
@@ -46,7 +50,7 @@ function ThemeToggle() {
 
   useEffect(() => {
     setMounted(true);
-    const stored = (localStorage.getItem('theme') as 'light' | 'dark' | null);
+    const stored = localStorage.getItem('theme') as 'light' | 'dark' | null;
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     setTheme(stored || (prefersDark ? 'dark' : 'light'));
   }, []);
@@ -58,13 +62,12 @@ function ThemeToggle() {
     localStorage.setItem('theme', next);
   }
 
-  // Render a stable shell during SSR to avoid hydration mismatch
+  // Render a stable shell during SSR to avoid hydration mismatch.
   if (!mounted) {
     return (
-      <button
-        type="button"
-        aria-label="Toggle theme"
-        className="w-9 h-9 rounded-md border border-border flex items-center justify-center"
+      <span
+        aria-hidden="true"
+        className="inline-flex h-11 w-11 items-center justify-center rounded-full"
       />
     );
   }
@@ -74,15 +77,15 @@ function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-      className="w-9 h-9 rounded-md border border-border flex items-center justify-center text-fg-muted hover:text-fg hover:border-border-strong transition-colors duration-fast"
+      className="inline-flex h-11 w-11 items-center justify-center rounded-full text-fg-muted transition-colors duration-fast hover:text-fg"
     >
       {theme === 'light' ? (
-        // Moon icon — switching to dark
+        // Moon — switching to dark
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
         </svg>
       ) : (
-        // Sun icon — switching to light
+        // Sun — switching to light
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="4" />
           <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
@@ -92,67 +95,110 @@ function ThemeToggle() {
   );
 }
 
+/** Thin vertical divider, tinted by the glass border var so it tracks theme. */
+function Divider() {
+  return (
+    <span
+      aria-hidden="true"
+      className="hidden h-5 w-px bg-[var(--nav-glass-border)] sm:inline-block"
+    />
+  );
+}
+
 export function Nav() {
   const pathname = usePathname();
-  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
+  // Close the mobile menu whenever the route changes.
   useEffect(() => {
-    function onScroll() {
-      setScrolled(window.scrollY > 8);
-    }
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+    setMenuOpen(false);
+  }, [pathname]);
 
   return (
-    <header
-      className={[
-        'sticky top-0 z-50 transition-all duration-med',
-        scrolled
-          ? 'border-b border-border/60 backdrop-blur-glass backdrop-saturate-glass bg-[var(--glass-bg)]'
-          : 'bg-transparent',
-      ].join(' ')}
+    <nav
+      aria-label="Primary"
+      className="nav-glass nav-enter fixed left-1/2 top-5 z-[100] -translate-x-1/2 rounded-full px-2 py-1.5"
     >
-      <nav
-        className="mx-auto max-w-[1280px] px-6 md:px-8 h-14 flex items-center justify-between"
-        aria-label="Primary"
-      >
+      <div className="flex items-center gap-1">
         <Wordmark />
 
-        <div className="flex items-center gap-1 md:gap-2">
-          <ul className="flex items-center gap-1 md:gap-3">
-            {NAV_ITEMS.map((item) => {
-              const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
-              return (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className={[
-                      'relative inline-flex items-center px-2 md:px-3 h-9 rounded-md text-sm font-medium transition-colors duration-fast',
-                      isActive
-                        ? 'text-fg'
-                        : 'text-fg-muted hover:text-fg',
-                    ].join(' ')}
-                    aria-current={isActive ? 'page' : undefined}
-                  >
-                    {item.label}
-                    {isActive && (
-                      <span
-                        className="absolute -bottom-0.5 left-2 right-2 md:left-3 md:right-3 h-px bg-accent"
-                        aria-hidden="true"
-                      />
-                    )}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-          <div className="ml-2 md:ml-4">
-            <ThemeToggle />
-          </div>
-        </div>
-      </nav>
-    </header>
+        <Divider />
+
+        {/* Inline links — hidden on small screens (collapse to menu) */}
+        <ul className="hidden items-center gap-0.5 sm:flex">
+          {NAV_ITEMS.map((item) => {
+            const active = isActiveHref(pathname, item.href);
+            return (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  aria-current={active ? 'page' : undefined}
+                  className={[
+                    'inline-flex h-11 items-center rounded-full px-3 text-sm font-medium transition-colors duration-fast',
+                    active
+                      ? 'nav-link-active text-fg'
+                      : 'text-fg-muted hover:text-fg',
+                  ].join(' ')}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+
+        <Divider />
+
+        <ThemeToggle />
+
+        {/* Menu affordance — only on small screens */}
+        <button
+          type="button"
+          onClick={() => setMenuOpen((o) => !o)}
+          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={menuOpen}
+          aria-controls="mobile-nav-menu"
+          className="inline-flex h-11 w-11 items-center justify-center rounded-full text-fg-muted transition-colors duration-fast hover:text-fg sm:hidden"
+        >
+          {menuOpen ? (
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
+          ) : (
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M3 12h18M3 6h18M3 18h18" />
+            </svg>
+          )}
+        </button>
+      </div>
+
+      {/* Mobile dropdown — glass panel below the pill, links stacked at ≥44px */}
+      {menuOpen && (
+        <ul
+          id="mobile-nav-menu"
+          className="nav-glass absolute left-1/2 top-[calc(100%+8px)] w-[min(78vw,16rem)] -translate-x-1/2 rounded-2xl p-2 sm:hidden"
+        >
+          {NAV_ITEMS.map((item) => {
+            const active = isActiveHref(pathname, item.href);
+            return (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  aria-current={active ? 'page' : undefined}
+                  className={[
+                    'flex h-11 items-center rounded-xl px-3 text-sm font-medium transition-colors duration-fast',
+                    active
+                      ? 'nav-link-active text-fg'
+                      : 'text-fg-muted hover:text-fg',
+                  ].join(' ')}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </nav>
   );
 }

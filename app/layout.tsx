@@ -101,7 +101,11 @@ export default function RootLayout({
         </a>
         <SmoothScroll>
           <Nav />
-          <main id="main">{children}</main>
+          {/* Offset clears the fixed floating pill (top ~20px + ~56px tall) so it
+              never occludes page headings; pages add their own section padding. */}
+          <main id="main" className="pt-8">
+            {children}
+          </main>
           <Footer />
         </SmoothScroll>
       </body>
