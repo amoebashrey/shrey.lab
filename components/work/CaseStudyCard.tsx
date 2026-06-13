@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import type { CaseStudy } from '@/lib/work';
 
 /**
  * CaseStudyCard — used on homepage FeaturedWork and on /work index.
@@ -6,68 +7,41 @@ import Link from 'next/link';
  * Status drives behavior:
  * - 'in-progress' → card is a div, not a link. Shows "→ in progress" indicator.
  *                   Deep page returns 404 (handled in [slug]/page.tsx).
- * - 'published'   → card is a Link to /work/{slug}. Shows "→ read".
- * - 'draft'       → card not rendered at all (filtered upstream).
+ * - 'published'   → card is a Link to its href. Shows "→ read".
  *
- * The signature hover orchestration (BRAND.md §9):
- * 1. Card lifts -2px, shadow deepens
- * 2. Image inside saturates B&W → color (handled by .lab-image)
- * 3. Arrow translates +2px right
+ * The signature hover orchestration (BRAND.md §9) is driven by the brand kit's
+ * `.lab-card-orchestrated` class (tokens.css), all in concert on `--duration-base`:
+ *   1. Card lifts -2px, shadow deepens, border strengthens
+ *   2. Any `.lab-image` inside saturates B&W → color
+ *   3. The `.lab-arrow` translates +2px right
+ * Reduced motion is honored globally (tokens.css §reduced-motion).
  *
- * All three motions in concert.
+ * No images in the data model yet — the image slot carries `.lab-image` so the
+ * B&W → color treatment is wired the moment a real image is dropped in.
  */
 
-interface CaseStudyCardProps {
-  slug: string;
-  year: number;
-  company: string;
-  title: string;
-  outcome: string;
-  status: 'in-progress' | 'published';
-  imageSrc?: string;
-  imageAlt?: string;
-}
-
-export function CaseStudyCard({
-  slug,
-  year,
-  company,
-  title,
-  outcome,
-  status,
-  imageSrc,
-  imageAlt,
-}: CaseStudyCardProps) {
-  const isLinkable = status === 'published';
+export function CaseStudyCard({ study }: { study: CaseStudy }) {
+  const { year, client, title, result, status, href } = study;
+  const isLinkable = status === 'published' && !!href;
   const Wrapper = isLinkable ? Link : 'div';
   const wrapperProps = isLinkable
-    ? { href: `/work/${slug}` }
+    ? { href: href as string }
     : { 'aria-label': `${title} — case study in progress` };
 
   return (
     <Wrapper
       {...(wrapperProps as any)}
       className={[
-        'group block relative rounded-lg overflow-hidden bg-bg-elevated border border-border',
-        'transition-all duration-med',
-        isLinkable
-          ? 'hover:-translate-y-0.5 hover:shadow-md hover:border-border-strong/30 cursor-pointer'
-          : 'cursor-default',
+        // .lab-card-orchestrated drives the hover (lift + image + arrow); p-0
+        // overrides the kit class's default padding so the image stays full-bleed.
+        'lab-card-orchestrated group block relative rounded-lg overflow-hidden bg-bg-elevated border border-border p-0',
+        isLinkable ? 'cursor-pointer' : 'cursor-default',
       ].join(' ')}
     >
-      {/* Image — B&W → color on hover via .lab-image */}
-      <div className="relative aspect-[4/3] bg-bg-sunken overflow-hidden">
-        {imageSrc ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={imageSrc}
-            alt={imageAlt || ''}
-            className="lab-image w-full h-full object-cover"
-          />
-        ) : (
-          // Placeholder treatment when no image — geometric line art per BRAND.md §5
-          <PlaceholderArt />
-        )}
+      {/* Image slot — B&W → color on hover via .lab-image (ready for real images) */}
+      <div className="lab-image relative aspect-[4/3] bg-bg-sunken overflow-hidden">
+        {/* Placeholder line art until a real hero image lands (BRAND.md §5) */}
+        <PlaceholderArt />
 
         {/* Status badge — only on in-progress */}
         {status === 'in-progress' && (
@@ -83,23 +57,22 @@ export function CaseStudyCard({
       {/* Content */}
       <div className="p-5 md:p-6">
         <p className="eyebrow mb-3">
-          // case study · {year} · {company}
+          // case study · {year} · {client}
         </p>
 
         <h3 className="text-base md:text-lg font-medium leading-snug text-fg mb-3 tracking-tight">
           {title}
         </h3>
 
-        <p className="text-sm text-fg-muted leading-relaxed">{outcome}</p>
+        <p className="text-sm text-fg-muted leading-relaxed">{result}</p>
 
         <div className="mt-5 flex items-center gap-1 text-2xs font-mono text-fg-muted tracking-mono">
           {isLinkable ? (
             <>
-              <span>→ read</span>
-              <span
-                className="transition-transform duration-fast group-hover:translate-x-0.5"
-                aria-hidden="true"
-              />
+              <span>read</span>
+              <span className="lab-arrow" aria-hidden="true">
+                →
+              </span>
             </>
           ) : (
             <span>→ in progress</span>

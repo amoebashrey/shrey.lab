@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { FadeUp } from '@/components/motion/FadeUp';
 
 export const metadata: Metadata = {
   title: 'Now',
@@ -32,7 +33,7 @@ export default function NowPage() {
 
   return (
     <div className="py-16 md:py-24">
-      <div className="mx-auto max-w-2xl px-6 md:px-8">
+      <FadeUp className="mx-auto max-w-2xl px-6 md:px-8">
         {/* Brutalist card — thick border, offset shadow, mono */}
         <div className="rounded-md border-2 border-fg shadow-brutal-md bg-bg p-8 md:p-10">
           <p className="font-mono text-2xs text-fg-muted tracking-mono mb-8">
@@ -75,7 +76,7 @@ export default function NowPage() {
             {entry.puneNote}
           </p>
         </div>
-      </div>
+      </FadeUp>
     </div>
   );
 }

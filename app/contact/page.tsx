@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { ResumeButton } from '@/components/ResumeButton';
+import { FadeUp } from '@/components/motion/FadeUp';
 
 export const metadata: Metadata = {
   title: 'Contact',
@@ -22,7 +23,7 @@ const CALENDLY_URL = 'https://calendly.com/shreyasjadhav531/intro'; // placehold
 export default function ContactPage() {
   return (
     <div className="py-16 md:py-24">
-      <div className="mx-auto max-w-2xl px-6 md:px-8">
+      <FadeUp className="mx-auto max-w-2xl px-6 md:px-8">
         <header className="mb-12 md:mb-16">
           <p className="eyebrow mb-4">// contact</p>
           <h1 className="text-4xl md:text-5xl font-medium tracking-tightest text-fg mb-6">
@@ -79,7 +80,7 @@ export default function ContactPage() {
         <p className="mt-16 text-sm text-fg-muted text-center font-mono tracking-mono">
           // got it. i&apos;ll be in touch — usually within a day or two.
         </p>
-      </div>
+      </FadeUp>
     </div>
   );
 }

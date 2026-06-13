@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { FadeUp } from '@/components/motion/FadeUp';
 
 export const metadata: Metadata = {
   title: 'About',
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <div className="py-16 md:py-24">
-      <div className="mx-auto max-w-[1280px] px-6 md:px-8">
+      <FadeUp className="mx-auto max-w-[1280px] px-6 md:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
           {/* Photo column — placeholder treatment */}
           <div className="lg:col-span-5">
@@ -106,7 +107,7 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
-      </div>
+      </FadeUp>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { FeaturedWork } from '@/components/home/FeaturedWork';
 import { AboutTeaser } from '@/components/home/AboutTeaser';
 import { LatestWriting } from '@/components/home/LatestWriting';
 import { NowTeaser } from '@/components/home/NowTeaser';
+import { Stagger } from '@/components/motion/Stagger';
 
 /**
  * Homepage — the 60-second skim.
@@ -27,7 +28,7 @@ import { NowTeaser } from '@/components/home/NowTeaser';
  */
 export default function HomePage() {
   return (
-    <>
+    <Stagger>
       <Hero />
       <HeroCTAs />
       <OutcomesStrip />
@@ -35,6 +36,6 @@ export default function HomePage() {
       <AboutTeaser />
       <LatestWriting />
       <NowTeaser />
-    </>
+    </Stagger>
   );
 }

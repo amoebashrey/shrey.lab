@@ -40,3 +40,23 @@
 .skip-to-content:focus-visible {
   top: 16px;
 }
+
+/* Lenis smooth scroll — recommended baseline styles. Lenis adds the `lenis`
+   class to <html> only when it initializes, so none of this applies under
+   reduced motion (the provider never starts Lenis there). */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}

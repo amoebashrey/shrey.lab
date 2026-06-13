@@ -1,46 +1,14 @@
 import { CaseStudyCard } from '@/components/work/CaseStudyCard';
+import { FEATURED_CASE_STUDIES } from '@/lib/work';
 
 /**
- * FeaturedWork — three case studies on the homepage.
+ * FeaturedWork — featured case studies on the homepage.
  *
  * Per PROJECT_BRIEF.md > Featured work at launch (locked):
- * Three placeholder cards. Real eyebrows, real titles, real outcome sentences.
- * Status: in-progress. Cards visible, deep pages DISABLED until each one's
- * Sanity document has status=published.
- *
- * The data shape mirrors the future caseStudy Sanity schema so when CMS lands,
- * this component just maps over the query result.
+ * Cards visible, deep pages DISABLED until each one's status flips to
+ * 'published'. Data comes from lib/work.ts (single source of truth, shared
+ * with /work) — when Sanity lands this just swaps for a query result.
  */
-const FEATURED_CASE_STUDIES = [
-  {
-    slug: 'amber-university-white-label',
-    year: 2024,
-    company: 'amber',
-    title: 'Unlocking a zero-CAC acquisition channel by treating university websites as a discovery surface',
-    outcome:
-      'Scaled across 30+ university pages; ~50% user conversion at zero paid CAC.',
-    status: 'in-progress' as const,
-  },
-  {
-    slug: 'amber-property-listing-conversion',
-    year: 2024,
-    company: 'amber',
-    title: 'Diagnosing image quality as the hidden conversion lever for low-performing listings',
-    outcome:
-      '18% booking conversion lift after the UX rollout, working cross-functionally with data and inventory.',
-    status: 'in-progress' as const,
-  },
-  {
-    slug: 'amber-internal-ticketing',
-    year: 2024,
-    company: 'amber',
-    title: 'Replacing a $20K vendor by building the right thing in-house',
-    outcome:
-      'Shipped from concept to production; full adoption; ~$20K/year saved.',
-    status: 'in-progress' as const,
-  },
-] as const;
-
 export function FeaturedWork() {
   return (
     <section
@@ -71,15 +39,7 @@ export function FeaturedWork() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           {FEATURED_CASE_STUDIES.map((cs) => (
-            <CaseStudyCard
-              key={cs.slug}
-              slug={cs.slug}
-              year={cs.year}
-              company={cs.company}
-              title={cs.title}
-              outcome={cs.outcome}
-              status={cs.status}
-            />
+            <CaseStudyCard key={cs.slug} study={cs} />
           ))}
         </div>
 

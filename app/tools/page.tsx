@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { FadeUp } from '@/components/motion/FadeUp';
 
 export const metadata: Metadata = {
   title: 'Tools',
@@ -28,7 +29,7 @@ const tools: Array<{
 export default function ToolsIndexPage() {
   return (
     <div className="py-16 md:py-24">
-      <div className="mx-auto max-w-[1280px] px-6 md:px-8">
+      <FadeUp className="mx-auto max-w-[1280px] px-6 md:px-8">
         <header className="mb-12 md:mb-16 max-w-2xl">
           <p className="eyebrow mb-4">// tools</p>
           <h1 className="text-4xl md:text-5xl font-medium tracking-tightest text-fg mb-6">
@@ -57,7 +58,7 @@ export default function ToolsIndexPage() {
             {/* tool cards go here once data lands */}
           </div>
         )}
-      </div>
+      </FadeUp>
     </div>
   );
 }
