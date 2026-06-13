@@ -1,11 +1,13 @@
 import Link from 'next/link';
-import { ResumeButton } from '@/components/ResumeButton';
 
 /**
  * HeroCTAs — extracted from the Hero per the v0.2 restraint pivot.
  * The hero block stays title-only; this sits below it with at least
  * 64px of vertical breathing room (mt-16) so the title has room to land
- * before the eye reaches the actions.
+ * before the eye reaches the action.
+ *
+ * One primary action only — "View work →". Work-first: the resume lives
+ * persistently in the nav (see components/Nav.tsx), not as a hero CTA.
  */
 export function HeroCTAs() {
   return (
@@ -27,8 +29,6 @@ export function HeroCTAs() {
               →
             </span>
           </Link>
-
-          <ResumeButton variant="ghost" />
         </div>
       </div>
     </section>

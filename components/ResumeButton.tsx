@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 
 /**
  * ResumeButton — opens an inline modal with the embedded PDF.
@@ -19,13 +19,21 @@ import { useEffect, useRef, useState } from 'react';
  */
 
 interface ResumeButtonProps {
-  variant?: 'primary' | 'ghost';
+  /**
+   * primary  — lime CTA · ghost — outlined (hero/contact) ·
+   * nav      — quiet outline pill for the nav bar ·
+   * nav-row  — full-width row for the mobile nav dropdown
+   */
+  variant?: 'primary' | 'ghost' | 'nav' | 'nav-row';
   className?: string;
 }
 
 export function ResumeButton({ variant = 'ghost', className = '' }: ResumeButtonProps) {
   const [open, setOpen] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
+  // Unique per instance so multiple ResumeButtons (e.g. nav pill + mobile row)
+  // don't emit a duplicate modal-title id.
+  const titleId = useId();
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -49,13 +57,21 @@ export function ResumeButton({ variant = 'ghost', className = '' }: ResumeButton
     }
   }
 
+  // Radius + padding live in the variant so each shape is self-contained.
   const baseStyles =
-    'inline-flex items-center gap-2 h-11 px-5 rounded-md font-medium text-sm transition-all duration-fast';
+    'inline-flex items-center gap-2 h-11 font-medium text-sm transition-all duration-fast';
 
-  const variantStyles =
-    variant === 'primary'
-      ? 'bg-accent text-[var(--accent-fg)] hover:bg-accent-hover hover:-translate-y-px'
-      : 'bg-transparent text-fg border border-border hover:border-border-strong hover:-translate-y-px';
+  const variantStyles = {
+    primary:
+      'px-5 rounded-md bg-accent text-[var(--accent-fg)] hover:bg-accent-hover hover:-translate-y-px',
+    ghost:
+      'px-5 rounded-md bg-transparent text-fg border border-border hover:border-border-strong hover:-translate-y-px',
+    // Quiet outline pill — NOT the lime active wash (lime = active route only).
+    nav: 'px-4 rounded-full bg-transparent text-fg-muted hover:text-fg border border-[var(--nav-glass-border)] hover:border-border-strong',
+    // Full-width row for the mobile dropdown, matching the link rows.
+    'nav-row':
+      'w-full justify-between px-3 rounded-xl bg-transparent text-fg-muted hover:text-fg',
+  }[variant];
 
   return (
     <>
@@ -73,7 +89,7 @@ export function ResumeButton({ variant = 'ghost', className = '' }: ResumeButton
         ref={dialogRef}
         onClick={onDialogClick}
         onClose={() => setOpen(false)}
-        aria-labelledby="resume-modal-title"
+        aria-labelledby={titleId}
         className="m-0 p-0 max-w-none max-h-none w-full h-full bg-transparent backdrop:bg-black/60 backdrop:backdrop-blur-sm"
       >
         <div
@@ -82,7 +98,7 @@ export function ResumeButton({ variant = 'ghost', className = '' }: ResumeButton
         >
           <div className="relative w-full max-w-4xl h-[90vh] bg-bg-elevated rounded-lg shadow-xl border border-border overflow-hidden flex flex-col">
             <header className="flex items-center justify-between px-5 py-3 border-b border-border bg-bg">
-              <h2 id="resume-modal-title" className="text-sm font-mono text-fg-muted">
+              <h2 id={titleId} className="text-sm font-mono text-fg-muted">
                 // resume · shreyas jadhav
               </h2>
               <div className="flex items-center gap-2">

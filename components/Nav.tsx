@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { ResumeButton } from '@/components/ResumeButton';
 // When the brand kit's Navigation component is wired up, swap to:
 // import { Wordmark, ThemeToggle } from '@/shrey-lab/components/Signature';
 // For now, inline so this works whether or not the kit components have these named exports.
@@ -147,6 +148,10 @@ export function Nav() {
           })}
         </ul>
 
+        {/* Persistent Resume — quiet outline pill, after the links. Collapses
+            into the mobile dropdown below the sm breakpoint. Reuses the modal. */}
+        <ResumeButton variant="nav" className="hidden sm:inline-flex" />
+
         <Divider />
 
         <ThemeToggle />
@@ -197,6 +202,10 @@ export function Nav() {
               </li>
             );
           })}
+          {/* Resume as a dropdown row on mobile — same modal, full-width. */}
+          <li>
+            <ResumeButton variant="nav-row" />
+          </li>
         </ul>
       )}
     </nav>
