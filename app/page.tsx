@@ -6,6 +6,7 @@ import { AboutTeaser } from '@/components/home/AboutTeaser';
 import { LatestWriting } from '@/components/home/LatestWriting';
 import { NowTeaser } from '@/components/home/NowTeaser';
 import { Stagger } from '@/components/motion/Stagger';
+import { IntroGate } from '@/components/onboarding/IntroGate';
 
 /**
  * Homepage — the 60-second skim.
@@ -28,14 +29,18 @@ import { Stagger } from '@/components/motion/Stagger';
  */
 export default function HomePage() {
   return (
-    <Stagger>
-      <Hero />
-      <HeroCTAs />
-      <OutcomesStrip />
-      <FeaturedWork />
-      <AboutTeaser />
-      <LatestWriting />
-      <NowTeaser />
-    </Stagger>
+    <>
+      {/* First-visit intro overlay (homepage only); renders on top, page below. */}
+      <IntroGate />
+      <Stagger>
+        <Hero />
+        <HeroCTAs />
+        <OutcomesStrip />
+        <FeaturedWork />
+        <AboutTeaser />
+        <LatestWriting />
+        <NowTeaser />
+      </Stagger>
+    </>
   );
 }
