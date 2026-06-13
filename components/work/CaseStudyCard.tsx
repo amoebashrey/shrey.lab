@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import type { CaseStudy } from '@/lib/work';
+import { SLUGS_WITH_DETAIL, type CaseStudy } from '@/lib/work';
 
 /**
  * CaseStudyCard — used on homepage FeaturedWork and on /work index.
@@ -21,12 +21,20 @@ import type { CaseStudy } from '@/lib/work';
  */
 
 export function CaseStudyCard({ study }: { study: CaseStudy }) {
-  const { year, client, title, result, status, href } = study;
-  const isLinkable = status === 'published' && !!href;
-  const Wrapper = isLinkable ? Link : 'div';
-  const wrapperProps = isLinkable
-    ? { href: href as string }
-    : { 'aria-label': `${title} — case study in progress` };
+  const { slug, year, client, title, result, status, href } = study;
+
+  // A written detail page wins; else a live product links straight out.
+  const hasDetail = SLUGS_WITH_DETAIL.has(slug);
+  const isExternal = !hasDetail && status === 'live' && !!href && /^https?:\/\//.test(href);
+  const isInternal = hasDetail || (status === 'published' && !!href);
+  const isLinkable = isInternal || isExternal;
+
+  const Wrapper = !isLinkable ? 'div' : isExternal ? 'a' : Link;
+  const wrapperProps = !isLinkable
+    ? { 'aria-label': `${title} — case study in progress` }
+    : isExternal
+      ? { href: href as string, target: '_blank', rel: 'noopener noreferrer' }
+      : { href: hasDetail ? `/work/${slug}` : (href as string) };
 
   return (
     <Wrapper
@@ -43,12 +51,15 @@ export function CaseStudyCard({ study }: { study: CaseStudy }) {
         {/* Placeholder line art until a real hero image lands (BRAND.md §5) */}
         <PlaceholderArt />
 
-        {/* Status badge — only on in-progress */}
-        {status === 'in-progress' && (
+        {/* Status badge — in-progress (rust) or live (lime) */}
+        {(status === 'in-progress' || status === 'live') && (
           <div className="absolute top-3 right-3">
             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[var(--glass-bg)] backdrop-blur-glass border border-[var(--glass-border)] text-3xs font-mono text-fg-muted tracking-mono">
-              <span className="w-1 h-1 rounded-full bg-rust-400" aria-hidden="true" />
-              in progress
+              <span
+                className={`w-1 h-1 rounded-full ${status === 'live' ? 'bg-accent' : 'bg-rust-400'}`}
+                aria-hidden="true"
+              />
+              {status === 'live' ? 'live' : 'in progress'}
             </span>
           </div>
         )}
@@ -67,15 +78,22 @@ export function CaseStudyCard({ study }: { study: CaseStudy }) {
         <p className="text-sm text-fg-muted leading-relaxed">{result}</p>
 
         <div className="mt-5 flex items-center gap-1 text-2xs font-mono text-fg-muted tracking-mono">
-          {isLinkable ? (
+          {!isLinkable ? (
+            <span>→ in progress</span>
+          ) : isExternal ? (
+            <>
+              <span>visit</span>
+              <span className="lab-arrow" aria-hidden="true">
+                ↗
+              </span>
+            </>
+          ) : (
             <>
               <span>read</span>
               <span className="lab-arrow" aria-hidden="true">
                 →
               </span>
             </>
-          ) : (
-            <span>→ in progress</span>
           )}
         </div>
       </div>
