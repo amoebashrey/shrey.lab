@@ -149,35 +149,47 @@ html.lenis body {
   }
 }
 
-/* Canvas texture vars — flip per theme (same selector tokens.css uses). */
+/* Canvas texture vars — flip per theme (same selector tokens.css uses).
+   Tuned to be clearly perceptible (Higgsfield-style grid), biased slightly
+   strong — dial down if it reads heavy. */
 :root {
-  --canvas-dot: rgba(24, 24, 21, 0.035); /* warm-ink dots on paper */
-  --canvas-grain-opacity: 0.03;
+  --canvas-dot: rgba(24, 24, 21, 0.1); /* warm-ink dots on paper */
+  --canvas-grain-opacity: 0.07;
 }
 [data-theme='dark'] {
-  --canvas-dot: rgba(255, 255, 255, 0.018); /* faint light dots on charcoal */
-  --canvas-grain-opacity: 0.025;
+  --canvas-dot: rgba(255, 255, 255, 0.12); /* light dots on charcoal */
+  --canvas-grain-opacity: 0.06;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --canvas-dot: rgba(255, 255, 255, 0.018);
-    --canvas-grain-opacity: 0.025;
+    --canvas-dot: rgba(255, 255, 255, 0.12);
+    --canvas-grain-opacity: 0.06;
   }
 }
 
-/* Fixed full-canvas layer: dot-grid (radial-gradient) + grain (::after).
-   pointer-events:none and z-index:-10 keep it inert and behind all content. */
+/* Stacking fix: the base --bg fill lives on <html> (see below); <body> is
+   transparent, so this fixed layer at z-index:-1 paints ABOVE the html fill
+   but BELOW all body content. Transparent sections (hero, page wrappers)
+   reveal it; opaque surfaces (cards, nav glass) sit over it. */
+html {
+  background-color: var(--bg);
+}
+body {
+  background-color: transparent;
+}
+
+/* Fixed full-canvas layer: dot-grid (radial-gradient) + grain (::after). */
 .site-texture {
   position: fixed;
   inset: 0;
-  z-index: -10;
+  z-index: -1;
   pointer-events: none;
   background-image: radial-gradient(
-    circle at 1px 1px,
-    var(--canvas-dot) 1px,
-    transparent 0
+    circle,
+    var(--canvas-dot) 1.5px,
+    transparent 1.6px
   );
-  background-size: 22px 22px;
+  background-size: 24px 24px;
 }
 .site-texture::after {
   content: '';

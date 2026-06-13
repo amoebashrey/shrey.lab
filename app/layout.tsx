@@ -80,7 +80,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${GeistSans.variable} ${GeistMono.variable}`}
+      className={`${GeistSans.variable} ${GeistMono.variable} bg-bg`}
       suppressHydrationWarning
     >
       <head>
@@ -95,7 +95,7 @@ export default function RootLayout({
         {/* Theme script must run before paint — inline, not external */}
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className="bg-bg text-fg antialiased">
+      <body className="text-fg antialiased">
         {/* Fixed canvas texture (dot-grid + grain) — behind all content, inert. */}
         <div className="site-texture" aria-hidden="true" />
         <a href="#main" className="skip-to-content">
