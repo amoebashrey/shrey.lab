@@ -168,7 +168,7 @@ export function Intro({ onDone }: { onDone: () => void }) {
       <div
         ref={textRef}
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 px-6 text-center font-medium tracking-tight text-[#FBFAF7]"
+        className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 px-6 text-center font-display italic text-[#FBFAF7]"
         style={{ fontSize: 'clamp(28px, 7vw, 72px)', willChange: 'clip-path' }}
       >
         hello, i&apos;m shreyas

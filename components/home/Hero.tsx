@@ -25,12 +25,12 @@ export function Hero() {
 
         <h1
           id="hero-heading"
-          className="hero-depth text-fg font-medium text-[clamp(48px,7vw,96px)] leading-[0.98] tracking-[-0.035em]"
+          className="hero-depth text-fg font-medium text-[clamp(48px,7vw,96px)] leading-[0.98] tracking-tightest"
         >
           Product manager.
         </h1>
 
-        <p className="mt-6 md:mt-8 max-w-[38ch] font-display italic font-normal text-fg text-[clamp(20px,2.4vw,32px)] leading-[1.25] tracking-[-0.01em]">
+        <p className="mt-6 md:mt-8 max-w-[38ch] font-display italic font-normal text-fg text-[clamp(20px,2.4vw,32px)] leading-[1.25] tracking-snug">
           I build internal tools, AI agents, and systems that help product teams move.
         </p>
       </div>

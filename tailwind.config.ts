@@ -24,6 +24,17 @@ const config: Config = {
   ],
   // Match tokens.css: dark values key off the [data-theme="dark"] attribute.
   darkMode: ['class', '[data-theme="dark"]'],
+  theme: {
+    extend: {
+      // The brand kit ships these tracking values as CSS vars (tokens.css) but
+      // not as Tailwind tokens, so `tracking-mono` / `tracking-tightest` used
+      // across the app were silently no-ops. Define them on the scale here.
+      letterSpacing: {
+        mono: '-0.02em', // --tracking-mono
+        tightest: '-0.02em', // brand heading tracking (--tracking-tight)
+      },
+    },
+  },
 };
 
 export default config;

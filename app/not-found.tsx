@@ -14,7 +14,7 @@ export default function NotFound() {
       <div className="mx-auto max-w-md px-6 text-center">
         <p className="eyebrow mb-6">// 404</p>
 
-        <h1 className="text-3xl md:text-4xl font-medium tracking-tighter text-fg mb-6">
+        <h1 className="text-3xl md:text-4xl font-medium tracking-tight text-fg mb-6">
           Well, this is <span className="italic-break text-fg-muted">awkward</span>.
         </h1>
 

@@ -28,7 +28,7 @@ export function Footer() {
                 className="inline-flex items-center justify-center w-8 h-8 rounded-md bg-fg text-bg"
                 aria-hidden="true"
               >
-                <span className="font-serif italic text-base leading-none mr-px">s</span>
+                <span className="font-display italic text-base leading-none mr-px">s</span>
                 <span className="w-1 h-1 rounded-full bg-accent" />
               </span>
               <span className="font-sans font-medium text-base">

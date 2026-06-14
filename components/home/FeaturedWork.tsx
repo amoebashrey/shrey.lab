@@ -21,7 +21,7 @@ export function FeaturedWork() {
             <p className="eyebrow mb-3">// selected work</p>
             <h2
               id="work-heading"
-              className="text-3xl md:text-4xl font-medium tracking-tighter text-fg"
+              className="text-3xl md:text-4xl font-medium tracking-tight text-fg"
             >
               Recent <span className="italic-break text-fg-muted">case studies</span>
             </h2>

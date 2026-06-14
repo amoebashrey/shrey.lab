@@ -41,6 +41,31 @@
   top: 16px;
 }
 
+/* ============================================================================
+   TYPOGRAPHY — brand classes
+   The `//` mono eyebrow. Ported verbatim from the brand styleguide (which the
+   Next app doesn't load), so every `className="eyebrow"` across the site renders
+   as the intended Geist Mono technical label instead of silently falling back to
+   default Geist sans. Per-element `mb-*` utilities still control spacing.
+   ============================================================================ */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs); /* 12px */
+  letter-spacing: var(--tracking-wide); /* 0.04em */
+  color: var(--fg-muted);
+  text-transform: lowercase;
+}
+
+/* The signature editorial break — one Instrument Serif italic phrase per heading
+   (BRAND.md). Used in ~11 headings via className="italic-break" but, like
+   .eyebrow, never defined in the app — so emphasis words were silently rendering
+   as plain Geist sans. This restores the serif-italic voice everywhere at once. */
+.italic-break {
+  font-family: var(--font-display); /* Instrument Serif */
+  font-style: italic;
+  font-weight: 400;
+}
+
 /* Lenis smooth scroll — recommended baseline styles. Lenis adds the `lenis`
    class to <html> only when it initializes, so none of this applies under
    reduced motion (the provider never starts Lenis there). */

@@ -27,7 +27,7 @@ export function LatestWriting() {
             <p className="eyebrow mb-3">// writing</p>
             <h2
               id="writing-heading"
-              className="text-3xl md:text-4xl font-medium tracking-tighter text-fg"
+              className="text-3xl md:text-4xl font-medium tracking-tight text-fg"
             >
               Latest <span className="italic-break text-fg-muted">posts</span>
             </h2>

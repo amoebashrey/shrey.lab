@@ -42,7 +42,7 @@ export default function NowPage() {
 
           <h1 className="sr-only">What I&apos;m working on now</h1>
 
-          <p className="text-xl md:text-2xl font-medium tracking-tighter text-fg leading-snug mb-10">
+          <p className="text-xl md:text-2xl font-medium tracking-tight text-fg leading-snug mb-10">
             Currently building <span className="italic-break text-fg-muted">{entry.currentlyBuilding}</span>{' '}
             <span dangerouslySetInnerHTML={{ __html: entry.currentlyBuildingReason }} />.
           </p>
