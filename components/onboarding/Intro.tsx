@@ -22,6 +22,7 @@ export function Intro({ onDone }: { onDone: () => void }) {
   const textRef = useRef<HTMLDivElement>(null);
   const wallRef = useRef<HTMLDivElement>(null);
   const voidRef = useRef<HTMLDivElement>(null);
+  const textureRef = useRef<HTMLDivElement>(null); // glass skin overlay on the ball
   // GSAP timeline handle, set once the library loads — used by skip + cleanup.
   const tlRef = useRef<{ kill: () => void } | null>(null);
   const doneRef = useRef(onDone);
@@ -46,7 +47,8 @@ export function Intro({ onDone }: { onDone: () => void }) {
       const wall = wallRef.current;
       const voidEl = voidRef.current;
       const overlay = overlayRef.current;
-      if (cancelled || !ball || !text || !wall || !voidEl || !overlay) return;
+      const texture = textureRef.current;
+      if (cancelled || !ball || !text || !wall || !voidEl || !overlay || !texture) return;
 
       const vw = window.innerWidth;
       const vh = window.innerHeight;
@@ -120,6 +122,9 @@ export function Intro({ onDone }: { onDone: () => void }) {
       // 5 — EXPAND: scale up until lime fills the viewport (fade the text out).
       tl.to(ball, { scale: fillScale, duration: 0.7, ease: 'power3.in' });
       tl.to(text, { opacity: 0, duration: 0.3 }, '<');
+      // Resolve the glass skin → flat lime as it grows (a giant specular looks
+      // wrong at full screen). Synced to the expand start; no beat timing changed.
+      tl.to(texture, { opacity: 0, duration: 0.45, ease: 'power2.in' }, '<');
 
       // 6 — VOID → REVEAL: lime → greyish void, then fade the overlay away.
       tl.to(voidEl, { opacity: 1, duration: 0.35, ease: 'power1.inOut' });
@@ -177,7 +182,8 @@ export function Intro({ onDone }: { onDone: () => void }) {
       {/* Invisible right wall — flicks visible on impact */}
       <div ref={wallRef} className="absolute inset-y-0 right-0 w-px bg-[#FBFAF7]" />
 
-      {/* The lime ball */}
+      {/* The lime ball — solid #A8E10C base (what the expand resolves to) with a
+          glass-sphere skin overlaid; the skin fades out during EXPAND. */}
       <div
         ref={ballRef}
         className="absolute left-1/2 top-1/2 rounded-full bg-[#A8E10C]"
@@ -187,8 +193,14 @@ export function Intro({ onDone }: { onDone: () => void }) {
           marginLeft: 'calc(clamp(48px, 12vw, 72px) / -2)',
           marginTop: 'calc(clamp(48px, 12vw, 72px) / -2)',
           willChange: 'transform',
+          boxShadow: '0 0 26px rgba(168, 225, 12, 0.35)', // faint outer lime glow
         }}
-      />
+      >
+        <div ref={textureRef} className="intro-ball-texture">
+          <span className="intro-ball-glass" />
+          <span className="intro-ball-sheen" />
+        </div>
+      </div>
 
       {/* Greyish void — fades in over the lime fill, then the overlay dissolves */}
       <div ref={voidRef} className="pointer-events-none absolute inset-0 bg-[#2b2b28]" />

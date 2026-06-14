@@ -177,6 +177,62 @@ html.lenis body {
 }
 
 /* ============================================================================
+   INTRO GLASS SPHERE — skin for the lime ball (texture only; GSAP untouched).
+   Same glass language as .lab-glass (soft top highlight, rim, inner depth), in
+   CSS only (no canvas/particles). #A8E10C stays the dominant color. The whole
+   overlay fades out during EXPAND so the sphere resolves to flat lime.
+   ============================================================================ */
+.intro-ball-texture {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  overflow: hidden; /* clips the drifting sheen to the sphere */
+  pointer-events: none;
+}
+.intro-ball-glass {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background:
+    radial-gradient(circle at 30% 26%, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 18%), /* crisp specular */
+    radial-gradient(circle at 36% 32%, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 48%), /* soft top-left light */
+    radial-gradient(circle at 70% 80%, rgba(34, 48, 0, 0.5) 0%, rgba(34, 48, 0, 0) 58%); /* bottom-right volume */
+  box-shadow:
+    inset 5px 7px 14px rgba(255, 255, 255, 0.35), /* inner top-left light */
+    inset -8px -10px 20px rgba(26, 38, 0, 0.5), /* inner bottom-right shadow */
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2); /* rim light */
+}
+.intro-ball-sheen {
+  position: absolute;
+  left: -28%;
+  top: -28%;
+  width: 78%;
+  height: 78%;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 60%);
+  animation: intro-sheen 7s ease-in-out infinite; /* slow, restrained internal sheen */
+}
+@keyframes intro-sheen {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translate(42%, 40%);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(0, 0);
+    opacity: 0.45;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro-ball-sheen {
+    animation: none;
+  }
+}
+
+/* ============================================================================
    HERO TYPE DEPTH + CANVAS TEXTURE (the "expensive landing" pass — BUG-004)
    Theme-aware, derived from brand ink/lime tokens, very low contrast. The
    texture sits behind content (z-index:-10), so text color is unchanged and AA
