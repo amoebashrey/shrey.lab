@@ -47,6 +47,10 @@ export function Footer() {
           <nav aria-label="Footer" className="space-y-3">
             <p className="eyebrow">// pages</p>
             <ul className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+              {/* RSS removed (no feed/articles yet) and the raw Resume PDF link
+                  removed (redundant with the persistent nav Resume button + the
+                  /contact resume; the PDF asset is also currently missing — see
+                  report). Re-add both when their content/asset lands. */}
               {[
                 { label: 'Work', href: '/work' },
                 { label: 'Writing', href: '/writing' },
@@ -54,8 +58,6 @@ export function Footer() {
                 { label: 'Tools', href: '/tools' },
                 { label: 'Now', href: '/now' },
                 { label: 'Contact', href: '/contact' },
-                { label: 'RSS', href: '/rss.xml' },
-                { label: 'Resume', href: '/resume.pdf' },
               ].map((item) => (
                 <li key={item.href}>
                   <Link

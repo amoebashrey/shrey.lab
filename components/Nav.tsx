@@ -8,9 +8,13 @@ import { ResumeButton } from '@/components/ResumeButton';
 // import { Wordmark, ThemeToggle } from '@/shrey-lab/components/Signature';
 // For now, inline so this works whether or not the kit components have these named exports.
 
+// Writing is intentionally NOT in the primary nav while it's empty — the #1
+// persona (hiring manager) shouldn't be led from the top nav into a blank page.
+// The route stays live with a tasteful empty state and a footer link; re-add
+// here the moment a first piece ships. (Drift from CLAUDE.md's locked 4-item
+// nav — see report.)
 const NAV_ITEMS = [
   { label: 'Work', href: '/work' },
-  { label: 'Writing', href: '/writing' },
   { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },
 ] as const;
