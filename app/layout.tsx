@@ -5,6 +5,7 @@ import './globals.css';
 import { Nav } from '@/components/Nav';
 import { Footer } from '@/components/Footer';
 import { SmoothScroll } from '@/components/SmoothScroll';
+import { CursorField } from '@/components/CursorField';
 
 /**
  * Root metadata. Per-page metadata (case studies, articles) overrides this
@@ -98,6 +99,8 @@ export default function RootLayout({
       <body className="text-fg antialiased">
         {/* Fixed canvas texture (dot-grid + grain) — behind all content, inert. */}
         <div className="site-texture" aria-hidden="true" />
+        {/* Ambient lime glow trailing the cursor — desktop only, reduced-motion off. */}
+        <CursorField />
         <a href="#main" className="skip-to-content">
           Skip to content
         </a>
