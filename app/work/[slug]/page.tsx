@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { FadeUp } from '@/components/motion/FadeUp';
+import { FelixDemo } from '@/components/work/FelixDemo';
 
 /**
  * /work/[slug] — individual case study.
@@ -198,6 +199,13 @@ export default function CaseStudyPage({ params }: PageProps) {
             </section>
           ))}
         </div>
+
+        {/* Scripted, illustrative triage demo — Felix only */}
+        {params.slug === 'felix' && (
+          <div className="mt-12 md:mt-16 pt-10 border-t border-border">
+            <FelixDemo />
+          </div>
+        )}
 
         {/* Tags */}
         <div className="mt-12 flex flex-wrap gap-2">
