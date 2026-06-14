@@ -122,6 +122,36 @@ html.lenis body {
 }
 
 /* ============================================================================
+   FROSTED GLASS SURFACE (.lab-glass)
+   Reusable theme-aware frosted panel for content surfaces (cards, contact
+   panels, pills, badges) — the same glass language as the nav, sitting over
+   the dot-grid canvas. Derived from the brand glass tokens. Brutalist surfaces
+   (/now, /tools) and dashed "coming soon" placeholders intentionally stay
+   opaque — that contrast is part of the brand.
+   ============================================================================ */
+:root {
+  --lab-glass-bg: rgba(255, 255, 255, 0.7); /* light: warm-paper glass */
+  --lab-glass-border: rgba(24, 24, 21, 0.1);
+}
+[data-theme='dark'] {
+  --lab-glass-bg: rgba(24, 24, 21, 0.58); /* dark: warm-charcoal glass */
+  --lab-glass-border: rgba(255, 255, 255, 0.12);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --lab-glass-bg: rgba(24, 24, 21, 0.58);
+    --lab-glass-border: rgba(255, 255, 255, 0.12);
+  }
+}
+.lab-glass {
+  background: var(--lab-glass-bg);
+  border: 1px solid var(--lab-glass-border);
+  -webkit-backdrop-filter: var(--glass-blur); /* blur(20px) saturate(1.4) */
+  backdrop-filter: var(--glass-blur);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14); /* subtle top highlight */
+}
+
+/* ============================================================================
    HERO TYPE DEPTH + CANVAS TEXTURE (the "expensive landing" pass — BUG-004)
    Theme-aware, derived from brand ink/lime tokens, very low contrast. The
    texture sits behind content (z-index:-10), so text color is unchanged and AA

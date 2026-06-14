@@ -11,7 +11,7 @@ interface StatusPillProps {
 
 export function StatusPill({ text, pulse = true }: StatusPillProps) {
   return (
-    <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-bg-elevated border border-border text-2xs font-mono text-fg-muted tracking-mono">
+    <span className="lab-glass inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-2xs font-mono text-fg-muted tracking-mono">
       <span className="relative inline-flex w-2 h-2" aria-hidden="true">
         <span className="absolute inset-0 rounded-full bg-accent" />
         {pulse && (

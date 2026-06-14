@@ -97,7 +97,7 @@ function ContactCard({
   action: React.ReactNode;
 }) {
   return (
-    <div className="rounded-lg border border-border bg-bg-elevated p-6 md:p-7 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+    <div className="lab-glass rounded-lg p-6 md:p-7 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
       <div>
         <p className="eyebrow mb-2">{label}</p>
         <p className="text-lg font-medium text-fg mb-1">{title}</p>

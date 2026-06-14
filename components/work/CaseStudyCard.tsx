@@ -40,21 +40,22 @@ export function CaseStudyCard({ study }: { study: CaseStudy }) {
     <Wrapper
       {...(wrapperProps as any)}
       className={[
-        // .lab-card-orchestrated drives the hover (lift + image + arrow); p-0
-        // overrides the kit class's default padding so the image stays full-bleed.
-        'lab-card-orchestrated group block relative rounded-lg overflow-hidden bg-bg-elevated border border-border p-0',
+        // .lab-card-orchestrated drives the hover (lift + image + arrow); .lab-glass
+        // is the frosted surface; p-0 keeps the image slot full-bleed.
+        'lab-card-orchestrated lab-glass group block relative rounded-lg overflow-hidden p-0',
         isLinkable ? 'cursor-pointer' : 'cursor-default',
       ].join(' ')}
     >
-      {/* Image slot — B&W → color on hover via .lab-image (ready for real images) */}
-      <div className="lab-image relative aspect-[4/3] bg-bg-sunken overflow-hidden">
+      {/* Image slot — transparent so the frosted glass reads through; .lab-image
+          gives real images the B&W → color hover when they land. */}
+      <div className="lab-image relative aspect-[4/3] overflow-hidden">
         {/* Placeholder line art until a real hero image lands (BRAND.md §5) */}
         <PlaceholderArt />
 
         {/* Status badge — in-progress (rust) or live (lime) */}
         {(status === 'in-progress' || status === 'live') && (
           <div className="absolute top-3 right-3">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[var(--glass-bg)] backdrop-blur-glass border border-[var(--glass-border)] text-3xs font-mono text-fg-muted tracking-mono">
+            <span className="lab-glass inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-3xs font-mono text-fg-muted tracking-mono">
               <span
                 className={`w-1 h-1 rounded-full ${status === 'live' ? 'bg-accent' : 'bg-rust-400'}`}
                 aria-hidden="true"
@@ -108,7 +109,7 @@ export function CaseStudyCard({ study }: { study: CaseStudy }) {
  */
 function PlaceholderArt() {
   return (
-    <div className="absolute inset-0 flex items-center justify-center text-fg-subtle/40 bg-bg-sunken">
+    <div className="absolute inset-0 flex items-center justify-center text-fg-subtle/40">
       <svg
         viewBox="0 0 200 150"
         className="w-2/3 h-2/3"
