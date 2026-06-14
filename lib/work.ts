@@ -46,7 +46,7 @@ export interface CaseStudy {
  * otherwise a 'live' card links straight out to `href`. Populated as detail
  * pages are written.
  */
-export const SLUGS_WITH_DETAIL = new Set<string>([]);
+export const SLUGS_WITH_DETAIL = new Set<string>(['felix', 'pune-bookies']);
 
 export const CASE_STUDIES: CaseStudy[] = [
   {
