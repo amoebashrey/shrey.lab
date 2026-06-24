@@ -93,15 +93,21 @@ export function CaseStudyCard({
           <PlaceholderArt />
         )}
 
-        {/* Status badge — in-progress (rust) or live (lime) */}
-        {(status === 'in-progress' || status === 'live') && (
+        {/* Status badge — live (lime), in-progress (rust), internal (lavender) */}
+        {(status === 'in-progress' || status === 'live' || status === 'internal') && (
           <div className="absolute top-3 right-3">
             <span className="lab-glass inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-3xs font-mono text-fg-muted tracking-mono">
               <span
-                className={`w-1 h-1 rounded-full ${status === 'live' ? 'bg-accent' : 'bg-rust-400'}`}
+                className={`w-1 h-1 rounded-full ${
+                  status === 'live'
+                    ? 'bg-accent'
+                    : status === 'internal'
+                      ? 'bg-lavender-400'
+                      : 'bg-rust-400'
+                }`}
                 aria-hidden="true"
               />
-              {status === 'live' ? 'live' : 'in progress'}
+              {status === 'live' ? 'live' : status === 'internal' ? 'internal' : 'in progress'}
             </span>
           </div>
         )}

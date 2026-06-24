@@ -105,6 +105,22 @@
 
 ---
 
+## 2026-06-24 · Hubble internal-tool case study
+
+### Hubble replaces the `amber-internal-ticketing` placeholder
+- **Decision:** The placeholder `amber-internal-ticketing` entry ("Replacing a $20K vendor…", in-progress, featured) is rewritten as **Hubble** — the real, named version of that same internal ticketing project. Hubble is `status: 'internal'`, `featured: false`, `href: null`, with a written `/work/hubble` detail page. Avoids shipping two near-duplicate internal-ticketing cards. (Confirmed with Shreyas before writing.)
+- **Reasoning:** The old placeholder led with a $20K cost metric; the brief for Hubble is explicit that the card stays qualitative (no metrics/cost) and that the framing is "owned and led the rebuild of an inherited tool" — NOT "solo-built." Keeping both would contradict that and duplicate the topic on `/work`.
+
+### New `'internal'` status (shipped, no public link)
+- **Decision:** Added `'internal'` to `CaseStudyStatus`. It links to the `/work/{slug}` detail page (via `SLUGS_WITH_DETAIL`), never links out, and shows a lavender status pill ("internal"). The detail page renders "// internal tool · no public link" in place of the "Visit live" button, and the bottom-bar visit link is omitted.
+- **Reasoning:** Honest representation of a shipped internal tool. Lavender (the brand's supporting colour) distinguishes it from live (lime) and in-progress (rust) without inventing a new pattern — same glass pill, same dot.
+
+### Designed Hubble mark (the one sanctioned fabrication)
+- **Decision:** Hubble has no real brand assets, so the card uses a designed mark: a line-drawn telescope (Hubble's Slack icon is a telescope) on a lavender field with lime accent "stars", as `public/work/hubble-mark.svg`. Built only from the design-system palette (lavender field, ink strokes, lime accents echoing the placeholder's accent dot). It rides the existing `.lab-image` slot and B&W→color hover like any other card image — no new visual language, and explicitly not a fake product screenshot. The detail page carries no fabricated visuals.
+- **Reasoning:** The brief sanctioned designing a mark here (and only here). Treating it as a normal card image keeps the treatment consistent with Felix/Pune Bookies.
+
+---
+
 ## Template for future entries
 
 ```

@@ -26,7 +26,8 @@ interface WorkDetail {
   title: string;
   year: number;
   client: string;
-  href: string;
+  /** Live URL. Omitted for internal tools with no public link (e.g. Hubble). */
+  href?: string;
   lead: string;
   meta: { label: string; value: string }[];
   sections: Section[];
@@ -133,6 +134,61 @@ const WORK_DETAIL: Record<string, WorkDetail> = {
     ],
     tags: ['Astro', 'Sanity CMS', 'Vercel', 'Performance'],
   },
+  hubble: {
+    title:
+      'Rehabilitating an inherited Slack ticketing bot — audit, rearchitect, and ship the fixes',
+    year: 2024,
+    client: 'amber',
+    // No public link — Hubble is an internal Slack tool.
+    lead: 'An inherited internal support tool, rebuilt. Hubble is a Slack-native ticketing bot: it turns a thread into a ticket, runs on a two-channel design, and keeps its records in a place the team can actually read.',
+    meta: [
+      {
+        label: 'role',
+        value:
+          'Owned and led the rebuild — audit, architecture, prioritization, shipping fixes',
+      },
+      { label: 'stack', value: 'Python · Flask · Slack API · Google Sheets' },
+      { label: 'year', value: '2024' },
+    ],
+    sections: [
+      {
+        eyebrow: '// the problem',
+        heading: 'Inherited, not greenfield',
+        body: [
+          'Hubble wasn’t a blank page. It was an existing internal ticketing bot that had been handed over — working in places, fragile in others, and leaning on a paid third-party tool. The job wasn’t to admire it or to rewrite it for the sake of rewriting; it was to figure out what to keep, what to fix, and in what order.',
+          'So the first work was an audit: read the system as it actually behaved, not as it was described, and decide where the real problems were.',
+        ],
+      },
+      {
+        eyebrow: '// the rebuild',
+        heading: 'A thread is a ticket',
+        body: [
+          'The model the rebuild settled on: a Slack thread is the ticket. Raising a request, the back-and-forth, and the resolution all live in one place people already work, instead of a separate system they have to be nagged into. A two-channel design separates where tickets come in from where they’re worked, so the intake stays legible as volume grows.',
+        ],
+      },
+      {
+        eyebrow: '// the trade-off',
+        heading: 'Google Sheets as the datastore',
+        body: [
+          'Records live in Google Sheets — a deliberate trade-off, not a shortcut. A human-readable datastore means the people running support can see, sort, and correct the data without waiting on a developer or learning a tool. The cost is the ceiling a spreadsheet imposes; for this team, at this size, the legibility was worth more than the headroom.',
+        ],
+      },
+      {
+        eyebrow: '// shipped',
+        heading: 'Replaced the paid tool',
+        body: [
+          'The rebuild replaced the paid third-party tool it had depended on. A deduplication fix — the kind of bug that quietly erodes trust in a ticketing system — was shipped and verified in production. It runs internally; there’s no public link, and this is the honest account of what the work was.',
+        ],
+      },
+    ],
+    tags: [
+      'Internal tools',
+      'Slack bot',
+      'Python / Flask',
+      'Ticketing system',
+      'Legacy rehabilitation',
+    ],
+  },
 };
 
 interface PageProps {
@@ -183,15 +239,22 @@ export default function CaseStudyPage({ params }: PageProps) {
             ))}
           </dl>
 
-          <a
-            href={detail.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group mt-8 inline-flex items-center gap-2 h-11 px-5 rounded-md bg-accent text-[var(--accent-fg)] font-medium text-sm transition-all duration-fast hover:bg-accent-hover hover:-translate-y-px"
-          >
-            {visitLabel}
-            <span className="lab-arrow" aria-hidden="true">↗</span>
-          </a>
+          {detail.href ? (
+            <a
+              href={detail.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group mt-8 inline-flex items-center gap-2 h-11 px-5 rounded-md bg-accent text-[var(--accent-fg)] font-medium text-sm transition-all duration-fast hover:bg-accent-hover hover:-translate-y-px"
+            >
+              {visitLabel}
+              <span className="lab-arrow" aria-hidden="true">↗</span>
+            </a>
+          ) : (
+            // Internal tool — no public link. State it plainly in the mono register.
+            <p className="eyebrow mt-8 inline-flex items-center gap-2 text-fg-muted">
+              // internal tool · no public link
+            </p>
+          )}
         </header>
 
         {/* Real product shot — reuses the .lab-image B&W → color treatment and
@@ -259,14 +322,16 @@ export default function CaseStudyPage({ params }: PageProps) {
             ← all work
           </Link>
           <div className="flex items-center gap-5">
-            <a
-              href={detail.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm font-mono text-fg-muted hover:text-fg transition-colors duration-fast tracking-mono"
-            >
-              visit live ↗
-            </a>
+            {detail.href && (
+              <a
+                href={detail.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-mono text-fg-muted hover:text-fg transition-colors duration-fast tracking-mono"
+              >
+                visit live ↗
+              </a>
+            )}
             <Link
               href="/contact"
               className="text-sm font-mono text-fg-muted hover:text-fg transition-colors duration-fast tracking-mono"

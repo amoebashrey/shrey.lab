@@ -10,7 +10,7 @@
  * empty rather than fabricated (no speculative content, per CLAUDE.md).
  */
 
-export type CaseStudyStatus = 'in-progress' | 'published' | 'live';
+export type CaseStudyStatus = 'in-progress' | 'published' | 'live' | 'internal';
 
 export interface CaseStudy {
   /** URL-safe id; also the [slug] segment for the deep page. */
@@ -30,6 +30,8 @@ export interface CaseStudy {
    * 'live'        — shipped product; card links to the live `href` (new tab),
    *                 unless a detail page exists (see SLUGS_WITH_DETAIL).
    * 'published'   — internal case study at /work/{slug}.
+   * 'internal'    — shipped, but an internal tool with no public link. Links to
+   *                 its /work/{slug} detail page; never links out.
    */
   status: CaseStudyStatus;
   /** Live URL (for 'live') or deep-page link; null when not yet linkable. */
@@ -58,7 +60,7 @@ export interface CaseStudy {
  * otherwise a 'live' card links straight out to `href`. Populated as detail
  * pages are written.
  */
-export const SLUGS_WITH_DETAIL = new Set<string>(['felix', 'pune-bookies']);
+export const SLUGS_WITH_DETAIL = new Set<string>(['felix', 'pune-bookies', 'hubble']);
 
 export const CASE_STUDIES: CaseStudy[] = [
   {
@@ -132,17 +134,30 @@ export const CASE_STUDIES: CaseStudy[] = [
     featured: true,
   },
   {
-    slug: 'amber-internal-ticketing',
-    title: 'Replacing a $20K vendor by building the right thing in-house',
+    slug: 'hubble',
+    title:
+      'Rehabilitating an inherited Slack ticketing bot — audit, rearchitect, and ship the fixes',
     year: 2024,
     client: 'amber',
-    summary: '',
+    summary:
+      'An inherited internal support tool, rebuilt: Slack-native ticketing on a thread-as-ticket model, a two-channel design, and Google Sheets as a human-readable datastore. Replaced a paid third-party tool.',
     result:
-      'Shipped from concept to production; full adoption; ~$20K/year saved.',
-    status: 'in-progress',
+      'Owned and led the rebuild — audit, architecture, prioritization, shipping fixes. Replaced a paid third-party tool; deduplication fix verified in production.',
+    status: 'internal',
     href: null,
-    tags: [],
-    featured: true,
+    tags: [
+      'Internal tools',
+      'Slack bot',
+      'Python / Flask',
+      'Ticketing system',
+      'Legacy rehabilitation',
+    ],
+    featured: false,
+    // No real brand assets exist for Hubble (internal tool). The card uses a
+    // designed, on-brand telescope mark (Hubble's Slack icon is a telescope),
+    // built only from the design system. See public/work/hubble-mark.svg.
+    image: '/work/hubble-mark.svg',
+    imageAlt: 'Hubble — a line-drawn telescope mark on a lavender field',
   },
 ];
 

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" role="img" aria-label="Hubble — a telescope mark">
+  <!-- Designed placeholder mark (no real brand assets exist for Hubble).
+       Built only from the shrey.lab palette: a lavender field (the brand's
+       supporting colour, fitting an internal tool), an ink line-telescope —
+       Hubble's Slack icon is a telescope — and lime accent "stars", echoing
+       the recurring lime accent dot in the card line-art placeholder. -->
+  <defs>
+    <linearGradient id="field" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#CFC3EE"/>
+      <stop offset="1" stop-color="#E6DFF7"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="400" height="300" fill="url(#field)"/>
+
+  <!-- lime accent "stars" (the sky the telescope points at) -->
+  <circle cx="300" cy="64" r="5" fill="#A8E10C"/>
+  <circle cx="338" cy="104" r="3.4" fill="#A8E10C"/>
+  <circle cx="286" cy="48" r="3" fill="#A8E10C"/>
+
+  <g stroke="#181815" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- barrel -->
+    <line x1="150" y1="196" x2="262" y2="116" stroke-width="26"/>
+    <!-- aperture rim (the big lens) -->
+    <line x1="252" y1="100" x2="278" y2="132" stroke-width="9"/>
+    <!-- eyepiece -->
+    <line x1="148" y1="200" x2="135" y2="214" stroke-width="11"/>
+    <!-- mount + tripod -->
+    <circle cx="206" cy="166" r="3.2" fill="#181815" stroke="none"/>
+    <line x1="206" y1="168" x2="206" y2="252" stroke-width="6"/>
+    <line x1="206" y1="170" x2="166" y2="256" stroke-width="6"/>
+    <line x1="206" y1="170" x2="246" y2="256" stroke-width="6"/>
+  </g>
+</svg>
