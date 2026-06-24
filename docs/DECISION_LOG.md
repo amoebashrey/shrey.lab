@@ -121,6 +121,22 @@
 
 ---
 
+## 2026-06-24 · Pune Bookies correction + brand-tile card + X links
+
+### Pune Bookies: built from scratch, not a rebuild (factual correction)
+- **Decision:** Rewrote the Pune Bookies card summary/result and the `/work/pune-bookies` detail narrative to say it was **designed and built from scratch**. Removed all "rebuild / re-house / re-house don't redesign / old site / pixel-for-pixel" language. Structure stated accurately: a reader-facing site, a separate brands/partnerships page, and a Sanity CMS for no-code editing. Role: "Built it — design, build, ship; partnerships, ops & community."
+- **Reasoning:** Shreyas flagged the prior "re-housed/migration" framing as factually wrong. Corrected per his instruction; structure confirmed against the repo (`src/pages/index.astro` + `src/pages/brands.astro` + `src/lib/cms.ts`). Kept only the evidenced specifics (Astro + Sanity + Vercel, Lighthouse 100/100/100 + 93 perf, zero layout shift, reduced-motion, 375px). Supersedes the "Re-house, don't redesign" framing in the 2026-06-24 Pune Bookies entry above.
+
+### Pune Bookies card: brand tile, not a screenshot
+- **Decision:** The card no longer uses the homepage screenshot. New `cardStyle: 'brand-tile'` treatment centers the real gulmohar-tree logo (`favicon.svg` from the repo → `public/work/pune-bookies-mark.svg`) with the "Pune Bookies" wordmark below in the site's display type (Instrument Serif), on a calm warm-tinted tile. New `BrandLogoTile` in CaseStudyCard, same family as `MascotTile` — no new fonts, rides the existing `.lab-image` B&W→color hover. The detail page keeps the real homepage screenshot (only the card was flagged).
+- **Reasoning:** The screenshot read as wonky/wobbly on the small card (the homepage tree uses watercolour displacement filters). A clean logo + wordmark is calmer and more intentional at card size.
+
+### X / Twitter added wherever social links live
+- **Decision:** Added X (`https://x.com/shreyasinpublic`) to the footer "// elsewhere" list (between LinkedIn and GitHub, "X ↗") and as a contact row on `/contact` ("// x · @shreyasinpublic · Open X ↗"), matching the existing link/label patterns. Also corrected the stale `twitter.creator` metadata in `layout.tsx` from `@shreything` to `@shreyasinpublic`. The About "// elsewhere" list is talks/press, not social links, so X was not added there.
+- **Reasoning:** Match existing placements only; both themes; real anchors (keyboard-focusable).
+
+---
+
 ## Template for future entries
 
 ```

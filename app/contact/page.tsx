@@ -75,6 +75,23 @@ export default function ContactPage() {
             note="Open in a modal. Download if you want a copy."
             action={<ResumeButton variant="ghost" />}
           />
+
+          {/* X */}
+          <ContactCard
+            label="// x"
+            title="@shreyasinpublic"
+            note="Working in public — product notes, and open DMs."
+            action={
+              <a
+                href="https://x.com/shreyasinpublic"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 h-11 px-5 rounded-md border border-border-strong/30 hover:border-border-strong hover:-translate-y-px text-fg font-medium text-sm transition-all duration-fast"
+              >
+                Open X ↗
+              </a>
+            }
+          />
         </div>
 
         <p className="mt-16 text-sm text-fg-muted text-center font-mono tracking-mono">

@@ -48,6 +48,13 @@ export interface CaseStudy {
   image?: string;
   /** Alt text for `image`. */
   imageAlt?: string;
+  /**
+   * Card image treatment. Default (undefined) uses `image` as a full-bleed
+   * screenshot. 'brand-tile' centers `brandMark` (a logo) with the `client`
+   * wordmark below, on an on-brand tile — for products whose identity is a mark,
+   * not a screenshot.
+   */
+  cardStyle?: 'brand-tile';
   /** Small brand mark (logo / mascot) shown as a chip over the hero. */
   brandMark?: string;
   /** Alt text for `brandMark` (decorative when paired with a captioned image). */
@@ -87,23 +94,22 @@ export const CASE_STUDIES: CaseStudy[] = [
   {
     slug: 'pune-bookies',
     title:
-      'Rebuilding a reading community’s website in Astro — faster, and editable without code',
+      'Building a reading community’s website in Astro — fast, and editable without code',
     year: 2026,
     client: 'Pune Bookies',
     summary:
-      'The website for Pune Bookies, a reading community in Pune. Re-housed in Astro with a Sanity CMS so the team can publish without touching code.',
+      'The website for Pune Bookies, a reading community in Pune — designed and built from scratch. A reader-facing site, a separate brands/partnerships page, and a Sanity CMS so the team publishes and edits without touching code.',
     result:
-      'Re-housed in Astro with a Sanity CMS; near-perfect Lighthouse — 100 on accessibility, best practices, and SEO.',
+      'Built on Astro with a Sanity CMS; near-perfect Lighthouse — 100 on accessibility, best practices, and SEO.',
     status: 'live',
     href: 'https://pune-bookies.vercel.app',
     tags: ['Astro', 'Sanity CMS', 'Vercel', 'Performance'],
     featured: false,
-    // Real asset: a clean capture of the live homepage hero
-    // (pune-bookies.vercel.app) — the gulmohar-tree mark + wordmark. No
-    // separate brand-mark chip; the logo is already in the shot.
-    image: '/work/pune-bookies-hero.png',
-    imageAlt:
-      'Pune Bookies homepage: an illustrated gulmohar tree above the “Pune Bookies” wordmark and the line “We read together. Every Sunday, eight to ten, under a tree somewhere in Pune.”',
+    // Real asset: the Pune Bookies gulmohar-tree logo (favicon.svg from the
+    // repo), centered with the wordmark on a calm brand tile — not a screenshot.
+    cardStyle: 'brand-tile',
+    brandMark: '/work/pune-bookies-mark.svg',
+    brandMarkAlt: 'Pune Bookies — the gulmohar-tree logo',
   },
   {
     slug: 'amber-university-white-label',

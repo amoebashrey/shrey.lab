@@ -62,7 +62,13 @@ export function CaseStudyCard({
       {/* Image slot — transparent so the frosted glass reads through; .lab-image
           gives real images the B&W → color hover when they land. */}
       <div className="lab-image relative aspect-[4/3] overflow-hidden">
-        {study.image && variant === 'screenshot' ? (
+        {study.cardStyle === 'brand-tile' && study.brandMark ? (
+          <BrandLogoTile
+            src={study.brandMark}
+            alt={study.brandMarkAlt ?? ''}
+            wordmark={client}
+          />
+        ) : study.image && variant === 'screenshot' ? (
           <>
             {/* Real product screenshot fills the slot (object-cover keeps the
                 4:3 crop). It's a direct child so .lab-image > img grayscales it. */}
@@ -146,6 +152,50 @@ export function CaseStudyCard({
         </div>
       </div>
     </Wrapper>
+  );
+}
+
+/**
+ * Brand-tile presentation of a logo: the mark centered with the wordmark below,
+ * on a calm brand-tinted tile (faint warm wash over the sunken surface). For
+ * products whose identity is a logo, not a screenshot. The wordmark uses the
+ * site's display type (Instrument Serif) — no new fonts. The mark is an <img>
+ * inside the card, so it rides the same B&W → color hover.
+ */
+function BrandLogoTile({
+  src,
+  alt,
+  wordmark,
+}: {
+  src: string;
+  alt: string;
+  wordmark: string;
+}) {
+  return (
+    <div className="absolute inset-0" style={{ background: 'var(--bg-sunken)' }}>
+      {/* warm wash — rust is a brand colour; kept faint so it reads calm */}
+      <div
+        className="absolute inset-0"
+        aria-hidden="true"
+        style={{
+          background:
+            'radial-gradient(105% 80% at 50% 30%, rgba(214,105,47,0.12), transparent 62%)',
+        }}
+      />
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 p-6">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt={alt}
+          className="h-[44%] w-auto max-w-[60%] object-contain"
+          loading="lazy"
+          decoding="async"
+        />
+        <span className="font-display leading-none text-fg text-[clamp(20px,4.4vw,30px)]">
+          {wordmark}
+        </span>
+      </div>
+    </div>
   );
 }
 

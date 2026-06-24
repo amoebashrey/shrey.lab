@@ -89,17 +89,17 @@ const WORK_DETAIL: Record<string, WorkDetail> = {
     tags: ['Internal tools', 'AI', 'Slack', 'Python', 'Supabase'],
   },
   'pune-bookies': {
-    title: 'Rebuilding a reading community’s website in Astro — faster, and editable without code',
+    title: 'Building a reading community’s website in Astro — fast, and editable without code',
     year: 2026,
     client: 'Pune Bookies',
     href: 'https://pune-bookies.vercel.app',
-    lead: 'The website for Pune Bookies, a reading community in Pune. Re-housed in Astro with a Sanity CMS so the team can publish without touching code.',
+    lead: 'The website for Pune Bookies, a reading community in Pune — designed and built from scratch. A reader-facing site, a separate brands/partnerships page, and a Sanity CMS so the team publishes and edits without touching code.',
     image: '/work/pune-bookies-hero.png',
     imageAlt:
       'Pune Bookies homepage: an illustrated gulmohar tree above the “Pune Bookies” wordmark and the line “We read together. Every Sunday, eight to ten, under a tree somewhere in Pune.”',
-    imageCaption: '// pune-bookies.vercel.app — the rebuilt homepage',
+    imageCaption: '// pune-bookies.vercel.app — the homepage',
     meta: [
-      { label: 'role', value: 'Site rebuild · partnerships & ops' },
+      { label: 'role', value: 'Built it — design, build, ship; partnerships, ops & community' },
       { label: 'stack', value: 'Astro · Sanity CMS · Vercel' },
       { label: 'year', value: '2026' },
     ],
@@ -108,27 +108,21 @@ const WORK_DETAIL: Record<string, WorkDetail> = {
         eyebrow: '// the brief',
         heading: 'A site the team can actually run',
         body: [
-          'Pune Bookies is a reading community in Pune. The old website was slow, and it could only be changed in code — so every copy tweak waited on a developer. The brief: make it fast, and make it editable by the people who actually run the community.',
-        ],
-      },
-      {
-        eyebrow: '// the decision',
-        heading: 'Re-house, don’t redesign',
-        body: [
-          'The design was working, so it stayed. The rebuild swapped the engine underneath it — verified pixel-for-pixel against the old site at both desktop and mobile — so the visible change is speed and self-serve editing, not a new look.',
+          'Pune Bookies is a reading community in Pune. It needed a site that was fast, that read like the community feels, and — the part that usually gets skipped — one the people running the group could edit themselves, without waiting on a developer for every copy change.',
         ],
       },
       {
         eyebrow: '// the build',
-        heading: 'Astro, plus a CMS built for non-developers',
+        heading: 'Designed and built from scratch in Astro',
         body: [
-          'The site is Astro — a base layout and around two dozen components — with every piece of copy bound to a Sanity CMS: schemas written in plain language, required alt text, character limits tied to the design. A Drive-to-Sanity sync, an inquiry pipeline with spam protection, and self-hosted fonts round it out.',
+          'I designed and built it from the ground up: a reader-facing site for the community and a separate brands/partnerships page for the people who want to work with it, sharing one component system. Astro keeps it static and fast; the structure is a base layout and around two dozen components.',
+          'Every piece of copy is bound to a Sanity CMS, set up for non-developers: schemas written in plain language, required alt text, and character limits tied to the design so edits can’t break the layout. A Drive-to-Sanity sync, an inquiry pipeline with spam protection, and self-hosted fonts round it out.',
         ],
       },
       {
         eyebrow: '// the result',
         body: [
-          'Near-perfect Lighthouse — 100 on accessibility, best practices, and SEO, 93 on performance — with zero layout shift, reduced-motion support, and layouts verified down to 375px. Day to day I run partnerships, ops, and community for the group; this was the engineering side of the same work.',
+          'Near-perfect Lighthouse — 100 on accessibility, best practices, and SEO, 93 on performance — with zero layout shift, reduced-motion support, and layouts verified down to 375px. Day to day I also run partnerships, ops, and community for the group; this was the engineering side of the same work.',
         ],
       },
     ],

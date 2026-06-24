@@ -97,6 +97,16 @@ export function Footer() {
               </li>
               <li>
                 <a
+                  href="https://x.com/shreyasinpublic"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-fg-muted hover:text-fg transition-colors duration-fast"
+                >
+                  X ↗
+                </a>
+              </li>
+              <li>
+                <a
                   href="https://github.com/amoebashrey"
                   target="_blank"
                   rel="noopener noreferrer"
