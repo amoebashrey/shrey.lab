@@ -88,6 +88,15 @@
 
 ---
 
+## 2026-06-24 · Felix card + detail-page visual identity
+
+### Felix gets real product imagery (kills the line-art placeholder)
+- **Decision:** The Felix case-study card and `/work/felix` now use real assets — a clean capture of the live Slack-thread hero (`heyfelix.vercel.app`) plus the product mascot — instead of the geometric line-art placeholder. Card default is the product screenshot filling the existing `.lab-image` slot, with the mascot as a small glass brand-mark chip; the detail page adds the same screenshot as a captioned hero figure between the header and the body sections.
+- **Reasoning:** The design audit flagged the line-art placeholder as the top "dated" tell — it made a shipped product read as unfinished. A real screenshot makes Felix the one card on `/work` that looks like a real product, which is exactly the signal Persona 1 (skeptical hiring manager) is scanning for. Assets are real, not fabricated (CLAUDE.md "no speculative content"). No new card layout or pattern — reused `CaseStudyCard`, the `.lab-image` B&W→color hover, and `.lab-glass`. Added an optional `image`/`brandMark` field to the `CaseStudy` type (mirrors the future Sanity `coverImage` field) so other studies adopt it by dropping in an asset.
+- **Alternative kept available:** A `variant="mascot-tile"` option (mascot centered on a brand-tinted tile) is built into `CaseStudyCard` for the on-brand-mark presentation, pending Shreyas's pick between the two. Default ships the product-screenshot version.
+
+---
+
 ## Template for future entries
 
 ```

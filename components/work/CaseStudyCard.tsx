@@ -16,11 +16,24 @@ import { SLUGS_WITH_DETAIL, type CaseStudy } from '@/lib/work';
  *   3. The `.lab-arrow` translates +2px right
  * Reduced motion is honored globally (tokens.css §reduced-motion).
  *
- * No images in the data model yet — the image slot carries `.lab-image` so the
- * B&W → color treatment is wired the moment a real image is dropped in.
+ * The image slot carries `.lab-image`, so any real image dropped in gets the
+ * B&W → color treatment for free. When a study has no `image`, the slot falls
+ * back to the geometric line-art placeholder.
+ *
+ * `variant` only changes how a study WITH assets fills the slot:
+ *   - 'screenshot'  (default) — the product screenshot fills the slot, with the
+ *                    brand mark as a small chip. Reads as a shipped product.
+ *   - 'mascot-tile' — the brand mark, centered on a brand-tinted tile. Used to
+ *                    preview the on-brand alternative. No screenshot.
  */
 
-export function CaseStudyCard({ study }: { study: CaseStudy }) {
+export function CaseStudyCard({
+  study,
+  variant = 'screenshot',
+}: {
+  study: CaseStudy;
+  variant?: 'screenshot' | 'mascot-tile';
+}) {
   const { slug, year, client, title, result, status, href } = study;
 
   // A written detail page wins; else a live product links straight out.
@@ -49,8 +62,36 @@ export function CaseStudyCard({ study }: { study: CaseStudy }) {
       {/* Image slot — transparent so the frosted glass reads through; .lab-image
           gives real images the B&W → color hover when they land. */}
       <div className="lab-image relative aspect-[4/3] overflow-hidden">
-        {/* Placeholder line art until a real hero image lands (BRAND.md §5) */}
-        <PlaceholderArt />
+        {study.image && variant === 'screenshot' ? (
+          <>
+            {/* Real product screenshot fills the slot (object-cover keeps the
+                4:3 crop). It's a direct child so .lab-image > img grayscales it. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={study.image}
+              alt={study.imageAlt ?? ''}
+              className="absolute inset-0 h-full w-full object-cover"
+              loading="lazy"
+              decoding="async"
+            />
+            {study.brandMark && (
+              <span className="lab-glass absolute bottom-3 left-3 inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-md p-1">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={study.brandMark}
+                  alt=""
+                  aria-hidden="true"
+                  className="h-full w-full object-contain"
+                />
+              </span>
+            )}
+          </>
+        ) : study.brandMark && variant === 'mascot-tile' ? (
+          <MascotTile src={study.brandMark} alt={study.brandMarkAlt ?? ''} />
+        ) : (
+          /* Placeholder line art until a real hero image lands (BRAND.md §5) */
+          <PlaceholderArt />
+        )}
 
         {/* Status badge — in-progress (rust) or live (lime) */}
         {(status === 'in-progress' || status === 'live') && (
@@ -99,6 +140,44 @@ export function CaseStudyCard({ study }: { study: CaseStudy }) {
         </div>
       </div>
     </Wrapper>
+  );
+}
+
+/**
+ * Brand-tile presentation of the mascot: the mark centered on a brand-tinted
+ * tile (faint lavender + lime glows over the sunken surface), sitting on a soft
+ * paper "icon plate" so the mascot's own backdrop reads as intentional in both
+ * themes. The mascot is a direct/descendant <img>, so the card's B&W → color
+ * hover still applies. No new colors — all from brand tokens.
+ */
+function MascotTile({ src, alt }: { src: string; alt: string }) {
+  return (
+    <div
+      className="absolute inset-0"
+      style={{ background: 'var(--bg-sunken)' }}
+    >
+      {/* brand wash */}
+      <div
+        className="absolute inset-0"
+        aria-hidden="true"
+        style={{
+          background:
+            'radial-gradient(120% 90% at 28% 22%, rgba(156,134,212,0.22), transparent 60%), radial-gradient(120% 90% at 82% 88%, rgba(168,225,12,0.16), transparent 58%)',
+        }}
+      />
+      <div className="absolute inset-0 flex items-center justify-center p-6">
+        <span className="lab-glass inline-flex aspect-square w-[52%] items-center justify-center overflow-hidden rounded-2xl p-2">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={src}
+            alt={alt}
+            className="h-full w-full object-contain"
+            loading="lazy"
+            decoding="async"
+          />
+        </span>
+      </div>
+    </div>
   );
 }
 

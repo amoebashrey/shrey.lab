@@ -31,6 +31,10 @@ interface WorkDetail {
   meta: { label: string; value: string }[];
   sections: Section[];
   tags: string[];
+  /** Optional hero image (real product shot), shown under the header. */
+  image?: string;
+  imageAlt?: string;
+  imageCaption?: string;
 }
 
 const WORK_DETAIL: Record<string, WorkDetail> = {
@@ -40,6 +44,10 @@ const WORK_DETAIL: Record<string, WorkDetail> = {
     client: 'Independent',
     href: 'https://heyfelix.vercel.app',
     lead: 'A solo-built Slack bot for internal support. It reads an incoming question, retrieves from a curated knowledge base, and takes one of three paths — resolve, ask a clarifying question, or escalate to a human.',
+    image: '/work/felix-hero.png',
+    imageAlt:
+      'Felix in Slack: a support question from Riya P. — “CRM session timed out again” — and Felix’s reply, “On it.”',
+    imageCaption: '// felix in slack — the live triage surface',
     meta: [
       { label: 'role', value: 'Solo — design, build, ship' },
       { label: 'stack', value: 'Python · Flask · Slack Bolt · Supabase · Groq' },
@@ -181,6 +189,25 @@ export default function CaseStudyPage({ params }: PageProps) {
             <span className="lab-arrow" aria-hidden="true">↗</span>
           </a>
         </header>
+
+        {/* Real product shot — reuses the .lab-image B&W → color treatment and
+            the site's border/radius tokens; sits in the header→body gap so it
+            doesn't disturb the section rhythm below. */}
+        {detail.image && (
+          <figure className="mb-12 md:mb-16">
+            <div className="lab-image relative aspect-[16/10] overflow-hidden rounded-lg border border-border">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={detail.image}
+                alt={detail.imageAlt ?? ''}
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+            </div>
+            {detail.imageCaption && (
+              <figcaption className="eyebrow mt-3">{detail.imageCaption}</figcaption>
+            )}
+          </figure>
+        )}
 
         <div className="space-y-12 md:space-y-16">
           {detail.sections.map((section) => (

@@ -38,6 +38,18 @@ export interface CaseStudy {
   tags: string[];
   /** Surfaced in the homepage FeaturedWork section. */
   featured: boolean;
+  /**
+   * Hero image for the card's `.lab-image` slot (B&W → color on hover). A real
+   * product visual — a screenshot of the shipped thing. Absent → line-art
+   * placeholder. Mirrors the future Sanity `coverImage` field.
+   */
+  image?: string;
+  /** Alt text for `image`. */
+  imageAlt?: string;
+  /** Small brand mark (logo / mascot) shown as a chip over the hero. */
+  brandMark?: string;
+  /** Alt text for `brandMark` (decorative when paired with a captioned image). */
+  brandMarkAlt?: string;
 }
 
 /**
@@ -63,6 +75,12 @@ export const CASE_STUDIES: CaseStudy[] = [
     href: 'https://heyfelix.vercel.app',
     tags: ['Internal tools', 'AI', 'Slack', 'Python', 'Supabase'],
     featured: true,
+    // Real assets: a clean capture of the live Slack-thread hero
+    // (heyfelix.vercel.app) + the product mascot. See public/work/.
+    image: '/work/felix-hero.png',
+    imageAlt: 'Felix in Slack: a support question from Riya P. — “CRM session timed out again” — and Felix’s reply, “On it.”',
+    brandMark: '/work/felix-mascot.png',
+    brandMarkAlt: 'Felix mascot',
   },
   {
     slug: 'pune-bookies',
