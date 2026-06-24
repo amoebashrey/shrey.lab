@@ -137,6 +137,20 @@
 
 ---
 
+## 2026-06-24 · Hubble rebuilt from the full brief (honesty-guarded)
+
+### Hubble case study, rewritten to the pasted brief
+- **Decision:** Reworked the Hubble entry and detail page from Shreyas's full brief. Supersedes the earlier 2026-06-24 Hubble entry. Key honesty guardrails, applied verbatim:
+  - Role one-liner at the top, verbatim: *"Owned and led Hubble end-to-end — scoped it, diagnosed the failures, directed the build, and shipped it into live use."* Ownership framing — no "hand-coded / wrote every line" (implementation ran through AI agents under direction; the original code was someone else's).
+  - **No company name** anywhere (dropped `client: 'amber'` → `'Internal'`). No metrics, no cost figures, no ticket-count numbers — all qualitative. Year → 2025. Status shipped · internal, no href, no screenshots, featured false.
+- **Reasoning:** The brief is explicit that overstating authorship or adding unmeasured numbers is the fastest way to lose credibility. Selective, not a transcription of the source doc.
+
+### Architecture rendered as a styled mono diagram (no ASCII)
+- **Decision:** New `HubbleArchitecture` component renders the event path current-vs-target-V1 as two columns of mono-labelled, bordered nodes connected by ↓ arrows, on `.lab-glass`. Defects in rust, fixes in lime — all from the existing type system and tokens. It sits inside its narrative section ("// the architecture") and stacks to one column under 380px. Not raw ASCII, not a new visual language.
+- **Reasoning:** The brief explicitly wanted the architecture kept and rendered cohesively in the existing system. Added an optional `roleLine` to the detail type for the verbatim ownership line under the title. Card keeps the designed telescope mark as the sanctioned placeholder (a real asset may be swapped into public/work/hubble-* later).
+
+---
+
 ## Template for future entries
 
 ```

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { FadeUp } from '@/components/motion/FadeUp';
 import { FelixDemo } from '@/components/work/FelixDemo';
+import { HubbleArchitecture } from '@/components/work/HubbleArchitecture';
 
 /**
  * /work/[slug] — individual case study.
@@ -28,6 +29,8 @@ interface WorkDetail {
   client: string;
   /** Live URL. Omitted for internal tools with no public link (e.g. Hubble). */
   href?: string;
+  /** Optional ownership one-liner, shown emphasized just under the title. */
+  roleLine?: string;
   lead: string;
   meta: { label: string; value: string }[];
   sections: Section[];
@@ -129,49 +132,63 @@ const WORK_DETAIL: Record<string, WorkDetail> = {
     tags: ['Astro', 'Sanity CMS', 'Vercel', 'Performance'],
   },
   hubble: {
-    title:
-      'Rehabilitating an inherited Slack ticketing bot — audit, rearchitect, and ship the fixes',
-    year: 2024,
-    client: 'amber',
+    title: 'Rescuing an inherited Slack ticketing bot — and making it trustworthy',
+    year: 2025,
+    client: 'Internal',
     // No public link — Hubble is an internal Slack tool.
-    lead: 'An inherited internal support tool, rebuilt. Hubble is a Slack-native ticketing bot: it turns a thread into a ticket, runs on a two-channel design, and keeps its records in a place the team can actually read.',
+    roleLine:
+      'Owned and led Hubble end-to-end — scoped it, diagnosed the failures, directed the build, and shipped it into live use.',
+    lead: 'Slack-native internal ticketing: a thread becomes a ticket, logged to Google Sheets — built to replace a paid third-party tool.',
     meta: [
-      {
-        label: 'role',
-        value:
-          'Owned and led the rebuild — audit, architecture, prioritization, shipping fixes',
-      },
-      { label: 'stack', value: 'Python · Flask · Slack API · Google Sheets' },
-      { label: 'year', value: '2024' },
+      { label: 'role', value: 'Internal-platforms product owner — led the rehabilitation' },
+      { label: 'stack', value: 'Python · Flask · Slack Bolt · Google Sheets API · Render' },
+      { label: 'year', value: 'Built 2025 · rehabilitated 2026' },
+      { label: 'status', value: 'Shipped · internal' },
     ],
     sections: [
       {
         eyebrow: '// the problem',
-        heading: 'Inherited, not greenfield',
+        heading: 'Trusted just often enough to be a problem',
         body: [
-          'Hubble wasn’t a blank page. It was an existing internal ticketing bot that had been handed over — working in places, fragile in others, and leaning on a paid third-party tool. The job wasn’t to admire it or to rewrite it for the sake of rewriting; it was to figure out what to keep, what to fix, and in what order.',
-          'So the first work was an audit: read the system as it actually behaved, not as it was described, and decide where the real problems were.',
+          'Slack was the de-facto intake point for requests across several teams, but Slack has no native structure for ownership, status, or priority. A paid third-party tool filled that gap at a recurring per-seat cost. An earlier in-house replacement existed to retire that cost — but it was unreliable: a single message could spawn duplicate tickets, there were no tests, two competing code paths handled interactions, and the docs had gone stale.',
+          'The mandate was narrow and honest: make the in-house tool trustworthy enough to fully replace the paid one — without a risky big-bang rewrite.',
         ],
       },
       {
-        eyebrow: '// the rebuild',
-        heading: 'A thread is a ticket',
+        eyebrow: '// the approach',
+        heading: 'Owned the judgement, not the keystrokes',
         body: [
-          'The model the rebuild settled on: a Slack thread is the ticket. Raising a request, the back-and-forth, and the resolution all live in one place people already work, instead of a separate system they have to be nagged into. A two-channel design separates where tickets come in from where they’re worked, so the intake stays legible as volume grows.',
+          'I did not write the original code; I owned the product and led the rescue — the calls, the sequencing, and the verification. Implementation ran through AI coding agents under my direction and review, and every ship/rollback decision was mine.',
+          'I refused to start in the editor. First a pre-build gate: is the problem real, is fixing it actually cheaper than keeping the incumbent, and what’s the defensible angle? Then I audited the running system rather than the stale docs, and diagnosed root cause before touching anything. Work was prioritized ruthlessly — stop-the-bleeding before robustness before cosmetic — and shipped on an isolated branch with one-click rollback, deployed to one live channel and smoke-tested before being trusted. Throughout, “it compiles” was never treated as “it works”: nothing was marked done without a live test.',
         ],
       },
       {
-        eyebrow: '// the trade-off',
-        heading: 'Google Sheets as the datastore',
+        eyebrow: '// the architecture',
+        heading: 'From flaky to safe, without a rewrite',
         body: [
-          'Records live in Google Sheets — a deliberate trade-off, not a shortcut. A human-readable datastore means the people running support can see, sort, and correct the data without waiting on a developer or learning a tool. The cost is the ceiling a spreadsheet imposes; for this team, at this size, the legibility was worth more than the headroom.',
+          'The fix wasn’t a new system — it was a disciplined reshaping of the path an event already took. Acknowledge Slack first and do the work in the background; guard against retries; make ticket creation idempotent; read the sheet once; collapse two interaction paths into one.',
         ],
       },
       {
-        eyebrow: '// shipped',
-        heading: 'Replaced the paid tool',
+        eyebrow: '// the bug',
+        heading: 'One message, several tickets',
         body: [
-          'The rebuild replaced the paid third-party tool it had depended on. A deduplication fix — the kind of bug that quietly erodes trust in a ticketing system — was shipped and verified in production. It runs internally; there’s no public link, and this is the honest account of what the work was.',
+          'The duplicate-ticket bug wasn’t a mysterious “AI hallucination” — there’s no model in that path. It was a textbook distributed-systems issue. Slack requires an acknowledgement within three seconds or it retries the event. The bot did all its work — including re-reading the entire Google Sheet several times — before acknowledging, so it blew the window. Slack retried; with no de-duplication, each retry ran the full creation path and an in-memory counter handed out a fresh ID — so one message became several tickets.',
+          'The fix, layered: acknowledge instantly and process in the background; de-duplicate on Slack’s event identifier; and make creation idempotent — check whether a ticket already exists for the source message before making one. Deployed to a live channel and verified: one message, one ticket.',
+        ],
+      },
+      {
+        eyebrow: '// honest outcomes',
+        heading: 'What shipped, and what hasn’t',
+        body: [
+          'Shipped and verified in production: the duplicate-ticket fix (one message → one ticket), a full structural audit that ranked every major reliability risk into a phased plan, and repo hygiene — restructured docs, dead code removed, the product renamed throughout.',
+          'In progress: consolidating the duplicate interaction code, securing open endpoints, and hardening ticket-ID generation. Not yet evidenced — and reported as such: there are no adoption, SLA, or cost-savings numbers measured yet. The honest version is that reliability came first; measurement comes after.',
+        ],
+      },
+      {
+        eyebrow: '// lessons',
+        body: [
+          'Three things carried over. Documentation rots faster than code — I treated the inherited docs as history, not truth, and verified against the running system. “It compiles” is not “it works” — the most valuable habit was refusing to mark anything done without a live test. And the cheapest fix is often the one you decide not to build — half the value was choosing what not to do this week: no rewrite, no database migration, no touching the high-risk channels yet.',
         ],
       },
     ],
@@ -222,6 +239,11 @@ export default function CaseStudyPage({ params }: PageProps) {
           <h1 className="text-4xl md:text-5xl font-medium tracking-tightest text-fg mb-6 leading-[1.05]">
             {detail.title}
           </h1>
+          {detail.roleLine && (
+            <p className="text-lg md:text-xl font-medium text-fg leading-snug mb-4">
+              {detail.roleLine}
+            </p>
+          )}
           <p className="text-lg text-fg-muted leading-relaxed">{detail.lead}</p>
 
           <dl className="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-5 border-t border-border pt-6">
@@ -284,6 +306,10 @@ export default function CaseStudyPage({ params }: PageProps) {
                   <p key={i}>{para}</p>
                 ))}
               </div>
+              {/* Architecture diagram sits inside its narrative section — Hubble only */}
+              {params.slug === 'hubble' && section.eyebrow === '// the architecture' && (
+                <HubbleArchitecture />
+              )}
             </section>
           ))}
         </div>

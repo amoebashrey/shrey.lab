@@ -142,13 +142,13 @@ export const CASE_STUDIES: CaseStudy[] = [
   {
     slug: 'hubble',
     title:
-      'Rehabilitating an inherited Slack ticketing bot — audit, rearchitect, and ship the fixes',
-    year: 2024,
-    client: 'amber',
+      'Rescuing an inherited Slack ticketing bot — and making it trustworthy',
+    year: 2025,
+    client: 'Internal',
     summary:
-      'An inherited internal support tool, rebuilt: Slack-native ticketing on a thread-as-ticket model, a two-channel design, and Google Sheets as a human-readable datastore. Replaced a paid third-party tool.',
+      'A Slack-native internal ticketing bot — each thread becomes a ticket, logged to Google Sheets. Inherited unreliable and stabilized to replace a paid third-party tool, without a big-bang rewrite.',
     result:
-      'Owned and led the rebuild — audit, architecture, prioritization, shipping fixes. Replaced a paid third-party tool; deduplication fix verified in production.',
+      'Owned the rescue end-to-end: audited the live system, diagnosed and fixed the duplicate-ticket bug (verified in production), and set a phased plan to retire the paid tool.',
     status: 'internal',
     href: null,
     tags: [
