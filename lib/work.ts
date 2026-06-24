@@ -96,6 +96,12 @@ export const CASE_STUDIES: CaseStudy[] = [
     href: 'https://pune-bookies.vercel.app',
     tags: ['Astro', 'Sanity CMS', 'Vercel', 'Performance'],
     featured: false,
+    // Real asset: a clean capture of the live homepage hero
+    // (pune-bookies.vercel.app) — the gulmohar-tree mark + wordmark. No
+    // separate brand-mark chip; the logo is already in the shot.
+    image: '/work/pune-bookies-hero.png',
+    imageAlt:
+      'Pune Bookies homepage: an illustrated gulmohar tree above the “Pune Bookies” wordmark and the line “We read together. Every Sunday, eight to ten, under a tree somewhere in Pune.”',
   },
   {
     slug: 'amber-university-white-label',

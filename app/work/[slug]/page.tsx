@@ -93,6 +93,10 @@ const WORK_DETAIL: Record<string, WorkDetail> = {
     client: 'Pune Bookies',
     href: 'https://pune-bookies.vercel.app',
     lead: 'The website for Pune Bookies, a reading community in Pune. Re-housed in Astro with a Sanity CMS so the team can publish without touching code.',
+    image: '/work/pune-bookies-hero.png',
+    imageAlt:
+      'Pune Bookies homepage: an illustrated gulmohar tree above the “Pune Bookies” wordmark and the line “We read together. Every Sunday, eight to ten, under a tree somewhere in Pune.”',
+    imageCaption: '// pune-bookies.vercel.app — the rebuilt homepage',
     meta: [
       { label: 'role', value: 'Site rebuild · partnerships & ops' },
       { label: 'stack', value: 'Astro · Sanity CMS · Vercel' },

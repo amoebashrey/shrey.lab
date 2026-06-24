@@ -97,6 +97,14 @@
 
 ---
 
+## 2026-06-24 · Pune Bookies real visual + verified link
+
+### Pune Bookies card + detail get the real homepage hero
+- **Decision:** The Pune Bookies card and `/work/pune-bookies` now use a real capture of the live homepage hero (the gulmohar-tree mark + "Pune Bookies" wordmark + tagline, from `pune-bookies.vercel.app`). Same treatment as Felix — fills the existing `.lab-image` slot on the card, and sits as a captioned hero figure on the detail page. No separate brand-mark chip: the logo is already in the shot, so a chip would duplicate it (this is the deliberate difference from Felix, whose Slack-thread shot only shows a tiny avatar).
+- **Reasoning:** Same audit fix as Felix — the line-art placeholder made a shipped site read as unfinished. Card + detail both link to the stable `https://pune-bookies.vercel.app` (not a `git-overhaul-…` preview URL), open in a new tab. Facts left as already written (verified against the repo at ~/Desktop/pune-bookies: Astro 6 + @astrojs/vercel, a `studio/` Sanity setup, a Drive→Sanity sync script — all evidenced).
+
+---
+
 ## Template for future entries
 
 ```
