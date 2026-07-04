@@ -100,12 +100,13 @@ function ThemeToggle() {
   );
 }
 
-/** Thin vertical divider, tinted by the glass border var so it tracks theme. */
+/** Thin vertical divider — the ink border token, not the glass border var
+    (rgba .08 at 1px×20px was imperceptible in light mode). Tracks theme. */
 function Divider() {
   return (
     <span
       aria-hidden="true"
-      className="hidden h-5 w-px bg-[var(--nav-glass-border)] sm:inline-block"
+      className="hidden h-5 w-px bg-[var(--border)] sm:inline-block"
     />
   );
 }

@@ -43,7 +43,7 @@ export default function ToolsIndexPage() {
 
         {tools.length === 0 ? (
           <div className="max-w-2xl">
-            <div className="rounded-md border-2 border-fg shadow-brutal-md bg-bg-elevated p-10 md:p-12">
+            <div className="rounded-md border-3 border-fg shadow-brutal-md bg-bg-elevated p-10 md:p-12">
               <p className="font-mono text-sm text-fg-muted tracking-mono mb-3">
                 // nothing live yet
               </p>

@@ -5,7 +5,6 @@ import './globals.css';
 import { Nav } from '@/components/Nav';
 import { Footer } from '@/components/Footer';
 import { SmoothScroll } from '@/components/SmoothScroll';
-import { CursorField } from '@/components/CursorField';
 
 /**
  * Root metadata. Per-page metadata (case studies, articles) overrides this
@@ -41,6 +40,9 @@ export const metadata: Metadata = {
   icons: {
     icon: '/favicon.svg',
     shortcut: '/favicon.svg',
+    // iOS ignores SVG favicons — without this, a home-screen bookmark gets a
+    // page screenshot instead of the monogram.
+    apple: '/apple-touch-icon.png',
   },
 };
 
@@ -85,22 +87,24 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        {/* Instrument Serif (italic display) and Sansita Swashed (sparing display) +
-            VT323 (pixel/retro) come from Google Fonts. Geist is loaded via next/font above. */}
+        {/* Instrument Serif (italic display) is the only webfont from Google
+            Fonts — Geist + Geist Mono are self-hosted via next/font above.
+            Sansita Swashed / VT323 were unused downloads; add back per-page
+            if a page ever actually uses font-playful / font-pixel. */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Sansita+Swashed:wght@500;700&family=VT323&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap"
           rel="stylesheet"
         />
         {/* Theme script must run before paint — inline, not external */}
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="text-fg antialiased">
-        {/* Fixed canvas texture (dot-grid + grain) — behind all content, inert. */}
+        {/* Fixed canvas texture (dot-grid + grain) — behind all content, inert.
+            CursorField lives on the homepage only (app/page.tsx) — BRAND §9
+            reserves the cursor glow for the home hero, one moment per site. */}
         <div className="site-texture" aria-hidden="true" />
-        {/* Ambient lime glow trailing the cursor — desktop only, reduced-motion off. */}
-        <CursorField />
         <a href="#main" className="skip-to-content">
           Skip to content
         </a>

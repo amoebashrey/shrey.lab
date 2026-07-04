@@ -20,7 +20,7 @@ export default function NowPage() {
   const entry = {
     lastUpdated: '05.01.26',
     currentlyBuilding: 'shrey.lab',
-    currentlyBuildingReason: 'because the old portfolio was a creative-generalist site, and I&apos;m a PM',
+    currentlyBuildingReason: "because the old portfolio was a creative-generalist site, and I'm a PM",
     shipped: [
       'Project brief, brand kit, and the three starter docs for shrey.lab',
       'Resume v01, with audit-proof timeframes on every Amber metric',
@@ -34,8 +34,10 @@ export default function NowPage() {
   return (
     <div className="py-16 md:py-24">
       <FadeUp className="mx-auto max-w-2xl px-6 md:px-8">
-        {/* Brutalist card — thick border, offset shadow, mono */}
-        <div className="rounded-md border-2 border-fg shadow-brutal-md bg-bg p-8 md:p-10">
+        {/* Brutalist card — thick border, offset shadow, mono.
+            border-3: BRAND §3 brutalist mode wants weight; 2px read mismatched
+            against the hard offset shadow. */}
+        <div className="rounded-md border-3 border-fg shadow-brutal-md bg-bg p-8 md:p-10">
           <p className="font-mono text-2xs text-fg-muted tracking-mono mb-8">
             // last updated {entry.lastUpdated}
           </p>
@@ -44,7 +46,7 @@ export default function NowPage() {
 
           <p className="text-xl md:text-2xl font-medium tracking-tight text-fg leading-snug mb-10">
             Currently building <span className="italic-break text-fg-muted">{entry.currentlyBuilding}</span>{' '}
-            <span dangerouslySetInnerHTML={{ __html: entry.currentlyBuildingReason }} />.
+            {entry.currentlyBuildingReason}.
           </p>
 
           <Section label="Shipped this month">

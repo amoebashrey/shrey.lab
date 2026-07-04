@@ -34,9 +34,9 @@ export default function WritingIndexPage() {
               <p className="font-mono text-sm text-fg-muted tracking-mono mb-3">
                 // nothing here yet. worth fixing.
               </p>
-              <p className="text-sm text-fg-subtle leading-relaxed">
+              <p className="text-sm text-fg-muted leading-relaxed">
                 I&apos;m still picking the first piece. When it&apos;s up, you&apos;ll find it here.
-                The <a href="/work" className="underline underline-offset-4 decoration-fg-muted/40 hover:decoration-fg-muted">case studies</a>{' '}
+                The <a href="/work" className="lab-link">case studies</a>{' '}
                 are the better read in the meantime.
               </p>
             </div>

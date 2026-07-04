@@ -61,7 +61,7 @@ export default function ContactPage() {
                 href={CALENDLY_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 h-11 px-5 rounded-md border border-border-strong/30 hover:border-border-strong hover:-translate-y-px text-fg font-medium text-sm transition-all duration-fast"
+                className="inline-flex items-center gap-2 h-11 px-5 rounded-md border border-border hover:border-border-strong hover:-translate-y-px text-fg font-medium text-sm transition-all duration-fast"
               >
                 Book a slot ↗
               </a>
@@ -86,7 +86,7 @@ export default function ContactPage() {
                 href="https://x.com/shreyasinpublic"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 h-11 px-5 rounded-md border border-border-strong/30 hover:border-border-strong hover:-translate-y-px text-fg font-medium text-sm transition-all duration-fast"
+                className="inline-flex items-center gap-2 h-11 px-5 rounded-md border border-border hover:border-border-strong hover:-translate-y-px text-fg font-medium text-sm transition-all duration-fast"
               >
                 Open X ↗
               </a>
@@ -95,7 +95,7 @@ export default function ContactPage() {
         </div>
 
         <p className="mt-16 text-sm text-fg-muted text-center font-mono tracking-mono">
-          // got it. i&apos;ll be in touch — usually within a day or two.
+          // whichever door — i reply within a day or two.
         </p>
       </FadeUp>
     </div>

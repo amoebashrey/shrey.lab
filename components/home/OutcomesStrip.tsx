@@ -5,9 +5,9 @@ import { useEffect, useRef, useState } from 'react';
 /**
  * OutcomesStrip — three concrete, audit-proof metrics (PROJECT_BRIEF Problem 1+3).
  *
- * Presentation: disciplined-brutalist. Large Geist Mono numbers that count up when
- * scrolled into view, one cycling brand-color dot per stat, hairline rules on a
- * clear grid. The numbers and claims are verbatim — the value/prefix/suffix are
+ * Presentation: disciplined-brutalist. Large Geist Sans numbers (BRAND §6 stat
+ * callout: big number in sans, label in mono) that count up when scrolled into
+ * view, one cycling brand-color dot per stat, hairline rules on a clear grid. The numbers and claims are verbatim — the value/prefix/suffix are
  * only split out so the number can animate; reassembled they read exactly as
  * before ("~50% conversion", "18% booking lift", "$20K saved / year").
  */
@@ -102,8 +102,8 @@ function Stat({ outcome, index }: { outcome: (typeof OUTCOMES)[number]; index: n
         aria-hidden="true"
       />
 
-      {/* Large Geist Mono number — count-up */}
-      <p className="font-mono text-5xl md:text-6xl tracking-tight leading-none text-fg tabular-nums">
+      {/* Large sans number — count-up (BRAND §6: number in sans, label mono) */}
+      <p className="font-sans font-medium text-4xl md:text-5xl tracking-tight leading-none text-fg tabular-nums">
         {outcome.prefix}
         {value}
         {outcome.suffix}
@@ -129,7 +129,7 @@ export function OutcomesStrip() {
           // recent outcomes
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 border-t-2 border-fg/80">
+        <div className="grid grid-cols-1 md:grid-cols-3 border-t-2 border-fg">
           {OUTCOMES.map((outcome, idx) => (
             <Stat key={idx} outcome={outcome} index={idx} />
           ))}

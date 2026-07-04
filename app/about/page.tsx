@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { FadeUp } from '@/components/motion/FadeUp';
+import { AboutPortrait } from '@/components/about/AboutPortrait';
 
 export const metadata: Metadata = {
   title: 'About',
@@ -15,24 +16,24 @@ export const metadata: Metadata = {
  * Short v1 stub renders below — better than fake content, on-brand for the
  * "/now" honesty register.
  *
- * Photo: deferred per locked decision. The placeholder block is sized to the
- * brand kit's photography rules (medium/environmental, ~3:4 aspect) so when the
- * real photo drops in via Sanity, no layout shifts.
+ * Photo: deferred per locked decision. Until it lands, the slot carries a
+ * designed line-art environmental portrait (AboutPortrait — BRAND §5's
+ * sanctioned no-photo fallback) sized to the kit's photography rules
+ * (medium/environmental, ~3:4), so when the real photo drops in via Sanity,
+ * no layout shifts.
  */
 export default function AboutPage() {
   return (
     <div className="py-16 md:py-24">
       <FadeUp className="mx-auto max-w-[1280px] px-6 md:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
-          {/* Photo column — placeholder treatment */}
+          {/* Photo column — designed line-art portrait until the photo lands */}
           <div className="lg:col-span-5">
-            <div className="aspect-[3/4] rounded-lg border border-dashed border-border bg-bg-sunken flex items-center justify-center">
-              <p className="font-mono text-sm text-fg-muted tracking-mono">
-                // photo coming
-              </p>
+            <div className="aspect-[3/4] rounded-lg border border-border bg-bg-sunken p-6 md:p-8">
+              <AboutPortrait />
             </div>
-            <p className="mt-3 text-2xs font-mono text-fg-subtle tracking-mono">
-              // pune · 2026
+            <p className="mt-3 text-2xs font-mono text-fg-muted tracking-mono">
+              // the desk, pune · 2026 · photo coming
             </p>
           </div>
 
@@ -54,7 +55,7 @@ export default function AboutPage() {
               <p>
                 Before Amber, I spent a summer at FamPay running A/B tests on a revenue feature
                 and helping launch NamasPay (UPI for foreigners) to its first 3,000 users.
-                Before <em>that</em>, I built three things in college: a kombucha brand called
+                Before that, I built three things in college: a kombucha brand called
                 Sattva (₹1L+ revenue, 7 SKUs, manufactured at home),{' '}
                 <span className="italic-break text-fg-muted">Rada</span>, a discussion community
                 that grew from five attendees to 600+ across four countries, and The Cultured
@@ -78,14 +79,14 @@ export default function AboutPage() {
                 Long-form version coming. In the meantime —{' '}
                 <Link
                   href="/work"
-                  className="underline underline-offset-4 decoration-fg-muted/40 hover:decoration-fg transition-colors duration-fast"
+                  className="lab-link"
                 >
                   the work
                 </Link>{' '}
                 or{' '}
                 <Link
                   href="/contact"
-                  className="underline underline-offset-4 decoration-fg-muted/40 hover:decoration-fg transition-colors duration-fast"
+                  className="lab-link"
                 >
                   the contact page
                 </Link>

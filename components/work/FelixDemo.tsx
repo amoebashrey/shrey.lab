@@ -136,7 +136,7 @@ export function FelixDemo() {
           <div className="min-w-0">
             <p className="text-sm">
               <span className="font-medium text-fg">{ex.ticketAuthor}</span>{' '}
-              <span className="text-3xs font-mono text-fg-subtle tracking-mono">#support</span>
+              <span className="text-3xs font-mono text-fg-muted tracking-mono">#support</span>
             </p>
             <p className="text-sm text-fg-muted leading-relaxed">{ex.ticketText}</p>
           </div>
@@ -166,7 +166,7 @@ export function FelixDemo() {
                     <span className={`h-2 w-2 rounded-full ${ex.dot}`} aria-hidden="true" />
                     {ex.pathLabel}
                   </span>
-                  <span className="text-2xs font-mono tracking-mono text-fg-subtle">
+                  <span className="text-2xs font-mono tracking-mono text-fg-muted">
                     // {ex.decision}
                   </span>
                 </div>

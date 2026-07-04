@@ -33,6 +33,13 @@ const config: Config = {
         mono: '-0.02em', // --tracking-mono
         tightest: '-0.02em', // brand heading tracking (--tracking-tight)
       },
+      // Geist + Geist Mono come from next/font (app/layout.tsx) — self-hosted,
+      // zero FOUT. The preset's 'Geist' family names would resolve to the
+      // render-blocking Google Fonts copy, which we no longer load.
+      fontFamily: {
+        sans: ['var(--font-geist-sans)', 'system-ui', 'sans-serif'],
+        mono: ['var(--font-geist-mono)', 'ui-monospace', 'monospace'],
+      },
     },
   },
 };

@@ -16,16 +16,28 @@ export function Hero() {
   return (
     <section
       aria-labelledby="hero-heading"
-      className="relative pt-16 md:pt-24 pb-16 md:pb-20"
+      // pb kept tight — HeroCTAs carries the gap below (see HeroCTAs.tsx);
+      // the old pb-16/20 + mt-16/20 stacked into a ~160px dead zone.
+      className="relative pt-16 md:pt-24 pb-4 md:pb-6"
     >
       <div className="mx-auto max-w-[1280px] px-6 md:px-8">
+        {/* Cinematic load (tokens.css §cinematic) — the lime line draws across
+            in 600ms: the signature color's one above-the-fold moment. A
+            standalone element rather than `.lab-cinematic` on the section, so
+            its `> *` fade-up doesn't double-animate with Stagger. Draw is
+            gated on the intro overlay finishing — see .hero-lime-line in
+            globals.css + IntroGate. */}
+        <div className="hero-lime-line mb-8 md:mb-10" aria-hidden="true" />
+        {/* Eyebrow carries what the H1 doesn't (name · company · city) —
+            "// product manager" directly above "Product manager." said the
+            same noun twice within 40px. */}
         <p className="eyebrow mb-6 md:mb-8" aria-hidden="true">
-          // product manager · pune
+          // shreyas jadhav · amber · pune
         </p>
 
         <h1
           id="hero-heading"
-          className="hero-depth text-fg font-medium text-[clamp(48px,7vw,96px)] leading-[0.98] tracking-tightest"
+          className="hero-depth text-fg font-medium text-[clamp(48px,7vw,88px)] leading-[0.98] tracking-tightest"
         >
           Product manager.
         </h1>

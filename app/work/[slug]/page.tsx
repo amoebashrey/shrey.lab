@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { FadeUp } from '@/components/motion/FadeUp';
@@ -279,11 +280,18 @@ export default function CaseStudyPage({ params }: PageProps) {
         {detail.image && (
           <figure className="mb-12 md:mb-16">
             <div className="lab-image relative aspect-[16/10] overflow-hidden rounded-lg border border-border">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              {/* next/image: auto WebP/AVIF + srcset — the raw PNG here was
+                  2.9MB and popped in seconds late. Container maxes at 760px
+                  minus px-6 padding, so cap the largest candidate there.
+                  priority: this is the page's LCP element. */}
+              <Image
                 src={detail.image}
                 alt={detail.imageAlt ?? ''}
-                className="absolute inset-0 h-full w-full object-cover"
+                fill
+                sizes="(min-width: 768px) 712px, 100vw"
+                quality={80}
+                priority
+                className="object-cover"
               />
             </div>
             {detail.imageCaption && (

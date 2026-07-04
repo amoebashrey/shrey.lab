@@ -29,8 +29,8 @@ export default function WorkIndexPage() {
           </h1>
           <p className="text-lg text-fg-muted leading-relaxed">
             Recent product work, written long-form. Each case study leads with the decision —
-            what I chose <em>not</em> to build, and why — because that&apos;s the part that
-            actually compounds.
+            what I chose <span className="italic-break">not</span> to build, and why — because
+            that&apos;s the part that actually compounds.
           </p>
         </header>
 

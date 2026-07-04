@@ -161,10 +161,12 @@ export function Intro({ onDone }: { onDone: () => void }) {
       role="dialog"
       aria-label="Intro animation"
     >
+      {/* Visible ghost pill — a skeptical skimmer must find the exit instantly;
+          bare mono text read as decoration, not a control. */}
       <button
         type="button"
         onClick={skip}
-        className="absolute right-5 top-5 z-10 inline-flex h-11 items-center rounded-full px-3 font-mono text-sm text-[#FBFAF7]/70 transition-colors duration-150 hover:text-[#FBFAF7]"
+        className="absolute right-5 top-5 z-10 inline-flex h-11 items-center rounded-full border border-[#FBFAF7]/25 px-4 font-mono text-sm text-[#FBFAF7]/80 transition-colors duration-150 hover:border-[#FBFAF7]/60 hover:text-[#FBFAF7]"
       >
         skip →
       </button>

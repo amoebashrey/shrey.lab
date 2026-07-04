@@ -1,10 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Monogram: charcoal square, Instrument Serif italic s, lime dot.
+       The s is OUTLINED PATHS (extracted from the italic TTF via opentype.js)
+       — SVG favicons can't fetch webfonts, so a font-family <text> here
+       rendered as generic Times in the tab. Regenerate: see DECISION_LOG. -->
   <rect width="32" height="32" rx="7" fill="#181815"/>
-  <text x="16" y="23"
-        font-family="Instrument Serif, serif"
-        font-style="italic"
-        font-size="24"
-        text-anchor="middle"
-        fill="#FBFAF7">s</text>
+  <path fill="#FBFAF7" d="M15.160 23.216Q14.368 23.216 13.492 22.976Q12.616 22.736 12.160 22.376Q11.992 22.232 12.016 21.944L12.544 18.800Q12.592 18.488 12.832 18.488Q13.096 18.488 13.096 18.824L13.144 19.976Q13.192 21.344 13.804 21.980Q14.416 22.616 15.304 22.616Q16.072 22.616 16.624 22.124Q17.176 21.632 17.176 20.672Q17.176 20.120 17.008 19.652Q16.840 19.184 16.480 18.644Q16.120 18.104 15.496 17.336Q14.680 16.280 14.284 15.524Q13.888 14.768 13.888 13.952Q13.888 12.440 14.836 11.528Q15.784 10.616 17.248 10.616Q17.896 10.616 18.508 10.808Q19.120 11 19.528 11.384Q19.744 11.552 19.672 11.816L19 15.032Q18.928 15.344 18.712 15.344Q18.496 15.344 18.448 15.008L18.376 13.856Q18.280 12.416 18.004 11.792Q17.728 11.168 16.864 11.168Q16.096 11.168 15.616 11.696Q15.136 12.224 15.136 12.968Q15.136 13.760 15.568 14.420Q16 15.080 16.744 16.088Q17.728 17.384 18.076 18.152Q18.424 18.920 18.424 19.712Q18.424 20.720 17.980 21.512Q17.536 22.304 16.792 22.760Q16.048 23.216 15.160 23.216"/>
   <circle cx="24" cy="23" r="1.5" fill="#A8E10C"/>
 </svg>

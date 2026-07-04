@@ -7,6 +7,7 @@ import { LatestWriting } from '@/components/home/LatestWriting';
 import { NowTeaser } from '@/components/home/NowTeaser';
 import { Stagger } from '@/components/motion/Stagger';
 import { IntroGate } from '@/components/onboarding/IntroGate';
+import { CursorField } from '@/components/CursorField';
 
 /**
  * Homepage — the 60-second skim.
@@ -22,8 +23,8 @@ import { IntroGate } from '@/components/onboarding/IntroGate';
  * 6. Latest writing→ Problem 4 (intellectual range)
  * 7. Now teaser    → Problem 5 (continuous shipping)
  *
- * Alive-and-shipping signal (Problem 5) lives in the footer as a rolling
- * status pill — see components/RollingStatus.tsx.
+ * Alive-and-shipping signal (Problem 5) lives in the footer as a pulsing
+ * status pill — see components/StatusPill.tsx (mounted in components/Footer.tsx).
  *
  * Don't add sections without updating PROJECT_BRIEF.md first.
  */
@@ -32,6 +33,9 @@ export default function HomePage() {
     <>
       {/* First-visit intro overlay (homepage only); renders on top, page below. */}
       <IntroGate />
+      {/* Cursor lime glow — homepage only per BRAND §9 ("home hero only…
+          reserved for one moment per site"); was previously global in layout. */}
+      <CursorField />
       <Stagger>
         <Hero />
         <HeroCTAs />

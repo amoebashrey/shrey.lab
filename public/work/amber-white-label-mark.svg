@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="University white-label — a browser frame with an embedded booking surface">
+  <!-- Designed placeholder mark (case study in progress — no shippable screenshot).
+       Built only from the shrey.lab palette per BRAND §5: simple geometry,
+       ink strokes, one lime accent. A university site's browser frame with the
+       white-label booking surface embedded inside — the lime dot is the
+       zero-CAC channel living on someone else's page. The paper plate keeps
+       the ink strokes legible on the dark theme's sunken tile. -->
+  <rect width="32" height="32" rx="7" fill="#F5F4F0"/>
+  <g stroke="#181815" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- browser frame -->
+    <rect x="4.5" y="6.5" width="23" height="19" rx="2"/>
+    <line x1="4.5" y1="11.5" x2="27.5" y2="11.5"/>
+    <!-- embedded white-label surface -->
+    <rect x="8" y="15" width="10.5" height="7.5" rx="1.2"/>
+  </g>
+  <!-- browser chrome dot -->
+  <circle cx="7.5" cy="9" r="1" fill="#181815"/>
+  <!-- lime accent — the recurring signature dot -->
+  <circle cx="23.5" cy="18.75" r="2.2" fill="#A8E10C"/>
+</svg>

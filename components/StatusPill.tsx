@@ -13,15 +13,17 @@ export function StatusPill({ text, pulse = true }: StatusPillProps) {
   return (
     <span className="lab-glass inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-2xs font-mono text-fg-muted tracking-mono">
       <span className="relative inline-flex w-2 h-2" aria-hidden="true">
-        <span className="absolute inset-0 rounded-full bg-accent" />
-        {pulse && (
-          <span
-            className="absolute inset-0 rounded-full bg-accent"
-            style={{
-              animation: 'pulse-ring 2s cubic-bezier(0.22, 1, 0.36, 1) infinite',
-            }}
-          />
-        )}
+        {/* pulse-lime (tokens.css) is a box-shadow ring pulse — it animates
+            the dot itself; no overlay span needed. (The previous `pulse-ring`
+            name referenced keyframes that don't exist in the kit.) */}
+        <span
+          className="absolute inset-0 rounded-full bg-accent"
+          style={
+            pulse
+              ? { animation: 'pulse-lime 2s var(--ease-out) infinite' }
+              : undefined
+          }
+        />
       </span>
       {text}
     </span>

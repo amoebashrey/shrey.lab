@@ -1,9 +1,12 @@
 import Link from 'next/link';
+import { StatusPill } from '@/components/StatusPill';
 
 /**
  * Footer — locked structure from PROJECT_BRIEF.md.
  *
- * Left column: monogram + wordmark + "built by shrey · {year}" in mono.
+ * Left column: monogram + wordmark + "built by shrey · {year}" in mono,
+ * plus the pulsing "currently building" StatusPill — the alive-and-shipping
+ * signal (Problem 5, BRAND §9). One pulsing dot per page lives here.
  * Middle column: secondary nav (Work, Writing, About, Tools, Now, RSS, Resume).
  * Right column: contact (email with lime dot replacing @) + social + view source.
  *
@@ -41,6 +44,7 @@ export function Footer() {
             <p className="text-sm text-fg-muted max-w-xs leading-relaxed">
               A studio for shipping useful, considered tools.
             </p>
+            <StatusPill text="currently building · shrey.lab" />
           </div>
 
           {/* Middle column — secondary nav */}
@@ -120,7 +124,7 @@ export function Footer() {
                   href="https://github.com/amoebashrey/shrey.lab"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-mono text-2xs text-fg-subtle hover:text-fg-muted transition-colors duration-fast"
+                  className="font-mono text-2xs text-fg-muted hover:text-fg transition-colors duration-fast"
                 >
                   // view source
                 </a>

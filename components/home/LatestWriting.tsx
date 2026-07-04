@@ -45,13 +45,15 @@ export function LatestWriting() {
           )}
         </header>
 
+        {/* One empty-state recipe site-wide: dashed border, sunken, left-aligned
+            (matches /writing — centered was the odd one out). */}
         {articles.length === 0 ? (
-          <div className="rounded-lg border border-dashed border-border p-10 md:p-14 text-center bg-bg-sunken">
+          <div className="rounded-lg border border-dashed border-border p-10 md:p-14 bg-bg-sunken">
             <p className="font-mono text-sm text-fg-muted tracking-mono">
               // nothing here yet. worth fixing.
             </p>
-            <p className="mt-3 text-sm text-fg-subtle max-w-md mx-auto leading-relaxed">
-              Articles coming soon. In the meantime, the work in <a href="/work" className="underline underline-offset-4 decoration-fg-muted/40 hover:decoration-fg-muted">/work</a> is the better read.
+            <p className="mt-3 text-sm text-fg-muted max-w-md leading-relaxed">
+              Articles coming soon. In the meantime, the work in <a href="/work" className="lab-link">/work</a> is the better read.
             </p>
           </div>
         ) : (
@@ -60,7 +62,7 @@ export function LatestWriting() {
               <li key={article.slug}>
                 <Link
                   href={`/writing/${article.slug}`}
-                  className="group block rounded-lg p-5 md:p-6 border border-border hover:border-border-strong/30 hover:-translate-y-0.5 transition-all duration-med"
+                  className="group block rounded-lg p-5 md:p-6 border border-border hover:border-border-strong hover:-translate-y-0.5 transition-all duration-base"
                 >
                   <p className="text-2xs font-mono text-fg-muted tracking-mono mb-3">
                     {article.date} · {article.readingTime}

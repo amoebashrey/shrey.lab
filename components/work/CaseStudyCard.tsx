@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { SLUGS_WITH_DETAIL, type CaseStudy } from '@/lib/work';
 
@@ -71,14 +72,16 @@ export function CaseStudyCard({
         ) : study.image && variant === 'screenshot' ? (
           <>
             {/* Real product screenshot fills the slot (object-cover keeps the
-                4:3 crop). It's a direct child so .lab-image > img grayscales it. */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+                4:3 crop). next/image renders a direct-child <img>, so the
+                .lab-image > img grayscale hover still applies. Cards render
+                3-up ≥1024px, 2-up ≥768px, full-width below. */}
+            <Image
               src={study.image}
               alt={study.imageAlt ?? ''}
-              className="absolute inset-0 h-full w-full object-cover"
-              loading="lazy"
-              decoding="async"
+              fill
+              sizes="(min-width: 1024px) 400px, (min-width: 768px) 45vw, 100vw"
+              quality={80}
+              className="object-cover"
             />
             {study.brandMark && (
               <span className="lab-glass absolute bottom-3 left-3 inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-md p-1">
@@ -244,7 +247,7 @@ function MascotTile({ src, alt }: { src: string; alt: string }) {
  */
 function PlaceholderArt() {
   return (
-    <div className="absolute inset-0 flex items-center justify-center text-fg-subtle/40">
+    <div className="absolute inset-0 flex items-center justify-center text-fg-subtle">
       <svg
         viewBox="0 0 200 150"
         className="w-2/3 h-2/3"

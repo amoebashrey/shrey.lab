@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Property listing conversion — a grid of listing photos, one marked in lime">
+  <!-- Designed placeholder mark (case study in progress — no shippable screenshot).
+       Built only from the shrey.lab palette per BRAND §5: an image grid — the
+       listing photos that turned out to be the hidden conversion lever — with
+       one frame carrying the photo and the lime accent. The paper plate keeps
+       the ink strokes legible on the dark theme's sunken tile. -->
+  <rect width="32" height="32" rx="7" fill="#F5F4F0"/>
+  <g stroke="#181815" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="5.5" y="5.5" width="9" height="9" rx="1.5"/>
+    <rect x="17.5" y="5.5" width="9" height="9" rx="1.5"/>
+    <rect x="5.5" y="17.5" width="9" height="9" rx="1.5"/>
+    <rect x="17.5" y="17.5" width="9" height="9" rx="1.5"/>
+    <!-- the photo that converts: hills in the highlighted frame -->
+    <path d="M18.5 24.5 L21 21.5 L22.8 23.4 L24.3 21.8 L26 24.5"/>
+  </g>
+  <!-- lime accent — the recurring signature dot (the photo's sun) -->
+  <circle cx="20.6" cy="19.6" r="1.3" fill="#A8E10C"/>
+</svg>

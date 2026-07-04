@@ -56,7 +56,7 @@ function Column({
   return (
     <div className="lab-glass rounded-lg p-4 md:p-5">
       <p className="eyebrow mb-1">{label}</p>
-      <p className="text-2xs font-mono tracking-mono text-fg-subtle mb-4">{caption}</p>
+      <p className="text-2xs font-mono tracking-mono text-fg-muted mb-4">{caption}</p>
       <div className="flex flex-col">{children}</div>
     </div>
   );

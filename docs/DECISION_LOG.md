@@ -151,6 +151,62 @@
 
 ---
 
+## 2026-07-04 · Visual-review fixes, round 1 (top-5 from the Fable 5 design review)
+
+### Fonts self-hosted via next/font; kit's @import removed
+- **Decision:** Removed the Google Fonts `@import` from `shrey-lab/tokens/tokens.css`; the app now consumes next/font's Geist/Geist Mono variables (globals.css re-points `--font-sans`/`--font-mono`; app tailwind.config.ts overrides `fontFamily`). The layout `<link>` now loads Instrument Serif only — Sansita Swashed and VT323 were downloaded on every page and used nowhere.
+- **Reasoning:** Geist was double-loaded (next/font + render-blocking @import) and the hero FOUTed on the most important glyphs on the site. styleguide.html carries its own `<link>`, so the kit file stays standalone-safe. Re-add Sansita/VT323 per-page if `font-playful`/`font-pixel` ever get used.
+
+### Case-study imagery via next/image
+- **Decision:** Detail-page heroes and CaseStudyCard screenshots render through `next/image` (fill + sizes + q80; detail hero gets `priority`). SVG marks stay as plain `<img>` — the optimizer can't improve SVGs.
+- **Reasoning:** `pune-bookies-hero.png` was 2.9MB served raw; it now serves ~100–200KB WebP with a proper srcset. `.lab-image > img` grayscale hover still applies (next/image renders a direct-child `<img>`).
+
+### Hero: lime cinematic line + closed dead zone
+- **Decision:** Added the kit's cinematic lime-line draw to the home hero as a standalone `.hero-lime-line` element (not `.lab-cinematic` on the section — its `> *` fade-up would double-animate with Stagger). The draw is gated on `html[data-intro-done]`, which IntroGate stamps when the intro finishes or is skipped. Hero `pb-16/20` → `pb-4/6`, HeroCTAs `mt-16/20` → `mt-10/12` (subline→CTA now ~72px, was ~160px).
+- **Reasoning:** The brand's one above-the-fold lime moment was documented but never used, and the draw would otherwise be wasted underneath the first-visit intro overlay.
+
+### Silent no-op utility classes repaired; StatusPill fixed and mounted
+- **Decision:** The preset's CSS-var colors don't support Tailwind `/NN` opacity modifiers, so `border-fg/80`, `border-border-strong/30` (×3), `decoration-fg-muted/40` (×3), `text-fg-subtle/40`, and the undefined `duration-med` compiled to nothing — all replaced with real tokens (ghost buttons unified on the ResumeButton recipe: `border-border hover:border-border-strong`). StatusPill's animation referenced nonexistent `pulse-ring` keyframes → now `pulse-lime` on the dot itself, and the pill is mounted in the Footer left column ("currently building · shrey.lab") as the alive-and-shipping signal (Problem 5).
+- **Reasoning:** Fix at the usage sites rather than adding `<alpha-value>` plumbing to the kit preset — no current design calls for translucent borders.
+
+### In-progress Amber cards get designed brand-tile marks; CursorField scoped to home
+- **Decision:** Both featured in-progress Amber studies use `cardStyle: 'brand-tile'` with new BRAND §5 line-art marks (`amber-white-label-mark.svg`: browser frame + embedded surface; `amber-listing-mark.svg`: listing-photo grid) on a paper plate so ink strokes survive dark mode. CursorField moved from the root layout to `app/page.tsx`.
+- **Reasoning:** The homepage proof row read ⅓ real with generic placeholders. BRAND §9 reserves the cursor glow for the home hero — it was mounted globally, drifting behind case-study body text.
+
+---
+
+## 2026-07-04 · Visual-review fixes, round 2 (full sweep)
+
+### Typography & copy precision
+- **Decision:** Hero eyebrow → `// shreyas jadhav · amber · pune` (was echoing the H1's noun); H1 clamp capped at 88px (the scale's top — 96px was a token violation); Outcomes numbers moved from Geist Mono 5xl/6xl to sans medium 4xl/5xl `tabular-nums` (BRAND §6 stat callout); stray Geist `<em>`s replaced (`/work` intro's "not" → `.italic-break`, About's dropped); `/now`'s `dangerouslySetInnerHTML` replaced with a plain string; contact footer line reworded to `// whichever door — i reply within a day or two.` (old line was form-submitted microcopy with no form).
+- **Reasoning:** All spec-vs-implementation drift; no new patterns.
+
+### AA contrast + nav divider
+- **Decision:** `text-fg-subtle` (ink-400, ~3.9:1) at 11–14px bumped to `text-fg-muted` in: footer view-source, FelixDemo `#support` + decision line, Hubble panel captions, both writing empty states, About caption. Decorative uses (placeholder art, arrows, thinking dots) keep fg-subtle. Nav divider `--nav-glass-border` → `--border`.
+- **Reasoning:** BRAND §12 calls AA non-negotiable; the divider was imperceptible in light mode.
+
+### Intro plays once ever, skip is a visible pill
+- **Decision:** IntroGate `sessionStorage` → `localStorage` (same key); skip control upgraded from bare mono text to a bordered ghost pill.
+- **Reasoning:** Persona 1 is a 60-second skimmer — a ~5s forced overlay is worth at most one showing, and the exit must read as a control.
+
+### Signature link treatment + one empty-state recipe
+- **Decision:** Inline prose links (About, both writing empty states) now use the kit's `.lab-link` lime underline wipe instead of three ad-hoc underline recipes; the homepage writing empty state is left-aligned to match `/writing`.
+- **Reasoning:** The kit shipped the signature treatment unused; ad-hoc recipes also relied on broken `/40` modifiers.
+
+### Homepage rhythm + brutalist weight
+- **Decision:** NowTeaser rendered as the brutalist changelog card (border-3 + shadow-brutal-sm + mono list) matching `/now`'s register; `/now` + `/tools` cards bumped border-2 → border-3.
+- **Reasoning:** Three same-gray prose teasers in a row read as monotony (review 4.1); 2px borders read mismatched against hard offset shadows (BRAND §3 brutalist = weight).
+
+### About portrait (line-art, theme-aware)
+- **Decision:** The dashed "// photo coming" box replaced with `AboutPortrait` — an inline-SVG environmental line drawing (monsoon window, laptop with lime cursor, books, kombucha bottle) in the same 3:4 slot; caption now `// the desk, pune · 2026 · photo coming`. Inline SVG so strokes ride `currentColor` across themes.
+- **Reasoning:** BRAND §5 names line art as the no-photo fallback; a dashed placeholder was the weakest visual on the second-most-visited page. Real photo still drops in with no layout shift.
+
+### Favicon outlined + apple-touch-icon
+- **Decision:** favicon.svg's `<text font-family="Instrument Serif">` replaced with the actual outlined glyph path (extracted from the italic TTF via opentype.js — SVG favicons can't load webfonts, so tabs showed generic Times). Added 180×180 `apple-touch-icon.png` rendered from the same mark and registered in layout metadata.
+- **Reasoning:** The monogram is the brand mark; it should be pixel-faithful everywhere it appears.
+
+---
+
 ## Template for future entries
 
 ```

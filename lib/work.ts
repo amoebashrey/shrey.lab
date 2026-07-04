@@ -124,6 +124,13 @@ export const CASE_STUDIES: CaseStudy[] = [
     href: null,
     tags: [],
     featured: true,
+    // No shippable screenshot yet (study in progress). Designed line-art mark
+    // per BRAND §5 so the featured row reads intentional, not unfinished —
+    // a university browser frame with the embedded white-label surface.
+    cardStyle: 'brand-tile',
+    brandMark: '/work/amber-white-label-mark.svg',
+    brandMarkAlt:
+      'A browser frame with an embedded booking surface marked in lime',
   },
   {
     slug: 'amber-property-listing-conversion',
@@ -138,6 +145,12 @@ export const CASE_STUDIES: CaseStudy[] = [
     href: null,
     tags: [],
     featured: true,
+    // No shippable screenshot yet (study in progress). Designed line-art mark
+    // per BRAND §5 — the listing-photo grid that turned out to be the
+    // conversion lever, one frame carrying the photo + lime accent.
+    cardStyle: 'brand-tile',
+    brandMark: '/work/amber-listing-mark.svg',
+    brandMarkAlt: 'A grid of listing photos, one marked in lime',
   },
   {
     slug: 'hubble',
