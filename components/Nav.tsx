@@ -4,9 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { ResumeButton } from '@/components/ResumeButton';
-// When the brand kit's Navigation component is wired up, swap to:
-// import { Wordmark, ThemeToggle } from '@/shrey-lab/components/Signature';
-// For now, inline so this works whether or not the kit components have these named exports.
+// The theme toggle lives outside the pill, fixed top-right (components/ThemeToggle.tsx).
 
 // Writing is intentionally NOT in the primary nav while it's empty — the #1
 // persona (hiring manager) shouldn't be led from the top nav into a blank page.
@@ -41,62 +39,6 @@ function Wordmark() {
       />
       <span className="text-base tracking-tight">lab</span>
     </Link>
-  );
-}
-
-/**
- * Inline theme toggle. Persists to localStorage and sets the `data-theme`
- * attribute on <html> — the selector tokens.css responds to. The init script
- * in layout.tsx applies the same attribute before paint to prevent FOUC.
- */
-function ThemeToggle() {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    const stored = localStorage.getItem('theme') as 'light' | 'dark' | null;
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    setTheme(stored || (prefersDark ? 'dark' : 'light'));
-  }, []);
-
-  function toggle() {
-    const next = theme === 'light' ? 'dark' : 'light';
-    setTheme(next);
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-  }
-
-  // Render a stable shell during SSR to avoid hydration mismatch.
-  if (!mounted) {
-    return (
-      <span
-        aria-hidden="true"
-        className="inline-flex h-11 w-11 items-center justify-center rounded-full"
-      />
-    );
-  }
-
-  return (
-    <button
-      type="button"
-      onClick={toggle}
-      aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-      className="inline-flex h-11 w-11 items-center justify-center rounded-full text-fg-muted transition-colors duration-fast hover:text-fg"
-    >
-      {theme === 'light' ? (
-        // Moon — switching to dark
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-        </svg>
-      ) : (
-        // Sun — switching to light
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="4" />
-          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-        </svg>
-      )}
-    </button>
   );
 }
 
@@ -156,10 +98,6 @@ export function Nav() {
         {/* Persistent Resume — quiet outline pill, after the links. Collapses
             into the mobile dropdown below the sm breakpoint. Reuses the modal. */}
         <ResumeButton variant="nav" className="hidden sm:inline-flex" />
-
-        <Divider />
-
-        <ThemeToggle />
 
         {/* Menu affordance — only on small screens */}
         <button

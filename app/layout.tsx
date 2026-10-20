@@ -3,6 +3,7 @@ import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import './globals.css';
 import { Nav } from '@/components/Nav';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { Footer } from '@/components/Footer';
 import { SmoothScroll } from '@/components/SmoothScroll';
 
@@ -72,6 +73,14 @@ const themeScript = `
       var theme = stored || (prefersDark ? 'dark' : 'light');
       document.documentElement.setAttribute('data-theme', theme);
     } catch (e) {}
+    // Mirror IntroGate's decision before paint: only when the first-visit
+    // intro will actually play does the hero hold its entrance for it.
+    // Everyone else gets the entrance at first paint, not after hydration.
+    var played = false;
+    try { played = localStorage.getItem('intro-played') === '1'; } catch (e) {}
+    if (!played && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.setAttribute('data-intro-pending', '');
+    }
   })();
 `;
 
@@ -110,6 +119,7 @@ export default function RootLayout({
         </a>
         <SmoothScroll>
           <Nav />
+          <ThemeToggle />
           {/* Offset clears the fixed floating pill (top ~20px + ~56px tall) so it
               never occludes page headings; pages add their own section padding. */}
           <main id="main" className="pt-8">

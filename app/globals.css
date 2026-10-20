@@ -32,20 +32,117 @@
    ============================================================================ */
 
 /* Hero lime line — the cinematic-load moment (tokens.css §cinematic).
-   Paused until IntroGate stamps data-intro-done on <html>, so the 600ms
-   draw isn't wasted underneath the first-visit intro overlay. With the
-   intro skipped/already-played, the attribute lands right after hydration.
-   Reduced motion: the kit's global rule snaps animations to their end
-   state, so the line simply appears — no draw. */
+   When the first-visit intro is going to play (layout.tsx's head script
+   stamps data-intro-pending before paint), the draw holds until IntroGate
+   stamps data-intro-done, so it isn't wasted under the overlay. Otherwise
+   it plays at first paint. Reduced motion: the kit's global rule snaps
+   animations to their end state, so the line simply appears — no draw. */
 .hero-lime-line {
   height: 2px;
   background: var(--accent);
   transform-origin: left;
   animation: lime-line-draw 600ms var(--ease-out) both;
+}
+html[data-intro-pending]:not([data-intro-done]) .hero-lime-line,
+html[data-intro-pending]:not([data-intro-done]) .hero-enter {
   animation-play-state: paused;
 }
-html[data-intro-done] .hero-lime-line {
-  animation-play-state: running;
+/* Centred hero: the rule draws out from its middle. */
+.hero-lime-line--center {
+  transform-origin: center;
+}
+
+/* Native UI (scrollbars, form controls) follows the toggled theme, not just
+   the OS — without this a manual dark choice kept light scrollbars. */
+[data-theme='light'] {
+  color-scheme: light;
+}
+[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+/* ============================================================================
+   HOME HERO — tile-shark band
+   --hero-bg is the colour the shark canvas paints (keep in step with LIGHT_BG /
+   DARK_BG in components/home/TileSharkBackground.tsx): pure white in light,
+   warm charcoal (--ink-800) in dark. Opaque, so the site dot-grid stays out.
+   ============================================================================ */
+:root {
+  --hero-bg: #ffffff;
+}
+[data-theme='dark'] {
+  --hero-bg: var(--ink-800);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --hero-bg: var(--ink-800);
+  }
+}
+.hero-band {
+  background: var(--hero-bg);
+  transition: background-color 300ms var(--ease-out);
+}
+/* The copy sits on a solid block of the page colour: a shark passing behind
+   the headline is covered instead of dropping text contrast. Invisible until
+   a tile meets its edge. */
+.hero-plate {
+  background: var(--hero-bg);
+  transition: background-color 300ms var(--ease-out);
+}
+
+/* Entrance — headline, sentence, button; 70ms apart; transform + opacity
+   only. `both` holds the start state during the delay. Held for the intro by
+   the same gate as the lime line (above). */
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.hero-enter {
+  animation: hero-rise 400ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+/* Reduced motion: fade only, no rise. The class selector + !important beats
+   the kit's universal 0.01ms override (tokens.css), which would snap it. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-enter {
+    animation-name: hero-fade !important;
+    animation-duration: 400ms !important;
+  }
+}
+
+/* Primary button — press feedback everywhere, hover only on real pointers. */
+.hero-btn {
+  transition:
+    transform 160ms ease-out,
+    background-color 160ms ease-out;
+}
+.hero-btn:active {
+  transform: scale(0.97);
+}
+.hero-btn-arrow {
+  transition: transform 160ms ease-out;
+}
+@media (hover: hover) and (pointer: fine) {
+  .hero-btn:hover {
+    background-color: var(--accent-hover);
+  }
+  .hero-btn:hover .hero-btn-arrow {
+    transform: translateX(2px);
+  }
 }
 
 /* Skip-to-content link — accessibility requirement (BRAND.md §12).
@@ -167,6 +264,60 @@ html.lenis body {
   .nav-enter {
     animation: none;
   }
+}
+
+/* Theme toggle pill (components/ThemeToggle.tsx) — same entrance as the nav,
+   without the nav's -50% centring. */
+@keyframes nav-enter-fade {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.nav-enter-fade {
+  animation: nav-enter-fade 400ms var(--ease-out) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-enter-fade {
+    animation: none;
+  }
+}
+/* Icons stack; data-theme picks one, so the first paint is already right.
+   The swap is a quick rotate + scale crossfade (never from scale 0). */
+.theme-toggle {
+  transition:
+    color 160ms ease-out,
+    transform 160ms ease-out;
+}
+.theme-toggle:active {
+  transform: scale(0.95);
+}
+@media (hover: hover) and (pointer: fine) {
+  .theme-toggle:hover {
+    color: var(--fg);
+  }
+}
+.theme-toggle svg {
+  position: absolute;
+  transition:
+    opacity 200ms cubic-bezier(0.23, 1, 0.32, 1),
+    transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.theme-toggle-sun {
+  opacity: 0;
+  transform: rotate(-45deg) scale(0.6);
+}
+[data-theme='dark'] .theme-toggle-moon {
+  opacity: 0;
+  transform: rotate(45deg) scale(0.6);
+}
+[data-theme='dark'] .theme-toggle-sun {
+  opacity: 1;
+  transform: none;
 }
 
 /* Active-route tint — faint lime wash behind the current link. Lime = accent only. */

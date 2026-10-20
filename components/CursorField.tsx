@@ -38,8 +38,10 @@ export function CursorField() {
     const onMove = (e: PointerEvent) => {
       targetX = e.clientX;
       targetY = e.clientY;
-      targetVisible = 1;
       const t = e.target as Element | null;
+      // Fade out over regions that opt out (the tile-shark hero band: nothing
+      // but the sharks should colour its page).
+      targetVisible = t?.closest('[data-cursor-off]') ? 0 : 1;
       targetHot = t?.closest('a,button,[role="button"],input,textarea,select,[tabindex]')
         ? 1
         : 0;

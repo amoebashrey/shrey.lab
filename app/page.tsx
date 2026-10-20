@@ -1,5 +1,4 @@
 import { Hero } from '@/components/home/Hero';
-import { HeroCTAs } from '@/components/home/HeroCTAs';
 import { OutcomesStrip } from '@/components/home/OutcomesStrip';
 import { FeaturedWork } from '@/components/home/FeaturedWork';
 import { AboutTeaser } from '@/components/home/AboutTeaser';
@@ -16,7 +15,7 @@ import { CursorField } from '@/components/CursorField';
  * of the seven core problems:
  *
  * 1. Hero          → Problem 1 (PM seniority + category in 60s)
- * 2. Hero CTAs     → Problem 6 (next-step path)
+ *                    + its one CTA → Problem 6 (next-step path)
  * 3. Outcomes      → Problem 1, 3 (audit-proof metrics)
  * 4. Featured work → Problem 2 (decision-making proof)
  * 5. About teaser  → Problem 4 (range without dilution)
@@ -36,9 +35,10 @@ export default function HomePage() {
       {/* Cursor lime glow — homepage only per BRAND §9 ("home hero only…
           reserved for one moment per site"); was previously global in layout. */}
       <CursorField />
+      {/* Hero sits outside Stagger: it runs its own CSS entrance (visible
+          without JS) and must not be double-animated. */}
+      <Hero />
       <Stagger>
-        <Hero />
-        <HeroCTAs />
         <OutcomesStrip />
         <FeaturedWork />
         <AboutTeaser />

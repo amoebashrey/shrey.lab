@@ -207,6 +207,18 @@
 
 ---
 
+## 2026-10-20 · Tile-shark hero + top-right theme toggle
+
+### Home hero becomes a centred tile-shark band
+- **Decision:** The hero (`components/home/Hero.tsx`) is now one full-bleed band: centred copy (lime line, eyebrow, h1, sentence, "View work") over a canvas of sharks drawn as small rounded tiles (`components/home/TileSharkBackground.tsx` → `lib/tile-art/`, a framework-free renderer ported verbatim from the prototype). `HeroCTAs` is folded back into `Hero`. The band paints `--hero-bg`: pure `#fff` in light, `--ink-800` in dark; sharks recolour with the theme (`PALETTES.blue` / `PALETTES.blueNight`) via a 300ms crossfade matching the kit's theme transition.
+- **Reasoning:** Ambient, decorative, seen once per visit — so it never reacts to scroll, pauses off-screen and on hidden tabs, renders a still frame under reduced motion, and caps DPR at 2. The copy sits on a solid `--hero-bg` plate: a full-opacity navy tile behind `#181815` text measures ~1.6:1, and lowering shark opacity was ruled out. The hero left `<Stagger>` for a CSS-only entrance (visible without JS, no hydration wait); it holds for the first-visit intro only when the head script stamps `data-intro-pending`.
+
+### Theme toggle moves out of the nav pill
+- **Decision:** `components/ThemeToggle.tsx`, fixed top-right in its own glass pill, mounted in `app/layout.tsx`; removed from `components/Nav.tsx`. Both icons render and CSS picks one from `data-theme`, so there's no mount placeholder.
+- **Reasoning:** Asked for explicitly (top-right). With the hero copy centred, a separate control reads cleaner than a fifth item in the centred pill.
+
+---
+
 ## Template for future entries
 
 ```
