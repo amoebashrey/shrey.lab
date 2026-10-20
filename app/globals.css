@@ -62,6 +62,54 @@ html[data-intro-pending]:not([data-intro-done]) .hero-enter {
 }
 
 /* ============================================================================
+   ACCENT — one hue for the whole site (lib/accent.ts)
+   Defaults = the brand lime. The accent slider (components/AccentSlider.tsx)
+   overrides these on <html> — including the kit's --lime-400/500, so links,
+   selection, focus ring and switches follow too. The kit hardcodes the lime
+   as rgba() in a few places; those are re-pointed at --accent-rgb below.
+   ============================================================================ */
+:root {
+  --accent-rgb: 168 225 12; /* #A8E10C */
+  --accent-hue: 126;
+}
+@keyframes pulse-lime {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(var(--accent-rgb) / 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgb(var(--accent-rgb) / 0);
+  }
+}
+.lab-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgb(var(--accent-rgb) / 0.18);
+}
+
+/* Accent slider — track is a JS-built gradient; the thumb is placed by the
+   --accent-hue var (set before paint), so it never jumps on hydration. */
+.accent-thumb {
+  top: calc((1 - var(--accent-hue) / 360) * 100%);
+  transform: translate(-50%, -50%);
+  border: 2px solid #fff;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(0, 0, 0, 0.08);
+  cursor: grab;
+  transition: transform 160ms ease-out;
+}
+.accent-thumb:active {
+  cursor: grabbing;
+  transform: translate(-50%, -50%) scale(1.1);
+}
+.accent-swatch {
+  transition: transform 160ms ease-out;
+}
+.accent-swatch:active {
+  transform: scale(0.95);
+}
+
+/* ============================================================================
    HOME HERO — tile-shark band
    --hero-bg is the colour the shark canvas paints (keep in step with LIGHT_BG /
    DARK_BG in components/home/TileSharkBackground.tsx): pure white in light,
@@ -82,12 +130,24 @@ html[data-intro-pending]:not([data-intro-done]) .hero-enter {
   background: var(--hero-bg);
   transition: background-color 300ms var(--ease-out);
 }
-/* The copy sits on a solid block of the page colour: a shark passing behind
-   the headline is covered instead of dropping text contrast. Invisible until
-   a tile meets its edge. */
-.hero-plate {
-  background: var(--hero-bg);
-  transition: background-color 300ms var(--ease-out);
+/* Lifted copy — no card. A tight-to-wide halo of the page colour hugs the
+   glyphs (stacked so it's dense at the letter edge and gone by ~30px), plus a
+   faint drop for depth. Over white it's invisible; over a passing shark the
+   tiles dim right around the letters, so the type keeps its edge while the
+   sharks swim freely. Replaces .hero-depth inside the hero. */
+.hero-lift,
+.hero-lift h1 {
+  --lift-halo: 0 0 1px var(--hero-bg), 0 0 4px var(--hero-bg), 0 0 10px var(--hero-bg),
+    0 0 18px var(--hero-bg), 0 0 30px var(--hero-bg);
+  text-shadow:
+    var(--lift-halo),
+    0 10px 30px rgba(24, 24, 21, 0.08);
+}
+[data-theme='dark'] .hero-lift,
+[data-theme='dark'] .hero-lift h1 {
+  text-shadow:
+    var(--lift-halo),
+    0 2px 44px rgb(var(--accent-rgb) / 0.06);
 }
 
 /* Entrance — headline, sentence, button; 70ms apart; transform + opacity
@@ -322,7 +382,7 @@ html.lenis body {
 
 /* Active-route tint — faint lime wash behind the current link. Lime = accent only. */
 .nav-link-active {
-  background: rgba(168, 225, 12, 0.12); /* --lime-400 at low alpha */
+  background: rgb(var(--accent-rgb) / 0.12); /* accent at low alpha */
 }
 
 /* ============================================================================
@@ -429,13 +489,13 @@ html.lenis body {
 [data-theme='dark'] .hero-depth {
   text-shadow:
     0 1px 24px rgba(255, 255, 255, 0.06),
-    0 2px 44px rgba(168, 225, 12, 0.05);
+    0 2px 44px rgb(var(--accent-rgb) / 0.05);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) .hero-depth {
     text-shadow:
       0 1px 24px rgba(255, 255, 255, 0.06),
-      0 2px 44px rgba(168, 225, 12, 0.05);
+      0 2px 44px rgb(var(--accent-rgb) / 0.05);
   }
 }
 

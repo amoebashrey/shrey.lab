@@ -221,7 +221,7 @@ function MascotTile({ src, alt }: { src: string; alt: string }) {
         aria-hidden="true"
         style={{
           background:
-            'radial-gradient(120% 90% at 28% 22%, rgba(156,134,212,0.22), transparent 60%), radial-gradient(120% 90% at 82% 88%, rgba(168,225,12,0.16), transparent 58%)',
+            'radial-gradient(120% 90% at 28% 22%, rgba(156,134,212,0.22), transparent 60%), radial-gradient(120% 90% at 82% 88%, rgb(var(--accent-rgb) / 0.16), transparent 58%)',
         }}
       />
       <div className="absolute inset-0 flex items-center justify-center p-6">

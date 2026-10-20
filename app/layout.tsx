@@ -3,7 +3,7 @@ import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import './globals.css';
 import { Nav } from '@/components/Nav';
-import { ThemeToggle } from '@/components/ThemeToggle';
+import { SiteControls } from '@/components/SiteControls';
 import { Footer } from '@/components/Footer';
 import { SmoothScroll } from '@/components/SmoothScroll';
 
@@ -73,6 +73,20 @@ const themeScript = `
       var theme = stored || (prefersDark ? 'dark' : 'light');
       document.documentElement.setAttribute('data-theme', theme);
     } catch (e) {}
+    // Accent hue from the colour slider (lib/accent.ts writes both keys).
+    // Only well-formed "--name:value" pairs are applied.
+    try {
+      var hue = localStorage.getItem('accent-hue');
+      var css = localStorage.getItem('accent-css');
+      if (hue && css && /^[-a-z0-9:#;. ]+$/i.test(css)) {
+        var root = document.documentElement;
+        css.split(';').forEach(function (pair) {
+          var i = pair.indexOf(':');
+          if (pair.indexOf('--') === 0 && i > 2) root.style.setProperty(pair.slice(0, i), pair.slice(i + 1));
+        });
+        root.setAttribute('data-accent-hue', hue);
+      }
+    } catch (e) {}
     // Mirror IntroGate's decision before paint: only when the first-visit
     // intro will actually play does the hero hold its entrance for it.
     // Everyone else gets the entrance at first paint, not after hydration.
@@ -119,7 +133,7 @@ export default function RootLayout({
         </a>
         <SmoothScroll>
           <Nav />
-          <ThemeToggle />
+          <SiteControls />
           {/* Offset clears the fixed floating pill (top ~20px + ~56px tall) so it
               never occludes page headings; pages add their own section padding. */}
           <main id="main" className="pt-8">

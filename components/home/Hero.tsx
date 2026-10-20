@@ -7,9 +7,10 @@ import { TileSharkBackground } from './TileSharkBackground';
  * sharks drifting around it.
  *
  * The band is full-bleed and paints --hero-bg (pure white in light, warm
- * charcoal in dark); the canvas sits behind the copy. The copy block carries
- * the same solid colour, so a shark passing behind the text is hidden by it
- * rather than fighting the type for contrast.
+ * charcoal in dark); the canvas sits behind the copy and the sharks swim
+ * freely under it. The copy is "lifted" (globals.css .hero-lift): a soft halo
+ * of the page colour hugs the glyphs, so a passing shark dims behind the
+ * letters instead of cutting through them — no card, no box edge.
  *
  * Entrance (globals.css .hero-enter): headline → sentence → button, 70ms
  * apart, rising 16px. Pure CSS, so the copy never depends on hydration; a
@@ -37,7 +38,7 @@ export function Hero() {
       />
 
       <div className="relative z-10 mx-auto flex min-h-[clamp(560px,88svh,820px)] max-w-[1280px] items-center justify-center px-4 pb-16 pt-28 md:px-8 md:pt-32">
-        <div className="hero-plate flex flex-col items-center rounded-3xl px-6 py-8 text-center md:px-12 md:py-10">
+        <div className="hero-lift flex flex-col items-center text-center">
           {/* Cinematic load (tokens.css §cinematic) — a short lime rule that
               draws out from the centre once the intro has finished. */}
           <div className="hero-lime-line hero-lime-line--center mb-8 w-16" aria-hidden="true" />

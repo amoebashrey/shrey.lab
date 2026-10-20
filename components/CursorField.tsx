@@ -82,7 +82,7 @@ export function CursorField() {
         className="absolute left-0 top-0 h-[460px] w-[460px] rounded-full"
         style={{
           background:
-            'radial-gradient(circle, rgba(168,225,12,0.55) 0%, rgba(168,225,12,0) 70%)',
+            'radial-gradient(circle, rgb(var(--accent-rgb) / 0.55) 0%, rgb(var(--accent-rgb) / 0) 70%)',
           opacity: 0,
           willChange: 'transform, opacity',
         }}

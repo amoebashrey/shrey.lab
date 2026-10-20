@@ -33,7 +33,7 @@ const EXAMPLES: Example[] = [
   {
     path: 'Resolve',
     pathLabel: 'Path A · Resolve',
-    dot: 'bg-lime-400',
+    dot: 'bg-accent',
     ticketAuthor: 'Riya P.',
     ticketText: 'CRM session timed out again',
     decision: 'KB has a high-confidence match — similarity above 0.65.',

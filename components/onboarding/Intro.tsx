@@ -184,18 +184,18 @@ export function Intro({ onDone }: { onDone: () => void }) {
       {/* Invisible right wall — flicks visible on impact */}
       <div ref={wallRef} className="absolute inset-y-0 right-0 w-px bg-[#FBFAF7]" />
 
-      {/* The lime ball — solid #A8E10C base (what the expand resolves to) with a
+      {/* The lime ball — solid accent base (what the expand resolves to) with a
           glass-sphere skin overlaid; the skin fades out during EXPAND. */}
       <div
         ref={ballRef}
-        className="absolute left-1/2 top-1/2 rounded-full bg-[#A8E10C]"
+        className="absolute left-1/2 top-1/2 rounded-full bg-accent"
         style={{
           width: 'clamp(48px, 12vw, 72px)',
           height: 'clamp(48px, 12vw, 72px)',
           marginLeft: 'calc(clamp(48px, 12vw, 72px) / -2)',
           marginTop: 'calc(clamp(48px, 12vw, 72px) / -2)',
           willChange: 'transform',
-          boxShadow: '0 0 26px rgba(168, 225, 12, 0.35)', // faint outer lime glow
+          boxShadow: '0 0 26px rgb(var(--accent-rgb) / 0.35)', // faint outer accent glow
         }}
       >
         <div ref={textureRef} className="intro-ball-texture">

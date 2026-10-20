@@ -217,6 +217,14 @@
 - **Decision:** `components/ThemeToggle.tsx`, fixed top-right in its own glass pill, mounted in `app/layout.tsx`; removed from `components/Nav.tsx`. Both icons render and CSS picks one from `data-theme`, so there's no mount placeholder.
 - **Reasoning:** Asked for explicitly (top-right). With the hero copy centred, a separate control reads cleaner than a fifth item in the centred pill.
 
+### One accent hue for the whole site, set by a slider
+- **Decision:** `lib/accent.ts` builds every accent colour from one hue in OKLCH at the brand lime's lightness (L 0.839, C 0.212, gamut-fit by lowering chroma). It writes `--accent`, `--accent-hover`, `--accent-rgb` and overrides the kit's `--lime-400/500`, so the CTA, dots, links, focus ring, selection, cursor glow, nav wash and the tile sharks all share it. A vertical hue slider (`components/AccentSlider.tsx`) sits under the theme toggle (`components/SiteControls.tsx`); the choice persists in localStorage and is applied before paint. Default hue 126 = `#A8E10C`, so the site looks unchanged until someone moves it. Home on the slider returns to lime.
+- **Reasoning:** Asked for explicitly: animals and CTA must match, one control recolours all of it. Equal OKLCH lightness keeps dark-on-accent text at AA for every hue. The lime is still the brand default; the slider makes it a preference, not a rebrand. Remaining fixed lime: the intro sphere's CSS texture and the kit's unused surface classes.
+
+### Hero copy is lifted, not carded
+- **Decision:** Dropped the solid plate behind the hero copy. `.hero-lift` puts a stacked halo of the page colour around the glyphs plus a faint drop; sharks swim freely and dim only right around the letters.
+- **Reasoning:** The plate sliced sharks with a visible rectangle edge. The halo keeps the letter edges readable without a box. Trade-off: at a shark's darkest tiles the area between letter strokes is still tinted — check if it ever reads poorly.
+
 ---
 
 ## Template for future entries

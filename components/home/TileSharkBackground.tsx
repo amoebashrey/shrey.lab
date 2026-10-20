@@ -3,8 +3,6 @@
 import { useEffect, useRef } from 'react';
 import {
   createTileRenderer,
-  DEFAULT_DARK_PALETTE,
-  DEFAULT_PALETTE,
   DEFAULT_SHARKS,
   drawShark,
   type Creature,
@@ -12,14 +10,17 @@ import {
   type RGB,
   type TileRenderer,
 } from '@/lib/tile-art';
+import { ACCENT_EVENT, accentPalette, readAccentHue } from '@/lib/accent';
 
 /**
  * TileSharkBackground — sharks built from tiny tiles, drifting behind the
  * home hero. Decorative: aria-hidden, pointer-events none, and it never
  * reacts to scroll.
  *
- * Colours follow the site theme (data-theme on <html>, which the toggle sets):
- * white page + `palette` in light, warm charcoal + `darkPalette` in dark,
+ * Colour: by default the sharks are built from the site accent hue
+ * (lib/accent.ts), so they always match the CTA and follow the accent
+ * slider live. Pass `palette` / `darkPalette` to pin fixed colours instead.
+ * Theme (data-theme on <html>): white page in light, warm charcoal in dark,
  * crossfading over the same 300ms the kit uses for its theme transition.
  *
  * The loop runs only while the hero is on screen, the tab is visible, `paused`
@@ -60,9 +61,9 @@ function layoutCreatures(list: readonly Creature[], w: number, h: number, phone:
 }
 
 export interface TileSharkBackgroundProps {
-  /** Palette in light mode. */
+  /** Fixed palette in light mode (default: built from the accent hue). */
   palette?: Palette;
-  /** Palette in dark mode. */
+  /** Fixed palette in dark mode (default: built from the accent hue). */
   darkPalette?: Palette;
   /** Tile size in px on desktop; phones use at least 8. */
   tileSize?: number;
@@ -72,20 +73,20 @@ export interface TileSharkBackgroundProps {
 }
 
 export function TileSharkBackground({
-  palette = DEFAULT_PALETTE,
-  darkPalette = DEFAULT_DARK_PALETTE,
+  palette,
+  darkPalette,
   tileSize = 7,
   sharks = DEFAULT_SHARKS,
   paused = false,
   className = '',
 }: TileSharkBackgroundProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const rendererRef = useRef<TileRenderer | null>(null);
   // Latest props for the long-lived effect below, without re-creating it.
   const propsRef = useRef({ palette, darkPalette, tileSize, sharks });
   propsRef.current = { palette, darkPalette, tileSize, sharks };
   const pausedRef = useRef(paused);
   const syncRef = useRef<() => void>(() => {});
+  const syncPaletteRef = useRef<() => void>(() => {});
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -94,14 +95,21 @@ export function TileSharkBackground({
 
     const p = propsRef.current;
     let dark = isDarkTheme();
+    let hue = readAccentHue();
     let { width, height } = host.getBoundingClientRect();
     let phone = width < PHONE_MAX;
+
+    // Fixed palette props win; otherwise build from the accent hue.
+    const pick = () => {
+      const cur = propsRef.current;
+      return (dark ? cur.darkPalette : cur.palette) ?? accentPalette(hue, dark);
+    };
 
     let renderer: TileRenderer;
     try {
       renderer = createTileRenderer(canvas, {
         shape: drawShark,
-        palette: dark ? p.darkPalette : p.palette,
+        palette: pick(),
         background: dark ? DARK_BG : LIGHT_BG,
         tileSize: phone ? Math.max(8, p.tileSize) : p.tileSize,
         creatures: layoutCreatures(p.sharks, width, height, phone),
@@ -109,7 +117,6 @@ export function TileSharkBackground({
     } catch {
       return; // no 2D canvas — the hero's own background still shows
     }
-    rendererRef.current = renderer;
     renderer.resize(width, height);
 
     const reduceMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -172,12 +179,7 @@ export function TileSharkBackground({
       const next = isDarkTheme();
       if (next === dark) return;
       dark = next;
-      const cur = propsRef.current;
-      renderer.setColors(
-        dark ? cur.darkPalette : cur.palette,
-        dark ? DARK_BG : LIGHT_BG,
-        fade ? THEME_FADE_MS : 0,
-      );
+      renderer.setColors(pick(), dark ? DARK_BG : LIGHT_BG, fade ? THEME_FADE_MS : 0);
     };
     const mo = new MutationObserver(() => applyTheme(true));
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
@@ -185,7 +187,18 @@ export function TileSharkBackground({
     const onScheme = () => applyTheme(true);
     schemeMQ.addEventListener('change', onScheme);
 
+    // Accent slider: recolour instantly — the slider itself is the animation.
+    const onAccent = (e: Event) => {
+      hue = (e as CustomEvent<number>).detail;
+      renderer.setColors(pick(), dark ? DARK_BG : LIGHT_BG, 0);
+    };
+    window.addEventListener(ACCENT_EVENT, onAccent);
+    syncPaletteRef.current = () =>
+      renderer.setColors(pick(), dark ? DARK_BG : LIGHT_BG, THEME_FADE_MS);
+
     return () => {
+      window.removeEventListener(ACCENT_EVENT, onAccent);
+      syncPaletteRef.current = () => {};
       window.clearTimeout(resizeTimer);
       reduceMQ.removeEventListener('change', onReduce);
       schemeMQ.removeEventListener('change', onScheme);
@@ -194,7 +207,6 @@ export function TileSharkBackground({
       ro.disconnect();
       mo.disconnect();
       renderer.destroy();
-      rendererRef.current = null;
       syncRef.current = () => {};
     };
   }, []);
@@ -211,10 +223,7 @@ export function TileSharkBackground({
       firstPalette.current = false;
       return;
     }
-    const r = rendererRef.current;
-    if (!r) return;
-    const dark = isDarkTheme();
-    r.setColors(dark ? darkPalette : palette, dark ? DARK_BG : LIGHT_BG, THEME_FADE_MS);
+    syncPaletteRef.current();
   }, [palette, darkPalette]);
 
   return (

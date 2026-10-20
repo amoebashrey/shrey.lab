@@ -2,8 +2,10 @@
  * Tile palettes — four colour stops mapped from shading: stop 0 is the darkest
  * (a creature's back), stop 3 the palest (its belly). Countershading.
  *
- * Swap DEFAULT_PALETTE (light theme) / DEFAULT_DARK_PALETTE (dark theme) to
- * recolour every creature at once.
+ * By default creatures are coloured from the site accent hue
+ * (lib/accent.ts → accentPalette), so they match the CTA. These fixed
+ * palettes are for pinning a creature to set colours via the component's
+ * `palette` / `darkPalette` props — e.g. the prototype's ocean blue.
  */
 export type RGB = readonly [number, number, number];
 export type Palette = readonly [RGB, RGB, RGB, RGB];

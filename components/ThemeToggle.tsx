@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 
 /**
- * ThemeToggle — fixed top-right, its own glass pill (same height and glass
- * as the nav pill, so the two read as one system).
+ * ThemeToggle — its own glass pill (same height and glass as the nav pill,
+ * so the two read as one system). Placed top-right by SiteControls.
  *
  * Persists to localStorage and sets `data-theme` on <html> — the selector
  * tokens.css responds to; the init script in layout.tsx applies it before
@@ -31,7 +31,7 @@ export function ThemeToggle() {
   }
 
   return (
-    <div className="nav-glass nav-enter-fade fixed right-4 top-5 z-[100] rounded-full p-1.5 md:right-6">
+    <div className="nav-glass nav-enter-fade rounded-full p-1.5">
       <button
         type="button"
         onClick={toggle}

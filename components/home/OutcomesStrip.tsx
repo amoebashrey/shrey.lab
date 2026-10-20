@@ -39,7 +39,7 @@ const OUTCOMES = [
 ] as const;
 
 // lime → lavender → rust → ink, one per stat.
-const DOT_COLORS = ['bg-lime-400', 'bg-lavender-400', 'bg-rust-400', 'bg-fg'];
+const DOT_COLORS = ['bg-accent', 'bg-lavender-400', 'bg-rust-400', 'bg-fg'];
 
 /** Count 0 → target once on scroll-into-view; reduced-motion shows it instantly. */
 function useCountUp(target: number, durationMs = 1100) {
