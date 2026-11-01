@@ -1,5 +1,12 @@
 COPY DECK · founder sales page
-Draft 3 · 2026-11-01 · nothing in this deck goes on the site until you OK it.
+Draft 3 · 2026-11-01 · APPLIED 2026-11-02 with the ★ picks, except where noted below.
+
+Applied changes from your answers (2026-11-02)
+- No calls: every action is email or an X DM. "Book 20 minutes", the Cal.com link and the HOW I WORK section are out; the nav's last item stays "Contact".
+- Amber figure is ₹20L, worded "about ₹20 lakh a year in tool costs" (holds whether realised or projected).
+- Rada: 300+ members everywhere (About corrected).
+- Ongoing help: no time commitment stated ("alongside your team").
+- Founder photos: cards are text-only until the photos arrive.
 
 Who it's for: founders and small teams who might hire me for project work. Most arrive from an X DM or outreach, on a phone, and give the page under a minute.
 What it sells: that I find the problem and build the fix myself. No prices anywhere.

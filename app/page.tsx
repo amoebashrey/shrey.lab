@@ -1,18 +1,21 @@
 import { Hero } from '@/components/home/Hero';
 import { Outcomes } from '@/components/home/Outcomes';
 import { SelectedWork } from '@/components/home/SelectedWork';
-import { AboutTeaser } from '@/components/home/AboutTeaser';
+import { HowIHelp } from '@/components/home/HowIHelp';
+import { Teardowns } from '@/components/home/Teardowns';
+import { FounderProof } from '@/components/home/FounderProof';
+import { ContactSection } from '@/components/home/ContactSection';
 import { Stagger } from '@/components/motion/Stagger';
 
 /**
- * Homepage.
+ * Homepage — a sales page for founders (docs/COPY.md, draft 3).
  *
- * Everything is visible on first paint: no intro overlay, and no section that
- * waits for JavaScript to appear (Stagger is CSS-only).
+ * Proof first, in the order a founder asks: has this person moved real
+ * numbers (Outcomes), can they build (Selected work), what would they do for
+ * me (How I help), how do they think (Teardowns), who are they (Founder
+ * proof), how do I reach them (Contact). Every action is email or an X DM.
  *
- * Writing and Now are off the homepage until they have real content — no
- * "coming soon" (CLAUDE.md). The founder-focused restructure (docs/COPY.md)
- * replaces this order next.
+ * Everything is visible on first paint (Stagger is CSS-only).
  */
 export default function HomePage() {
   return (
@@ -21,7 +24,10 @@ export default function HomePage() {
       <Stagger>
         <Outcomes />
         <SelectedWork />
-        <AboutTeaser />
+        <HowIHelp />
+        <Teardowns />
+        <FounderProof />
+        <ContactSection />
       </Stagger>
     </>
   );

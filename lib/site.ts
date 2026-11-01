@@ -18,10 +18,8 @@ export const EMAIL = 'shreyasjadhav531@gmail.com';
 export const X_HANDLE = '@shreyasinpublic';
 export const X_URL = 'https://x.com/shreyasinpublic';
 
-/**
- * Cal.com booking link. TODO(shreyas): replace with the real event URL before
- * deploying. While this is the placeholder, booking buttons still render (so
- * the layout can be reviewed) and point here.
- */
-export const BOOKING_URL = 'https://cal.com/REPLACE-ME/20min';
-export const BOOKING_IS_PLACEHOLDER = BOOKING_URL.includes('REPLACE-ME');
+/** The small proof line under the hero sentence. */
+export const PROOF_LINE = 'Product at Amber, joining super.money as an APM. Based in Pune.';
+
+/* No booking link: people reach out by email or an X DM (Shreyas's call,
+   2026-11-02), so every action on the site points to one of those two. */

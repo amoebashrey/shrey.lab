@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { CSSProperties } from 'react';
 import { HeroFootprints, type FootprintLook } from './HeroFootprints';
-import { HERO_LINE, NAME } from '@/lib/site';
+import { EMAIL, HERO_LINE, NAME, PROOF_LINE } from '@/lib/site';
 
 /**
  * Hero — centred name in Fraunces + one plain sentence + one action, with
@@ -50,17 +50,23 @@ export function Hero({ look }: { look?: FootprintLook } = {}) {
           >
             {HERO_LINE}
           </p>
+          <p className="hero-enter mt-3 text-balance text-sm text-fg-muted" style={enter(1)}>
+            {PROOF_LINE}
+          </p>
 
-          {/* One primary action only — work-first. */}
-          <div className="hero-enter mt-10" style={enter(2)}>
-            <Link
-              href="/work"
+          {/* One action: get in touch. The work is a quiet link, not a second button. */}
+          <div className="hero-enter mt-9 flex flex-col items-center gap-4 sm:flex-row sm:gap-6" style={enter(2)}>
+            <a
+              href={`mailto:${EMAIL}`}
               className="hero-btn inline-flex h-11 items-center gap-2 rounded-md bg-accent px-5 text-sm font-medium text-[var(--accent-fg)]"
             >
-              View work
+              Email me
               <span className="hero-btn-arrow inline-block" aria-hidden="true">
                 →
               </span>
+            </a>
+            <Link href="#work" className="lab-link text-sm text-fg">
+              See the work <span aria-hidden="true">↓</span>
             </Link>
           </div>
         </div>

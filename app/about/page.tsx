@@ -55,7 +55,7 @@ export default function AboutPage() {
                 Before that, I built three things in college: a kombucha brand called
                 Sattva (₹1L+ revenue, 7 SKUs, manufactured at home),{' '}
                 Rada, a discussion community
-                that grew from five attendees to 600+ across four countries, and The Cultured
+                that grew to 300+ members across four countries, and The Cultured
                 Cult — a fermentation-and-food-science teaching practice that ran 30+ lectures
                 across India&apos;s engineering schools.
               </p>

@@ -1,4 +1,5 @@
 import { TEARDOWNS } from '@/lib/teardowns';
+import { EMAIL } from '@/lib/site';
 import { StudyFrame } from '@/components/work/StudyArt';
 
 /**
@@ -9,7 +10,7 @@ import { StudyFrame } from '@/components/work/StudyArt';
  */
 export function Teardowns() {
   return (
-    <section aria-labelledby="teardowns-heading" className="seam py-20 md:py-28">
+    <section id="how-i-think" aria-labelledby="teardowns-heading" className="cs-section seam scroll-mt-24 py-20 md:py-28">
       <div className="mx-auto max-w-[1180px] px-4 md:px-8">
         <h2
           id="teardowns-heading"
@@ -18,8 +19,9 @@ export function Teardowns() {
           How I think
         </h2>
         <p className="mb-8 max-w-[60ch] text-base leading-relaxed text-fg-muted md:mb-10 md:text-lg">
-          Before you hire me to look at your product, see me look at others. Unsolicited teardowns,
-          each with a clickable Figma prototype.
+          Before you hire me to look at your product, see me look at others. These are unsolicited
+          teardowns with clickable Figma prototypes. None of these companies asked me to; the years
+          are when I did them.
         </p>
 
         <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -47,6 +49,14 @@ export function Teardowns() {
             </li>
           ))}
         </ul>
+
+        <p className="mt-8 text-base text-fg-muted">
+          Want one of these for your product?{' '}
+          <a href={`mailto:${EMAIL}`} className="lab-link text-fg">
+            Email me
+          </a>{' '}
+          <span aria-hidden="true">→</span>
+        </p>
       </div>
     </section>
   );

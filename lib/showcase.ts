@@ -12,15 +12,12 @@ export interface ShowcaseLink {
 }
 
 export interface ShowcaseStudy {
-  slug: string;
+  /** Also picks the card's art (components/work/StudyArt.tsx). */
+  slug: 'felix' | 'pune-bookies' | 'hubble';
   name: string;
   /** One line under the name. */
   kicker: string;
   rows: ReadonlyArray<{ label: string; text: string }>;
-  image: string;
-  imageAlt: string;
-  /** 'cover' for screenshots, 'contain' for marks on a tinted field. */
-  imageFit: 'cover' | 'contain';
   links: readonly ShowcaseLink[];
 }
 
@@ -43,9 +40,6 @@ export const SHOWCASE: readonly ShowcaseStudy[] = [
         text: 'Built solo and shipped to production, first working version in under three weeks. No paid adoption yet.',
       },
     ],
-    image: '/work/felix-hero.png',
-    imageAlt: 'Felix in Slack: a support question from Riya P., "CRM session timed out again", and Felix replying "On it."',
-    imageFit: 'cover',
     links: [
       { label: 'Try it live', href: 'https://heyfelix.vercel.app', external: true },
       { label: 'Read the case study', href: '/work/felix' },
@@ -69,9 +63,6 @@ export const SHOWCASE: readonly ShowcaseStudy[] = [
         text: 'It’s live and the team edits it without code. Lighthouse scores 100 on accessibility, best practices and SEO.',
       },
     ],
-    image: '/work/pune-bookies-hero.png',
-    imageAlt: 'The Pune Bookies homepage: a gulmohar-tree mark, the wordmark and the tagline',
-    imageFit: 'cover',
     links: [
       { label: 'Visit the site', href: 'https://pune-bookies.vercel.app', external: true },
       { label: 'Read the case study', href: '/work/pune-bookies' },
@@ -95,9 +86,6 @@ export const SHOWCASE: readonly ShowcaseStudy[] = [
         text: 'The duplicate-ticket fix is verified in production, and there’s a phased plan to retire the paid tool.',
       },
     ],
-    image: '/work/hubble-mark.svg',
-    imageAlt: 'Hubble: a line-drawn telescope mark',
-    imageFit: 'contain',
     links: [{ label: 'Read the case study', href: '/work/hubble' }],
   },
 ];

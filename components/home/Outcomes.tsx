@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from 'react';
+import { EMAIL } from '@/lib/site';
 import './showcase.css';
 
 /**
@@ -44,12 +45,12 @@ const OUTCOMES = [
       'Students choose a room from its listing, mostly from the photos. The listing images were reworked and rolled out, and bookings rose 18% afterwards.',
   },
   {
-    value: '$20K',
-    label: 'a year, built in-house',
+    value: '₹20L',
+    label: 'a year in tool costs, built in-house',
     icon: ICON_DOLLAR,
     where: 'Amber · internal ticketing · 2024',
     story:
-      'The team was paying for Suptask to run support tickets in Slack. An in-house tool does that job instead, which is about $20K a year the team no longer spends.',
+      'The team was paying for Suptask to run support tickets in Slack. An in-house tool does that job instead, worth about ₹20 lakh a year in tool costs.',
   },
 ] as const;
 
@@ -118,10 +119,14 @@ export function Outcomes() {
       <div className="mx-auto max-w-[1180px] px-4 md:px-8">
         <h2
           id="outcomes-heading"
-          className="mb-8 max-w-[20ch] text-balance text-[clamp(32px,4vw,48px)] leading-[1.15] tracking-tight text-fg md:mb-10"
+          className="mb-3 max-w-[20ch] text-balance text-[clamp(32px,4vw,48px)] leading-[1.15] tracking-tight text-fg"
         >
-          What changed after it shipped
+          Shipped on products people use
         </h2>
+        <p className="mb-8 max-w-[60ch] text-base leading-relaxed text-fg-muted md:mb-10 md:text-lg">
+          You want someone who has moved a real metric, not a mockup. These are from Amber, a
+          global student housing marketplace.
+        </p>
 
         {/* Compact strip: the three numbers in one row */}
         <div className="grid grid-cols-3 overflow-hidden rounded-[10px] bg-bg-elevated">
@@ -194,6 +199,14 @@ export function Outcomes() {
             </div>
           </div>
         </div>
+
+        <p className="mt-6 text-base text-fg-muted">
+          Want me to look for yours?{' '}
+          <a href={`mailto:${EMAIL}`} className="lab-link text-fg">
+            Email me
+          </a>{' '}
+          <span aria-hidden="true">→</span>
+        </p>
       </div>
     </section>
   );

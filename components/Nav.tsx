@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 // nav — see report.)
 const NAV_ITEMS = [
   { label: 'Work', href: '/work' },
+  { label: 'How I help', href: '/#how-i-help' },
   { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },
 ] as const;

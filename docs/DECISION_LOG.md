@@ -292,6 +292,32 @@ Audience is now founders and teams hiring for project work (mostly via X DMs and
 - **Decision:** Removed every `//` mono eyebrow and caption, mono-as-style, pill badges and tag pills, the cursor glow, the hero text-shadow glow, frosted glass on the floating controls (the nav keeps it), the one-italic-serif-word-per-heading device, the footer's duplicate nav, and the "coming soon" lines on About. /work now uses the same one-card-per-study layout as the homepage; CaseStudyCard, FeaturedWork, OutcomesStrip, StatusPill, ResumeButton, CursorField and lib/work.ts are deleted.
 - **Reasoning:** Each read as default model output rather than a choice. Playfulness comes from the footprints, the copy and small hover moments (the tile icons lifting), not from decoration.
 
+## 2026-11-02 · Founder sales page
+
+### Flat footprints
+- **Decision:** Hero prints render as crisp flat shapes (rounded heel, three tapered toes, claw points) instead of tiles. 52px and 34px prints, ~1.5x faster, wandering paths that start from random edges.
+- **Reasoning:** Picked over 3px and 4px tiles on a side-by-side page: tiles blurred the toes into arrows or blobs.
+
+### One visual system for case-study art
+- **Decision:** Every case-study image sits in the same frame (accent-tinted backdrop from the hue slider, 12px corners, the same padding, a plain sheet), drawn in our own fonts: Felix's Slack exchange recreated, Pune Bookies' live homepage, Hubble's before/after redrawn. Teardown cards use the same frame.
+- **Reasoning:** The old images each had their own palette and type; approved side by side.
+
+### Cards measured against onepercentclub.io
+- **Decision:** 10px corners, 40px padding, 40/49 text-to-image columns with an 11% gap, 1.55 images, 20px between cards; a card is 54% of the viewport at 1440.
+- **Reasoning:** Measured at 1440; proportions matched, not the brand.
+
+### Teardowns shown, labelled as teardowns
+- **Decision:** Jar (2025), Swiggy Dineout (2022) and Neosurge (2022) appear in "How I think", each labelled "Unsolicited teardown. Not affiliated with…", with its real year and a link to the Figma prototype.
+- **Reasoning:** Overrides the CLAUDE.md ban on these as case studies, at Shreyas's request. They're presented as what they are, not as client work.
+
+### No booking link
+- **Decision:** Every action is email or an X DM. Cal.com, the "Book 20 minutes" buttons and "How I work" are out.
+- **Reasoning:** Shreyas would rather people simply reach out.
+
+### Facts settled
+- Amber ticketing figure is ₹20 lakh a year, not $20K. Worded as "about ₹20 lakh a year in tool costs", which holds whether the saving is realised or projected.
+- Rada is 300+ members across 4 countries, 40+ gatherings; the About page's "600+" is corrected.
+
 ## Template for future entries
 
 ```

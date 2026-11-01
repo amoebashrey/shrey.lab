@@ -1,15 +1,16 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useId, useRef, useState } from 'react';
 import type { ShowcaseStudy } from '@/lib/showcase';
+import { STUDY_ART } from '@/components/work/StudyArt';
 import './showcase.css';
 
 /**
  * CaseStudyFeature — one case study as one card: the name, then three rows
  * (the problem, what I built, what happened) as a single-open accordion on
- * the left, and the study's image on the right (above the rows on phones).
+ * the left, and the study's art on the right (above the rows on phones),
+ * drawn in the shared case-study frame (components/work/StudyArt.tsx).
  *
  * While the card is on screen the open row steps forward on its own, with a
  * thin progress line under it. That stops for good once someone opens a row
@@ -69,7 +70,7 @@ export function CaseStudyFeature({ study, index }: { study: ShowcaseStudy; index
 
         {/* Image on phones: above the rows so the story reads top to bottom */}
         <div className="mt-6 md:hidden">
-          <StudyImage study={study} priority={index === 0} />
+          <StudyArt slug={study.slug} />
         </div>
 
         <div className="mt-5 md:mt-6">
@@ -117,27 +118,13 @@ export function CaseStudyFeature({ study, index }: { study: ShowcaseStudy; index
       </div>
 
       <div className="hidden self-center md:block">
-        <StudyImage study={study} priority={index === 0} />
+        <StudyArt slug={study.slug} />
       </div>
     </article>
   );
 }
 
-function StudyImage({ study, priority }: { study: ShowcaseStudy; priority: boolean }) {
-  return (
-    <div
-      className={`relative aspect-[1.55] overflow-hidden rounded-[10px] ${
-        study.imageFit === 'contain' ? 'bg-[#e9e4f6] dark:bg-[#2a2638]' : 'bg-bg-sunken'
-      }`}
-    >
-      <Image
-        src={study.image}
-        alt={study.imageAlt}
-        fill
-        sizes="(min-width: 768px) 560px, 100vw"
-        priority={priority}
-        className={study.imageFit === 'contain' ? 'object-contain p-8' : 'object-cover'}
-      />
-    </div>
-  );
+function StudyArt({ slug }: { slug: ShowcaseStudy['slug'] }) {
+  const Art = STUDY_ART[slug];
+  return <Art />;
 }
