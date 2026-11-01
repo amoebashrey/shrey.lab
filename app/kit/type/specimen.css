@@ -1,0 +1,88 @@
+/* /kit/type — scoped to .spec so nothing leaks into the site.
+   Display face on the headline, body face on the sentence and button.
+   Display tracking −0.02 to −0.04em; body 18px. */
+
+.spec .hero-band h1 {
+  font-family: var(--spec-display);
+  font-weight: var(--spec-display-weight, 400);
+  letter-spacing: var(--spec-track, -0.03em);
+  line-height: 1;
+  text-shadow: none;
+}
+.spec .hero-band h1 + p {
+  font-family: var(--spec-body);
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(17px, 1.5vw, 20px);
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+  max-width: 38ch;
+  color: var(--fg-muted);
+}
+.spec .hero-band .hero-btn {
+  font-family: var(--spec-body);
+  font-weight: 500;
+}
+
+/* A — Fraunces: SOFT at its softest (100), no wonky glyphs, optical size
+   following the rendered size. */
+.spec-a {
+  --spec-display: var(--font-fraunces), 'Times New Roman', serif;
+  --spec-body: var(--font-switzer), Arial, sans-serif;
+  --spec-display-weight: 420;
+  --spec-track: -0.03em;
+}
+.spec-a .hero-band h1 {
+  font-variation-settings: 'SOFT' 100, 'WONK' 0;
+  font-optical-sizing: auto;
+}
+.spec-opsz-144 .hero-band h1 {
+  font-variation-settings: 'SOFT' 100, 'WONK' 0, 'opsz' 144;
+}
+
+/* B — Sentient + General Sans. */
+.spec-b {
+  --spec-display: var(--font-sentient), 'Times New Roman', serif;
+  --spec-body: var(--font-general-sans), Arial, sans-serif;
+  --spec-display-weight: 400;
+  --spec-track: -0.025em;
+}
+
+/* C — Gloock (one weight, display only) + Switzer. */
+.spec-c {
+  --spec-display: var(--font-gloock), 'Times New Roman', serif;
+  --spec-body: var(--font-switzer), Arial, sans-serif;
+  --spec-display-weight: 400;
+  --spec-track: -0.02em;
+}
+
+/* Set switcher — small, fixed bottom-left, out of the hero's way. */
+.spec-switch {
+  position: fixed;
+  left: 16px;
+  bottom: 16px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  background: var(--bg-elevated);
+  box-shadow: 0 0 0 1px var(--border);
+  font: 13px/1 var(--spec-body);
+  color: var(--fg-muted);
+}
+.spec-switch span {
+  padding: 0 8px 0 4px;
+  color: var(--fg);
+}
+.spec-switch a {
+  padding: 6px 8px;
+  border-radius: 6px;
+  color: var(--fg-muted);
+  text-decoration: none;
+}
+.spec-switch a[aria-current='page'] {
+  background: var(--bg-sunken);
+  color: var(--fg);
+}

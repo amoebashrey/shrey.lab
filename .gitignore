@@ -38,3 +38,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Fontshare fonts (ITF Free Font License): self-hosting is allowed, but the
+# licence forbids making the files available through a public repository.
+# Kept local; see docs/DECISION_LOG.md (2026-11-01, type specimen).
+app/fonts/fontshare/
