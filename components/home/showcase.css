@@ -40,7 +40,8 @@
   transition: color 160ms ease-out;
 }
 .cs-trigger:focus-visible,
-.oc-dot:focus-visible {
+.oc-arrow:focus-visible,
+.oc-carousel:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
   border-radius: 6px;
@@ -80,7 +81,11 @@
 
 /* Outcomes: the story card cross-fades between slides. */
 .oc-slide {
-  transition: opacity 300ms cubic-bezier(0.23, 1, 0.32, 1);
+  /* visibility flips at the end of the fade, so hidden slides drop out of
+     the tab order and the accessibility tree */
+  transition:
+    opacity 300ms cubic-bezier(0.23, 1, 0.32, 1),
+    visibility 300ms;
 }
 .oc-dot {
   width: 8px;
@@ -89,11 +94,34 @@
   background: var(--border-strong);
   transition: background-color 160ms ease-out, width 220ms cubic-bezier(0.23, 1, 0.32, 1);
 }
-[aria-current='true'] > .oc-dot {
+.oc-dot[data-on] {
   width: 22px;
   background: var(--fg);
 }
-/* The stat card for the story on show is marked with an accent hairline. */
+/* Carousel: vertical scroll stays native; horizontal swipes change slide. */
+.oc-carousel {
+  touch-action: pan-y;
+}
+.oc-arrow {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--fg);
+  transition: border-color 160ms ease-out, transform 160ms ease-out;
+}
+.oc-arrow:active {
+  transform: scale(0.96);
+}
+@media (hover: hover) and (pointer: fine) {
+  .oc-arrow:hover {
+    border-color: var(--border-strong);
+  }
+}
+
+/* The stat for the story on show is marked with an accent hairline. */
 .oc-stat {
   box-shadow: inset 0 0 0 1px transparent;
   transition: box-shadow 220ms ease-out;

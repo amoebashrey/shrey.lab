@@ -36,6 +36,9 @@ export interface TileRendererOptions {
   intensity?: number;
   /** ± lightness noise per tile, from a stable hash (keeps it from looking flat). */
   jitter?: number;
+  /** 'tiles' (default) paints the scene as small rounded tiles; 'flat' paints
+      it as crisp shapes in one mid-palette colour, at full resolution. */
+  mode?: 'tiles' | 'flat';
 }
 
 export interface TileRenderer {
@@ -101,6 +104,11 @@ export function createTileRenderer(
   if (!ctx || !o) throw new Error('2D canvas unavailable');
 
   const scene = opts.scene;
+  const mode = opts.mode ?? 'tiles';
+  // Flat mode: the scene draws at full resolution here, then gets tinted.
+  const full = mode === 'flat' ? document.createElement('canvas') : null;
+  const f = full?.getContext('2d') ?? null;
+  let dpr = 1;
   const jitter = opts.jitter ?? 0.06;
   let intensity = opts.intensity ?? 0.8;
   let W = 0;
@@ -145,8 +153,31 @@ export function createTileRenderer(
     }
   }
 
+  function drawFlat() {
+    const c = ctx!;
+    c.globalAlpha = 1;
+    c.fillStyle = bgFill;
+    c.fillRect(0, 0, W, H);
+    f!.setTransform(1, 0, 0, 1, 0, 0);
+    f!.globalCompositeOperation = 'source-over';
+    f!.clearRect(0, 0, full!.width, full!.height);
+    f!.setTransform(dpr, 0, 0, dpr, 0, 0);
+    scene.draw(f!);
+    // Keep each shape's alpha, swap its grey for the palette's mid tone.
+    f!.setTransform(1, 0, 0, 1, 0, 0);
+    f!.globalAlpha = 1;
+    f!.globalCompositeOperation = 'source-in';
+    f!.fillStyle = fills[Math.round(LUT_SIZE * 0.42)];
+    f!.fillRect(0, 0, full!.width, full!.height);
+    f!.globalCompositeOperation = 'source-over';
+    c.globalAlpha = intensity;
+    c.drawImage(full!, 0, 0, W, H);
+    c.globalAlpha = 1;
+  }
+
   function draw() {
     if (!W || !H) return;
+    if (mode === 'flat') return drawFlat();
 
     // Scene at one pixel per tile.
     o!.setTransform(1, 0, 0, 1, 0, 0);
@@ -215,11 +246,15 @@ export function createTileRenderer(
 
   return {
     resize(width, height) {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
       W = width;
       H = height;
       canvas.width = Math.round(W * dpr);
       canvas.height = Math.round(H * dpr);
+      if (full) {
+        full.width = canvas.width;
+        full.height = canvas.height;
+      }
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       fitOffscreen();
       scene.resize(W, H);

@@ -55,24 +55,24 @@ export function CaseStudyFeature({ study, index }: { study: ShowcaseStudy; index
     <article
       ref={ref}
       aria-labelledby={`${uid}-name`}
-      className="cs-card grid gap-8 rounded-[20px] bg-bg-elevated p-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] md:gap-12 md:p-10"
+      className="cs-card grid gap-6 rounded-[10px] bg-bg-elevated p-5 md:grid-cols-[minmax(0,40fr)_minmax(0,49fr)] md:gap-x-[11%] md:p-10"
       onMouseEnter={() => setHeld(true)}
       onMouseLeave={() => setHeld(false)}
       onFocusCapture={() => setHeld(true)}
       onBlurCapture={() => setHeld(false)}
     >
       <div className="flex min-w-0 flex-col">
-        <h3 id={`${uid}-name`} className="text-balance text-3xl font-medium tracking-tight text-fg md:text-4xl">
+        <h3 id={`${uid}-name`} className="text-balance text-[32px] leading-[1.2] tracking-tight text-fg md:text-[40px] md:leading-[1.25]">
           {study.name}
         </h3>
-        <p className="mt-2 text-base text-fg-muted">{study.kicker}</p>
+        <p className="mt-1.5 text-base text-fg-muted">{study.kicker}</p>
 
         {/* Image on phones: above the rows so the story reads top to bottom */}
         <div className="mt-6 md:hidden">
           <StudyImage study={study} priority={index === 0} />
         </div>
 
-        <div className="mt-6 md:mt-8">
+        <div className="mt-5 md:mt-6">
           {study.rows.map((row, i) => {
             const isOpen = i === open;
             const panel = `${uid}-panel-${i}`;
@@ -87,14 +87,14 @@ export function CaseStudyFeature({ study, index }: { study: ShowcaseStudy; index
                     aria-expanded={isOpen}
                     aria-controls={panel}
                     onClick={() => choose(i)}
-                    className="cs-trigger flex w-full items-center justify-between gap-4 py-5 text-left text-lg text-fg md:text-xl"
+                    className="cs-trigger flex w-full items-center justify-between gap-4 py-4 text-left text-[17px] text-fg"
                   >
                     {row.label}
                     <span className="cs-icon" data-open={isOpen || undefined} aria-hidden="true" />
                   </button>
                 </h4>
-                <div id={panel} role="region" aria-label={row.label} hidden={!isOpen} className="pb-6">
-                  <p className="max-w-[52ch] text-base leading-relaxed text-fg-muted md:text-[17px]">{row.text}</p>
+                <div id={panel} role="region" aria-label={row.label} hidden={!isOpen} className="pb-5">
+                  <p className="max-w-[52ch] text-[15px] leading-relaxed text-fg-muted md:text-base">{row.text}</p>
                 </div>
               </div>
             );
@@ -116,7 +116,7 @@ export function CaseStudyFeature({ study, index }: { study: ShowcaseStudy; index
         </div>
       </div>
 
-      <div className="hidden md:block">
+      <div className="hidden self-center md:block">
         <StudyImage study={study} priority={index === 0} />
       </div>
     </article>
@@ -126,7 +126,7 @@ export function CaseStudyFeature({ study, index }: { study: ShowcaseStudy; index
 function StudyImage({ study, priority }: { study: ShowcaseStudy; priority: boolean }) {
   return (
     <div
-      className={`relative aspect-[4/3] overflow-hidden rounded-xl ${
+      className={`relative aspect-[1.55] overflow-hidden rounded-[10px] ${
         study.imageFit === 'contain' ? 'bg-[#e9e4f6] dark:bg-[#2a2638]' : 'bg-bg-sunken'
       }`}
     >

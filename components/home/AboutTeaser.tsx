@@ -17,7 +17,7 @@ export function AboutTeaser() {
   return (
     <section
       aria-labelledby="about-teaser-heading"
-      className="py-20 md:py-28"
+      className="seam py-20 md:py-28"
     >
       <div className="mx-auto max-w-[1180px] px-4 md:px-8">
         <div className="max-w-2xl">

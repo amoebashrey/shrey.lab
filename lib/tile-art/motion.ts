@@ -157,6 +157,10 @@ export function stepCreatures(
   W: number,
   H: number,
   obstacles: readonly Obstacle[],
+  /** Optional heading each creature drifts toward while not avoiding (rad).
+      With one, the level pull and the off-edge correction are skipped: the
+      caller owns where the creature wanders and what happens at the edges. */
+  goals?: ReadonlyArray<number | undefined>,
 ) {
   for (let i = 0; i < creatures.length; i++) {
     const s = creatures[i];
@@ -179,7 +183,11 @@ export function stepCreatures(
     // Ambient wander, only while not avoiding (it would fight the swerve), and
     // a gentle pull back toward level so swerves don't leave creatures heading
     // straight up or down — they cruise across the hero, as in the prototype.
-    if (st.dir === 0) {
+    const goal = goals?.[i];
+    if (st.dir === 0 && goal !== undefined) {
+      const diff = Math.atan2(Math.sin(goal - s.a), Math.cos(goal - s.a));
+      s.a += Math.max(-STEER.level * k, Math.min(STEER.level * k, diff));
+    } else if (st.dir === 0) {
       const above = s.y < -s.L * 0.1;
       const below = s.y > H + s.L * 0.1;
       if (above || below) {

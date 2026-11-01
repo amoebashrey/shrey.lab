@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { fraunces } from './fonts';
 import './globals.css';
+import './trace.css';
 import { Nav } from '@/components/Nav';
 import { NAME, ROLE, X_HANDLE } from '@/lib/site';
 import { SiteControls } from '@/components/SiteControls';
@@ -118,10 +119,12 @@ export default function RootLayout({
         {/* Theme script must run before paint — inline, not external */}
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className="text-fg antialiased">
+      <body className="relative text-fg antialiased">
         {/* Fixed canvas texture (dot-grid + grain) — behind all content, inert.
             No cursor glow: the hero's footprints are the site's one moment. */}
         <div className="site-texture" aria-hidden="true" />
+        {/* Two hairlines in the gutters, full page height (app/trace.css). */}
+        <div className="trace-lines" aria-hidden="true" />
         <a href="#main" className="skip-to-content">
           Skip to content
         </a>

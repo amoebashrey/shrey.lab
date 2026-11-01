@@ -18,7 +18,7 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-border bg-bg">
+    <footer className="seam bg-bg">
       <div className="mx-auto flex max-w-[1180px] flex-col gap-8 px-4 py-12 md:flex-row md:items-end md:justify-between md:px-8 md:py-14">
         <div className="space-y-2">
           <p className="flex items-center gap-2 text-base font-medium text-fg">

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { CSSProperties } from 'react';
-import { HeroFootprints } from './HeroFootprints';
+import { HeroFootprints, type FootprintLook } from './HeroFootprints';
 import { HERO_LINE, NAME } from '@/lib/site';
 
 /**
@@ -20,7 +20,7 @@ import { HERO_LINE, NAME } from '@/lib/site';
  */
 const enter = (i: number) => ({ '--i': i }) as CSSProperties;
 
-export function Hero() {
+export function Hero({ look }: { look?: FootprintLook } = {}) {
   return (
     <section
       aria-labelledby="hero-heading"
@@ -28,7 +28,7 @@ export function Hero() {
       // under the floating nav, instead of leaving a paper strip above it.
       className="hero-band relative isolate -mt-8 overflow-hidden"
     >
-      <HeroFootprints avoidSelector="[data-tile-avoid]" />
+      <HeroFootprints avoidSelector="[data-tile-avoid]" look={look} />
 
       <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-[1280px] items-center justify-center px-4 pb-48 pt-28 sm:min-h-[clamp(560px,88svh,820px)] sm:pb-16 md:px-8 md:pt-32">
         <div data-tile-avoid="" className="flex flex-col items-center text-center">

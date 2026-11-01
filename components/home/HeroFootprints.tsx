@@ -36,7 +36,7 @@ const JITTER = 0.14;
 const TEXT_PAD = 48; // clearance between any print and the copy
 const FIXED_PAD = 12; // clearance from the nav / colour pill
 const PHONE_MAX = 640;
-const PHONE_SCALE = 0.75;
+const PHONE_SCALE = 0.8; // 52px → ~42px and 34px → ~27px prints on phones
 const PREWARM_MS = 2500; // a little trail already laid on first frame
 const RESIZE_DEBOUNCE_MS = 120;
 const PAUSE_KEY = 'hero-paused';
@@ -47,13 +47,23 @@ function isDarkTheme() {
   return window.matchMedia('(prefers-color-scheme: dark)').matches;
 }
 
+export interface FootprintLook {
+  /** 'flat' crisp shapes, or 'tiles' at `tile` px. */
+  render?: 'tiles' | 'flat';
+  tile?: number;
+}
+
 export function HeroFootprints({
   avoidSelector,
   fixedObstacleSelector = '[data-tile-obstacle]',
+  look = {},
 }: {
   avoidSelector?: string;
   fixedObstacleSelector?: string;
+  look?: FootprintLook;
 }) {
+  const render = look.render ?? 'tiles';
+  const tile = look.tile ?? TILE;
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [paused, setPaused] = useState(false);
   const [ready, setReady] = useState(false); // the control only renders once it works
@@ -89,7 +99,8 @@ export function HeroFootprints({
         scene,
         palette: accentPalette(accent, dark),
         background: dark ? DARK_BG : LIGHT_BG,
-        tileSize: TILE,
+        tileSize: tile,
+        mode: render,
         intensity: dark ? INTENSITY.dark : INTENSITY.light,
         jitter: JITTER,
       });
@@ -225,7 +236,7 @@ export function HeroFootprints({
       renderer.destroy();
       syncRef.current = () => {};
     };
-  }, [phone, avoidSelector, fixedObstacleSelector]);
+  }, [phone, avoidSelector, fixedObstacleSelector, render, tile]);
 
   useEffect(() => {
     pausedRef.current = paused;

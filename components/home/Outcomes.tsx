@@ -1,19 +1,23 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from 'react';
 import './showcase.css';
 
 /**
- * Outcomes — the second fold. A large card on the left tells the story behind
- * one number at a time (dots to switch); three stat cards on the right carry
- * the numbers, each with a small tile icon in the accent.
+ * Outcomes — the second fold. A compact strip of the three numbers, then a
+ * story card that tells the context behind one number at a time.
+ *
+ * The story card is a small carousel: previous/next buttons, ← → keys while
+ * it has focus, swipe on touch, and dots as position indicators. Picking a
+ * number in the strip opens its story. It steps on its own while on screen,
+ * pauses on hover or focus, stops once someone takes over, and never moves
+ * under reduced motion.
  *
  * The numbers are the ones the site has always stated, verbatim. The stories
  * only restate their context; nothing here is a quote or a testimonial.
- * Auto-steps while on screen, like the case-study cards: pauses on hover or
- * focus, stops once someone picks one, never runs under reduced motion.
  */
 const STEP_MS = 7000;
+const SWIPE_PX = 40;
 
 type Icon = readonly string[];
 
@@ -25,8 +29,7 @@ const ICON_DOLLAR: Icon = ['..#..', '.####', '#.#..', '.###.', '..#.#', '####.',
 const OUTCOMES = [
   {
     value: '~50%',
-    label: 'conversion',
-    qualifier: 'Zero paid CAC',
+    label: 'conversion, zero paid CAC',
     icon: ICON_UP,
     where: 'Amber · university channel',
     story:
@@ -34,8 +37,7 @@ const OUTCOMES = [
   },
   {
     value: '18%',
-    label: 'booking lift',
-    qualifier: 'After the image UX rollout',
+    label: 'booking lift after the image rollout',
     icon: ICON_BARS,
     where: 'Amber · property listings · 2024',
     story:
@@ -43,8 +45,7 @@ const OUTCOMES = [
   },
   {
     value: '$20K',
-    label: 'saved a year',
-    qualifier: 'Built in-house',
+    label: 'a year, built in-house',
     icon: ICON_DOLLAR,
     where: 'Amber · internal ticketing · 2024',
     story:
@@ -58,6 +59,8 @@ export function Outcomes() {
   const [held, setHeld] = useState(false);
   const [inView, setInView] = useState(false);
   const ref = useRef<HTMLElement>(null);
+  const swipe = useRef<{ x: number; y: number } | null>(null);
+  const n = OUTCOMES.length;
 
   useEffect(() => {
     setAuto(!window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -71,20 +74,42 @@ export function Outcomes() {
   const running = auto && inView && !held;
   useEffect(() => {
     if (!running) return;
-    const t = window.setTimeout(() => setActive((a) => (a + 1) % OUTCOMES.length), STEP_MS);
+    const t = window.setTimeout(() => setActive((a) => (a + 1) % n), STEP_MS);
     return () => window.clearTimeout(t);
-  }, [running, active]);
+  }, [running, active, n]);
 
-  function choose(i: number) {
-    setAuto(false);
-    setActive(i);
+  function go(i: number) {
+    setAuto(false); // the visitor is in charge now
+    setActive(((i % n) + n) % n);
+  }
+
+  function onKey(e: KeyboardEvent) {
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      go(active - 1);
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      go(active + 1);
+    }
+  }
+
+  function onPointerDown(e: PointerEvent) {
+    if (e.pointerType === 'mouse') return;
+    swipe.current = { x: e.clientX, y: e.clientY };
+  }
+  function onPointerUp(e: PointerEvent) {
+    const s = swipe.current;
+    swipe.current = null;
+    if (!s) return;
+    const dx = e.clientX - s.x;
+    if (Math.abs(dx) > SWIPE_PX && Math.abs(dx) > Math.abs(e.clientY - s.y)) go(active + (dx < 0 ? 1 : -1));
   }
 
   return (
     <section
       ref={ref}
       aria-labelledby="outcomes-heading"
-      className="oc-section pt-20 md:pt-28"
+      className="oc-section seam pt-20 md:pt-28"
       onMouseEnter={() => setHeld(true)}
       onMouseLeave={() => setHeld(false)}
       onFocusCapture={() => setHeld(true)}
@@ -93,66 +118,80 @@ export function Outcomes() {
       <div className="mx-auto max-w-[1180px] px-4 md:px-8">
         <h2
           id="outcomes-heading"
-          className="mb-10 max-w-[20ch] text-balance text-4xl font-medium tracking-tight text-fg md:mb-14 md:text-5xl"
+          className="mb-8 max-w-[20ch] text-balance text-[clamp(32px,4vw,48px)] leading-[1.15] tracking-tight text-fg md:mb-10"
         >
           What changed after it shipped
         </h2>
 
-        <div className="grid gap-4 md:gap-5 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
-          {/* Story card */}
-          <div className="flex min-h-[300px] flex-col rounded-[20px] bg-bg-elevated p-6 md:min-h-[380px] md:p-10">
-            <div className="grid flex-1">
-              {OUTCOMES.map((o, i) => (
-                <div
-                  key={o.label}
-                  aria-hidden={i !== active}
-                  className="oc-slide col-start-1 row-start-1 flex flex-col"
-                  style={{ opacity: i === active ? 1 : 0 }}
-                >
-                  <p className="text-sm text-fg-muted">{o.where}</p>
-                  <p className="mt-6 max-w-[34ch] text-pretty text-2xl leading-snug text-fg md:text-[28px]">
-                    {o.story}
-                  </p>
-                </div>
-              ))}
-            </div>
-            <div className="mt-8 flex items-center gap-1" role="group" aria-label="Choose an outcome">
-              {OUTCOMES.map((o, i) => (
-                <button
-                  key={o.label}
-                  type="button"
-                  onClick={() => choose(i)}
-                  aria-label={`${o.value} ${o.label}`}
-                  aria-current={i === active}
-                  className="grid h-6 min-w-6 place-items-center px-1"
-                >
-                  <span className="oc-dot block" />
-                </button>
-              ))}
-            </div>
+        {/* Compact strip: the three numbers in one row */}
+        <div className="grid grid-cols-3 overflow-hidden rounded-[10px] bg-bg-elevated">
+          {OUTCOMES.map((o, i) => (
+            <button
+              key={o.label}
+              type="button"
+              onClick={() => go(i)}
+              data-active={i === active || undefined}
+              aria-pressed={i === active}
+              className="oc-stat cs-trigger flex items-center gap-4 border-border px-3 py-3.5 text-left [&:not(:first-child)]:border-l sm:px-5 sm:py-4 md:px-6 md:py-5"
+            >
+              <TileIcon rows={o.icon} />
+              <span className="min-w-0">
+                <span className="block text-[22px] font-medium leading-none tracking-tight text-fg tabular-nums sm:text-[28px] md:text-[32px]">
+                  {o.value}
+                </span>
+                <span className="mt-1.5 block text-xs leading-snug text-fg-muted sm:text-sm">{o.label}</span>
+              </span>
+            </button>
+          ))}
+        </div>
+
+        {/* Story carousel */}
+        <div
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="The story behind each number"
+          tabIndex={0}
+          onKeyDown={onKey}
+          onPointerDown={onPointerDown}
+          onPointerUp={onPointerUp}
+          onPointerCancel={() => (swipe.current = null)}
+          className="oc-carousel mt-4 rounded-[10px] bg-bg-elevated p-6 md:mt-5 md:p-10"
+        >
+          <div className="grid">
+            {OUTCOMES.map((o, i) => (
+              <div
+                key={o.label}
+                role="group"
+                aria-roledescription="slide"
+                aria-label={`${i + 1} of ${n}`}
+                aria-hidden={i !== active}
+                className="oc-slide col-start-1 row-start-1"
+                style={{ opacity: i === active ? 1 : 0, visibility: i === active ? 'visible' : 'hidden' }}
+              >
+                <p className="text-sm text-fg-muted">{o.where}</p>
+                <p className="mt-3 max-w-[48ch] text-pretty text-lg leading-snug text-fg sm:text-xl md:text-2xl">{o.story}</p>
+              </div>
+            ))}
           </div>
 
-          {/* Stat cards */}
-          <div className="grid gap-4 sm:grid-cols-3 md:gap-5 lg:grid-cols-1">
-            {OUTCOMES.map((o, i) => (
-              <button
-                key={o.label}
-                type="button"
-                onClick={() => choose(i)}
-                data-active={i === active || undefined}
-                aria-pressed={i === active}
-                className="oc-stat cs-trigger flex items-center gap-5 rounded-[20px] bg-bg-elevated p-6 text-left sm:flex-col sm:items-start lg:flex-row lg:items-center"
-              >
-                <TileIcon rows={o.icon} />
-                <span className="min-w-0">
-                  <span className="block text-4xl font-medium leading-none tracking-tight text-fg tabular-nums md:text-5xl">
-                    {o.value}
-                  </span>
-                  <span className="mt-2 block text-base text-fg">{o.label}</span>
-                  <span className="block text-sm text-fg-muted">{o.qualifier}</span>
-                </span>
+          <div className="mt-6 flex items-center justify-between gap-4 md:mt-8">
+            <div className="flex items-center gap-1" aria-hidden="true">
+              {OUTCOMES.map((o, i) => (
+                <span key={o.label} className="oc-dot block" data-on={i === active || undefined} />
+              ))}
+            </div>
+            <div className="flex gap-2">
+              <button type="button" onClick={() => go(active - 1)} aria-label="Previous project" className="oc-arrow">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M15 18l-6-6 6-6" />
+                </svg>
               </button>
-            ))}
+              <button type="button" onClick={() => go(active + 1)} aria-label="Next project" className="oc-arrow">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -167,13 +206,7 @@ function TileIcon({ rows }: { rows: Icon }) {
   const w = rows[0].length * S;
   const h = rows.length * S;
   return (
-    <svg
-      className="tile-icon flex-none overflow-visible"
-      width={w * 1.4}
-      height={h * 1.4}
-      viewBox={`0 0 ${w} ${h}`}
-      aria-hidden="true"
-    >
+    <svg className="tile-icon hidden flex-none overflow-visible sm:block" width={w} height={h} viewBox={`0 0 ${w} ${h}`} aria-hidden="true">
       {rows.flatMap((row, y) =>
         [...row].map((c, x) => (
           <rect
