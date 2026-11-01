@@ -271,6 +271,17 @@ Audience is now founders and teams hiring for project work (mostly via X DMs and
 
 ---
 
+## 2026-11-01 · Hero: dinosaur footprints replace the sharks
+
+### Tile footprints (style B)
+- **Decision:** Two theropods walk the hero in opposite directions (`lib/tile-art/footprints.ts`), drawn in the hero's small rounded tiles (5px). The big one (58px prints) steps every 1.1s and travels 72px per step; the small one (38px) every 0.72s and 48px per step. Prints alternate feet with a slight toe-out, land with a press (scale 1.05→1 + fade-in over 220ms) and fade out behind, about 10 per trail. A walker that leaves the hero respawns from its edge at a new height, in a lane that crosses without meeting an obstacle.
+- **Steering:** walkers reuse the shark obstacle logic (`lib/tile-art/motion.ts`); each walker's steered body covers the prints it lays. Clearance: 48px around the copy, 12px around the nav and colour pill. Obstacles whose free corridor is narrower than 1.5 bodies merge (otherwise a walker can wedge between the nav and the copy). Stronger level-out bias so trails cross rather than detour.
+- **Verified:** headless sim, 3 × 6 runs × 5 min at 1440/768/390 — 0 prints over the copy or under the chrome, ~9–10 prints per trail, headings within ~37° of horizontal 99% of the time. Live in Chrome: 0 tiles under the copy in both themes at 1440 and 390; reduced motion holds two still trails; 60fps (p95 frame 16.8ms) at 1440.
+- **Renderer:** generalised to scenes (`TileScene`); the shark shape and components are removed.
+- **Trade-off:** at desktop sizes the colour pill closes the lane above the headline, so both trails use the band under the button.
+
+---
+
 ## Template for future entries
 
 ```

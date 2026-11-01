@@ -1,42 +1,60 @@
 import type { Palette, RGB } from './palettes';
-import type { Creature, ShapeFn } from './types';
-import { BODY_REACH, evictCreatures, mergeObstacles, newSteer, stepCreatures, type Obstacle, type Steer } from './motion';
+import type { Obstacle } from './motion';
 
 /**
- * Tile renderer — framework-free. Draws creatures as smooth silhouettes into a
- * tiny offscreen canvas (one pixel per tile), then paints each covered pixel
- * as a small rounded square on the visible canvas, coloured from a four-stop
- * palette by its shading.
+ * Tile renderer — framework-free. A scene draws smooth shapes into a tiny
+ * offscreen canvas (one pixel per tile); the renderer paints each covered
+ * pixel as a small rounded square on the visible canvas, coloured from a
+ * four-stop palette by its shading.
  *
- * No DOM reads inside the frame loop: the caller pushes sizes via resize().
+ * The renderer owns everything a scene shouldn't care about: canvas sizing
+ * and DPR, the frame loop (frame-rate independent, paused when stopped),
+ * colour crossfades, and the tile pass. No DOM reads inside the loop: the
+ * caller pushes sizes via resize().
  */
 
+/**
+ * What moves on the canvas. `draw` receives a context already scaled so the
+ * scene works in CSS px; it paints greyscale where the red channel is the
+ * shading (0 darkest … 1 palest) and alpha is coverage.
+ */
+export interface TileScene {
+  resize(width: number, height: number): void;
+  /** Advance the scene by `dtMs` of animation time. */
+  step(dtMs: number): void;
+  draw(ctx: CanvasRenderingContext2D): void;
+  /** Areas to keep clear (CSS px, canvas space). */
+  setObstacles(obstacles: readonly Obstacle[]): void;
+}
+
 export interface TileRendererOptions {
-  shape: ShapeFn;
+  scene: TileScene;
   palette: Palette;
   background: RGB;
   tileSize: number;
-  creatures: readonly Creature[];
+  /** Peak tile opacity (0–1): how strongly the scene shows on the page. */
+  intensity?: number;
+  /** ± lightness noise per tile, from a stable hash (keeps it from looking flat). */
+  jitter?: number;
 }
 
 export interface TileRenderer {
-  /** CSS-px size of the canvas. Keeps creature positions. */
+  /** CSS-px size of the canvas. */
   resize(width: number, height: number): void;
   setTileSize(size: number): void;
-  /** Replaces the creature list (positions included). */
-  setCreatures(creatures: readonly Creature[]): void;
-  /** Areas creatures steer around (CSS px, canvas space), each kept `pad` px
-      clear of their bodies. Creatures already inside are moved out. */
   setObstacles(obstacles: readonly Obstacle[]): void;
   /** Recolours palette + background; crossfades over `duration` ms (0 = snap). */
   setColors(palette: Palette, background: RGB, duration?: number): void;
+  setIntensity(intensity: number): void;
+  /** Advance the scene without drawing (e.g. to show a settled still frame). */
+  advance(ms: number): void;
   start(): void;
   stop(): void;
   renderOnce(): void;
   destroy(): void;
 }
 
-const FRAME_MS = 1000 / 60; // speeds are in px per 60fps frame
+const FRAME_MS = 1000 / 60;
 const MAX_DT = 50; // clamp long gaps (tab switch, jank) so nothing leaps
 const LUT_SIZE = 256;
 
@@ -82,15 +100,14 @@ export function createTileRenderer(
   const o = off.getContext('2d', { willReadFrequently: true });
   if (!ctx || !o) throw new Error('2D canvas unavailable');
 
-  const shape = opts.shape;
+  const scene = opts.scene;
+  const jitter = opts.jitter ?? 0.06;
+  let intensity = opts.intensity ?? 0.8;
   let W = 0;
   let H = 0;
   let T = opts.tileSize;
   let cols = 0;
   let rows = 0;
-  let creatures = opts.creatures.map((c) => ({ ...c }));
-  let steer: Steer[] = creatures.map(newSteer);
-  let obstacles: readonly Obstacle[] = [];
 
   // Colour state. `shown*` is what's on screen; during a crossfade it moves
   // from `from*` to `to*`. Fill strings are rebuilt only when colours change.
@@ -116,7 +133,6 @@ export function createTileRenderer(
   let running = false;
   let raf = 0;
   let last = 0;
-  let simT = 0; // drives tail phase + heading drift; frozen while paused
 
   function fitOffscreen() {
     const c = Math.max(1, Math.ceil(W / T));
@@ -129,19 +145,15 @@ export function createTileRenderer(
     }
   }
 
-  function step(dt: number) {
-    simT += dt;
-    stepCreatures(creatures, steer, dt / FRAME_MS, simT, W, H, obstacles);
-  }
-
   function draw() {
     if (!W || !H) return;
 
-    // Creatures at one pixel per tile.
+    // Scene at one pixel per tile.
     o!.setTransform(1, 0, 0, 1, 0, 0);
     o!.clearRect(0, 0, cols, rows);
     o!.setTransform(1 / T, 0, 0, 1 / T, 0, 0);
-    for (const s of creatures) shape(o!, s, simT);
+    scene.draw(o!);
+    o!.globalAlpha = 1;
     const d = o!.getImageData(0, 0, cols, rows).data;
 
     // Page colour, then tiles.
@@ -160,23 +172,20 @@ export function createTileRenderer(
         const i = (y * cols + x) * 4;
         const al = d[i + 3] / 255;
         if (al < 0.12) continue;
-        const l = d[i] / 255 / al + (hash(x, y) - 0.5) * 0.06;
+        const l = d[i] / 255 / al + (hash(x, y) - 0.5) * jitter;
         const li = Math.round(Math.max(0, Math.min(1, l)) * (LUT_SIZE - 1));
         const px = x * T + g / 2;
         const py = y * T + g / 2;
-        c.globalAlpha = Math.pow(al, 1.4) * (0.72 + 0.2 * (1 - l));
+        c.globalAlpha = Math.pow(al, 1.3) * intensity;
         c.fillStyle = fills[li];
         c.beginPath();
         if (rounded) c.roundRect(px, py, sz, sz, r);
         else c.rect(px, py, sz, sz);
         c.fill();
         if (hl && al > 0.6) {
-          c.globalAlpha = 0.18 + 0.12 * (1 - l);
+          c.globalAlpha = (0.18 + 0.12 * (1 - l)) * intensity;
           c.fillStyle = '#fff';
           c.fillRect(px + r * 0.6, py + 0.6, sz - r * 1.2, 0.9);
-          c.globalAlpha = 0.06;
-          c.fillStyle = '#000';
-          c.fillRect(px + r * 0.6, py + sz - 1, sz - r * 1.2, 0.8);
         }
       }
     }
@@ -186,7 +195,7 @@ export function createTileRenderer(
   function loop(ts: number) {
     const dt = last ? Math.min(ts - last, MAX_DT) : FRAME_MS;
     last = ts;
-    if (running) step(dt);
+    if (running) scene.step(dt);
     if (fadeDur) {
       fadeMs = Math.min(fadeDur, fadeMs + dt);
       refreshFills(easeOut(fadeMs / fadeDur));
@@ -213,22 +222,15 @@ export function createTileRenderer(
       canvas.height = Math.round(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       fitOffscreen();
+      scene.resize(W, H);
       draw(); // resizing clears the canvas — repaint now, even if paused
     },
     setTileSize(size) {
       T = size;
       fitOffscreen();
     },
-    setCreatures(list) {
-      creatures = list.map((c) => ({ ...c }));
-      steer = creatures.map(newSteer);
-      evictCreatures(creatures, obstacles);
-    },
     setObstacles(list) {
-      // Touching clearance zones become one block, so there are no pockets.
-      const reach = BODY_REACH * Math.max(0, ...creatures.map((c) => c.L));
-      obstacles = mergeObstacles(list, reach);
-      evictCreatures(creatures, obstacles);
+      scene.setObstacles(list);
       if (!running) draw();
     },
     setColors(palette, background, duration = 0) {
@@ -249,6 +251,14 @@ export function createTileRenderer(
         refreshFills(1);
         draw();
       }
+    },
+    setIntensity(n) {
+      intensity = n;
+      if (!running) draw();
+    },
+    advance(ms) {
+      // In frame-sized steps so the scene's motion stays the same as live.
+      for (let t = 0; t < ms; t += FRAME_MS) scene.step(FRAME_MS);
     },
     start() {
       if (running) return;

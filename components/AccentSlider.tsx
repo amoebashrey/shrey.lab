@@ -8,7 +8,7 @@ import '@/components/bencho/wake-slider/HueWake.css';
 /**
  * AccentSlider — the colour control under the theme toggle: Bencho's Wake
  * slider over the hue circle. One control recolours the whole accent system
- * (CTA, links, focus ring, dots, sharks); every hue is generated in OKLCH at a
+ * (CTA, links, focus ring, dots, footprints); every hue is generated in OKLCH at a
  * fixed lightness, so contrast holds wherever it lands (lib/accent.ts).
  *
  * Phones: the bars sit behind a swatch button so they don't cover content.

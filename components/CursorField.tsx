@@ -39,8 +39,8 @@ export function CursorField() {
       targetX = e.clientX;
       targetY = e.clientY;
       const t = e.target as Element | null;
-      // Fade out over regions that opt out (the tile-shark hero band: nothing
-      // but the sharks should colour its page).
+      // Fade out over regions that opt out (the footprint hero band: nothing
+      // but the footprints should colour its page).
       targetVisible = t?.closest('[data-cursor-off]') ? 0 : 1;
       targetHot = t?.closest('a,button,[role="button"],input,textarea,select,[tabindex]')
         ? 1

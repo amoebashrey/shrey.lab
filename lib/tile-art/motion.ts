@@ -50,7 +50,7 @@ export const STEER = {
   release: 40, // frames of clear path before the committed side resets
   guard: 0.5, // hard wall at this fraction of the pad (steering acts at 1.0)
   maxPush: 2, // px per frame the wall may nudge a body outward
-  level: 0.003, // rad/frame pull back toward a horizontal heading after a swerve
+  level: 0.006, // rad/frame pull back toward a horizontal heading after a swerve
 };
 
 /**
@@ -219,8 +219,11 @@ export function stepCreatures(
  */
 export function mergeObstacles(list: readonly Obstacle[], reach: number): Obstacle[] {
   const out = list.map((o) => ({ rect: { ...o.rect }, pad: o.pad }));
+  // Zones count as touching when the free corridor between them is narrower
+  // than 1.5 bodies (a body is `reach` on both sides of its centreline): a
+  // body could squeeze in, but would get wedged turning there.
   const zone = (o: Obstacle) => {
-    const g = o.pad + reach;
+    const g = o.pad + reach * 1.5;
     return { x0: o.rect.x - g, y0: o.rect.y - g, x1: o.rect.x + o.rect.w + g, y1: o.rect.y + o.rect.h + g };
   };
   let merged = true;

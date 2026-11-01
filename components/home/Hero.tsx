@@ -1,17 +1,17 @@
 import Link from 'next/link';
 import type { CSSProperties } from 'react';
-import { HeroSharks } from './HeroSharks';
+import { HeroFootprints } from './HeroFootprints';
 import { NAME, ROLE } from '@/lib/site';
 
 /**
  * Hero — centred noun + supporting italic sentence + one action, with tile
- * sharks drifting around it.
+ * two dinosaurs' footprints walking around it.
  *
  * The band is full-bleed and paints --hero-bg (pure white in light, warm
- * charcoal in dark). No card behind the copy: the sharks treat the copy
- * column ([data-shark-avoid]) as an obstacle and swerve around it, so the
+ * charcoal in dark). No card behind the copy: the walkers treat the copy
+ * column ([data-tile-avoid]) as an obstacle and swerve around it, so the
  * text always sits on clean page colour at full contrast. A quiet pause/play
- * control sits bottom-right (HeroSharks).
+ * control sits bottom-right (HeroFootprints).
  *
  * Entrance (globals.css .hero-enter): headline → sentence → button settle
  * 16px into place, 70ms apart. Pure CSS and transform only, so the copy is
@@ -30,10 +30,10 @@ export function Hero() {
       // under the floating nav, instead of leaving a paper strip above it.
       className="hero-band relative isolate -mt-8 overflow-hidden"
     >
-      <HeroSharks avoidSelector="[data-shark-avoid]" />
+      <HeroFootprints avoidSelector="[data-tile-avoid]" />
 
       <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-[1280px] items-center justify-center px-4 pb-48 pt-28 sm:min-h-[clamp(560px,88svh,820px)] sm:pb-16 md:px-8 md:pt-32">
-        <div data-shark-avoid="" className="flex flex-col items-center text-center">
+        <div data-tile-avoid="" className="flex flex-col items-center text-center">
           {/* Cinematic load (tokens.css §cinematic) — a short accent rule that
               draws out from the centre at first paint. */}
           <div className="hero-lime-line hero-lime-line--center mb-8 w-16" aria-hidden="true" />

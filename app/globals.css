@@ -120,9 +120,9 @@
 }
 
 /* ============================================================================
-   HOME HERO — tile-shark band
-   --hero-bg is the colour the shark canvas paints (keep in step with LIGHT_BG /
-   DARK_BG in components/home/TileSharkBackground.tsx): pure white in light,
+   HOME HERO — tile footprint band
+   --hero-bg is the colour the footprint canvas paints (keep in step with
+   LIGHT_BG / DARK_BG in components/home/HeroFootprints.tsx): pure white in light,
    warm charcoal (--ink-800) in dark. Opaque, so the site dot-grid stays out.
    ============================================================================ */
 :root {
@@ -140,7 +140,7 @@
   background: var(--hero-bg);
   transition: background-color 300ms var(--ease-out);
 }
-/* Pause/play for the shark canvas — quiet until hovered or focused. Hidden
+/* Pause/play for the footprint canvas — quiet until hovered or focused. Hidden
    under reduced motion: the canvas is already a still frame there. */
 .hero-motion-toggle {
   transition:

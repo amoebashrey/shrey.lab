@@ -8,7 +8,7 @@ import { ThemeToggle } from './ThemeToggle';
  */
 export function SiteControls() {
   return (
-    <div data-shark-obstacle="" className="fixed right-4 top-5 z-[100] flex flex-col items-end gap-2 md:right-6">
+    <div data-tile-obstacle="" className="fixed right-4 top-5 z-[100] flex flex-col items-end gap-2 md:right-6">
       <ThemeToggle />
       <AccentSlider />
     </div>
