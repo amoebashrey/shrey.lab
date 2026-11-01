@@ -1,45 +1,33 @@
 import { Hero } from '@/components/home/Hero';
-import { HeroCTAs } from '@/components/home/HeroCTAs';
-import { OutcomesStrip } from '@/components/home/OutcomesStrip';
-import { FeaturedWork } from '@/components/home/FeaturedWork';
-import { AboutTeaser } from '@/components/home/AboutTeaser';
-import { LatestWriting } from '@/components/home/LatestWriting';
-import { NowTeaser } from '@/components/home/NowTeaser';
+import { Outcomes } from '@/components/home/Outcomes';
+import { SelectedWork } from '@/components/home/SelectedWork';
+import { HowIHelp } from '@/components/home/HowIHelp';
+import { Teardowns } from '@/components/home/Teardowns';
+import { FounderProof } from '@/components/home/FounderProof';
+import { ContactSection } from '@/components/home/ContactSection';
 import { Stagger } from '@/components/motion/Stagger';
-import { IntroGate } from '@/components/onboarding/IntroGate';
 
 /**
- * Homepage — the 60-second skim.
+ * Homepage — a sales page for founders (docs/COPY.md, draft 3).
  *
- * Section order is LOCKED in PROJECT_BRIEF.md. Each section solves at least one
- * of the seven core problems:
+ * Proof first, in the order a founder asks: has this person moved real
+ * numbers (Outcomes), can they build (Selected work), what would they do for
+ * me (How I help), how do they think (Teardowns), who are they (Founder
+ * proof), how do I reach them (Contact). Every action is email or an X DM.
  *
- * 1. Hero          → Problem 1 (PM seniority + category in 60s)
- * 2. Hero CTAs     → Problem 6 (next-step path)
- * 3. Outcomes      → Problem 1, 3 (audit-proof metrics)
- * 4. Featured work → Problem 2 (decision-making proof)
- * 5. About teaser  → Problem 4 (range without dilution)
- * 6. Latest writing→ Problem 4 (intellectual range)
- * 7. Now teaser    → Problem 5 (continuous shipping)
- *
- * Alive-and-shipping signal (Problem 5) lives in the footer as a rolling
- * status pill — see components/RollingStatus.tsx.
- *
- * Don't add sections without updating PROJECT_BRIEF.md first.
+ * Everything is visible on first paint (Stagger is CSS-only).
  */
 export default function HomePage() {
   return (
     <>
-      {/* First-visit intro overlay (homepage only); renders on top, page below. */}
-      <IntroGate />
+      <Hero />
       <Stagger>
-        <Hero />
-        <HeroCTAs />
-        <OutcomesStrip />
-        <FeaturedWork />
-        <AboutTeaser />
-        <LatestWriting />
-        <NowTeaser />
+        <Outcomes />
+        <SelectedWork />
+        <HowIHelp />
+        <Teardowns />
+        <FounderProof />
+        <ContactSection />
       </Stagger>
     </>
   );

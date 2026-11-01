@@ -4,7 +4,11 @@
    Import this once in any project and every other file inherits it.
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&family=Sansita+Swashed:wght@400;500;700&family=VT323&display=swap');
+/* Webfont loading lives in the consuming app, not here — a CSS @import is
+   render-blocking and double-loads fonts the app already self-hosts.
+   The portfolio app loads Geist + Geist Mono via next/font (app/layout.tsx)
+   and Instrument Serif via a preconnected <link>. styleguide.html carries
+   its own <link>. Sansita Swashed / VT323: load only on pages that use them. */
 
 :root {
   /* ─── Brand Colors ─────────────────────────────────────────

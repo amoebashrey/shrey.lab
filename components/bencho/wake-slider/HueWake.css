@@ -1,0 +1,71 @@
+/* Adapted from Bencho's "Wake slider" (MIT, © 2026 Lorenzo Cabra — full
+   notice in HueWake.tsx). Mapped to shrey.lab tokens: each bar is its slice of
+   the spectrum in the active theme's accent (--wks-cl / --wks-cd); faint at
+   rest, full at the chosen hue, and the chosen bar stands a little taller. */
+.wks {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 14px 0 12px;
+  color: var(--fg);
+}
+
+.wks-track {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  cursor: ew-resize;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  border-radius: 6px;
+}
+
+.wks-track:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 6px;
+}
+
+.wks-bar {
+  --wks-c: var(--wks-cl);
+  --wks-wake: 1;
+  --wks-lift: 1;
+  flex: none;
+  width: 3px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--wks-c) 45%, var(--bg));
+  transform-origin: 50% 50%;
+  transform: scaleY(calc(var(--wks-wake) * var(--wks-lift)));
+  transition:
+    background-color 160ms ease,
+    transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+/* While dragging, the wake writes heights every frame — no easing on top. */
+.wks-track[data-dragging] .wks-bar {
+  transition: background-color 160ms ease;
+}
+[data-theme='dark'] .wks-bar {
+  --wks-c: var(--wks-cd);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .wks-bar {
+    --wks-c: var(--wks-cd);
+  }
+}
+.wks-bar[data-near] {
+  background: color-mix(in srgb, var(--wks-c) 75%, var(--bg));
+}
+.wks-bar[data-on] {
+  --wks-lift: 1.35;
+  background: var(--wks-c);
+}
+
+.wks-value {
+  min-width: 5ch;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-muted);
+}

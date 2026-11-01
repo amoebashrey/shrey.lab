@@ -1,0 +1,60 @@
+/* ============================================================================
+   TRACE LINES — one quiet system that holds the page together.
+   Two vertical hairlines just outside the content column (1180px max, so the
+   lines sit 32px outside the text on desktop and 8px from the screen edge on
+   phones), running the full page; and a short horizontal tick across each
+   line where two sections meet (.seam). Never crosses text: the lines live in
+   the gutter. Very low contrast in both themes.
+   ============================================================================ */
+:root {
+  --trace: rgba(24, 24, 21, 0.08);
+  --trace-x: max(8px, calc(50% - 590px));
+}
+[data-theme='dark'] {
+  --trace: rgba(255, 255, 255, 0.07);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --trace: rgba(255, 255, 255, 0.07);
+  }
+}
+.trace-lines {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.trace-lines::before,
+.trace-lines::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--trace);
+}
+.trace-lines::before {
+  left: var(--trace-x);
+}
+.trace-lines::after {
+  right: var(--trace-x);
+}
+.seam {
+  position: relative;
+}
+.seam::before,
+.seam::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 24px;
+  height: 1px;
+  background: var(--trace);
+  pointer-events: none;
+}
+.seam::before {
+  left: calc(var(--trace-x) - 12px);
+}
+.seam::after {
+  right: calc(var(--trace-x) - 12px);
+}

@@ -151,6 +151,173 @@
 
 ---
 
+## 2026-07-04 · Visual-review fixes, round 1 (top-5 from the Fable 5 design review)
+
+### Fonts self-hosted via next/font; kit's @import removed
+- **Decision:** Removed the Google Fonts `@import` from `shrey-lab/tokens/tokens.css`; the app now consumes next/font's Geist/Geist Mono variables (globals.css re-points `--font-sans`/`--font-mono`; app tailwind.config.ts overrides `fontFamily`). The layout `<link>` now loads Instrument Serif only — Sansita Swashed and VT323 were downloaded on every page and used nowhere.
+- **Reasoning:** Geist was double-loaded (next/font + render-blocking @import) and the hero FOUTed on the most important glyphs on the site. styleguide.html carries its own `<link>`, so the kit file stays standalone-safe. Re-add Sansita/VT323 per-page if `font-playful`/`font-pixel` ever get used.
+
+### Case-study imagery via next/image
+- **Decision:** Detail-page heroes and CaseStudyCard screenshots render through `next/image` (fill + sizes + q80; detail hero gets `priority`). SVG marks stay as plain `<img>` — the optimizer can't improve SVGs.
+- **Reasoning:** `pune-bookies-hero.png` was 2.9MB served raw; it now serves ~100–200KB WebP with a proper srcset. `.lab-image > img` grayscale hover still applies (next/image renders a direct-child `<img>`).
+
+### Hero: lime cinematic line + closed dead zone
+- **Decision:** Added the kit's cinematic lime-line draw to the home hero as a standalone `.hero-lime-line` element (not `.lab-cinematic` on the section — its `> *` fade-up would double-animate with Stagger). The draw is gated on `html[data-intro-done]`, which IntroGate stamps when the intro finishes or is skipped. Hero `pb-16/20` → `pb-4/6`, HeroCTAs `mt-16/20` → `mt-10/12` (subline→CTA now ~72px, was ~160px).
+- **Reasoning:** The brand's one above-the-fold lime moment was documented but never used, and the draw would otherwise be wasted underneath the first-visit intro overlay.
+
+### Silent no-op utility classes repaired; StatusPill fixed and mounted
+- **Decision:** The preset's CSS-var colors don't support Tailwind `/NN` opacity modifiers, so `border-fg/80`, `border-border-strong/30` (×3), `decoration-fg-muted/40` (×3), `text-fg-subtle/40`, and the undefined `duration-med` compiled to nothing — all replaced with real tokens (ghost buttons unified on the ResumeButton recipe: `border-border hover:border-border-strong`). StatusPill's animation referenced nonexistent `pulse-ring` keyframes → now `pulse-lime` on the dot itself, and the pill is mounted in the Footer left column ("currently building · shrey.lab") as the alive-and-shipping signal (Problem 5).
+- **Reasoning:** Fix at the usage sites rather than adding `<alpha-value>` plumbing to the kit preset — no current design calls for translucent borders.
+
+### In-progress Amber cards get designed brand-tile marks; CursorField scoped to home
+- **Decision:** Both featured in-progress Amber studies use `cardStyle: 'brand-tile'` with new BRAND §5 line-art marks (`amber-white-label-mark.svg`: browser frame + embedded surface; `amber-listing-mark.svg`: listing-photo grid) on a paper plate so ink strokes survive dark mode. CursorField moved from the root layout to `app/page.tsx`.
+- **Reasoning:** The homepage proof row read ⅓ real with generic placeholders. BRAND §9 reserves the cursor glow for the home hero — it was mounted globally, drifting behind case-study body text.
+
+---
+
+## 2026-07-04 · Visual-review fixes, round 2 (full sweep)
+
+### Typography & copy precision
+- **Decision:** Hero eyebrow → `// shreyas jadhav · amber · pune` (was echoing the H1's noun); H1 clamp capped at 88px (the scale's top — 96px was a token violation); Outcomes numbers moved from Geist Mono 5xl/6xl to sans medium 4xl/5xl `tabular-nums` (BRAND §6 stat callout); stray Geist `<em>`s replaced (`/work` intro's "not" → `.italic-break`, About's dropped); `/now`'s `dangerouslySetInnerHTML` replaced with a plain string; contact footer line reworded to `// whichever door — i reply within a day or two.` (old line was form-submitted microcopy with no form).
+- **Reasoning:** All spec-vs-implementation drift; no new patterns.
+
+### AA contrast + nav divider
+- **Decision:** `text-fg-subtle` (ink-400, ~3.9:1) at 11–14px bumped to `text-fg-muted` in: footer view-source, FelixDemo `#support` + decision line, Hubble panel captions, both writing empty states, About caption. Decorative uses (placeholder art, arrows, thinking dots) keep fg-subtle. Nav divider `--nav-glass-border` → `--border`.
+- **Reasoning:** BRAND §12 calls AA non-negotiable; the divider was imperceptible in light mode.
+
+### Intro plays once ever, skip is a visible pill
+- **Decision:** IntroGate `sessionStorage` → `localStorage` (same key); skip control upgraded from bare mono text to a bordered ghost pill.
+- **Reasoning:** Persona 1 is a 60-second skimmer — a ~5s forced overlay is worth at most one showing, and the exit must read as a control.
+
+### Signature link treatment + one empty-state recipe
+- **Decision:** Inline prose links (About, both writing empty states) now use the kit's `.lab-link` lime underline wipe instead of three ad-hoc underline recipes; the homepage writing empty state is left-aligned to match `/writing`.
+- **Reasoning:** The kit shipped the signature treatment unused; ad-hoc recipes also relied on broken `/40` modifiers.
+
+### Homepage rhythm + brutalist weight
+- **Decision:** NowTeaser rendered as the brutalist changelog card (border-3 + shadow-brutal-sm + mono list) matching `/now`'s register; `/now` + `/tools` cards bumped border-2 → border-3.
+- **Reasoning:** Three same-gray prose teasers in a row read as monotony (review 4.1); 2px borders read mismatched against hard offset shadows (BRAND §3 brutalist = weight).
+
+### About portrait (line-art, theme-aware)
+- **Decision:** The dashed "// photo coming" box replaced with `AboutPortrait` — an inline-SVG environmental line drawing (monsoon window, laptop with lime cursor, books, kombucha bottle) in the same 3:4 slot; caption now `// the desk, pune · 2026 · photo coming`. Inline SVG so strokes ride `currentColor` across themes.
+- **Reasoning:** BRAND §5 names line art as the no-photo fallback; a dashed placeholder was the weakest visual on the second-most-visited page. Real photo still drops in with no layout shift.
+
+### Favicon outlined + apple-touch-icon
+- **Decision:** favicon.svg's `<text font-family="Instrument Serif">` replaced with the actual outlined glyph path (extracted from the italic TTF via opentype.js — SVG favicons can't load webfonts, so tabs showed generic Times). Added 180×180 `apple-touch-icon.png` rendered from the same mark and registered in layout metadata.
+- **Reasoning:** The monogram is the brand mark; it should be pixel-faithful everywhere it appears.
+
+---
+
+## 2026-10-20 · Tile-shark hero + top-right theme toggle
+
+### Home hero becomes a centred tile-shark band
+- **Decision:** The hero (`components/home/Hero.tsx`) is now one full-bleed band: centred copy (lime line, eyebrow, h1, sentence, "View work") over a canvas of sharks drawn as small rounded tiles (`components/home/TileSharkBackground.tsx` → `lib/tile-art/`, a framework-free renderer ported verbatim from the prototype). `HeroCTAs` is folded back into `Hero`. The band paints `--hero-bg`: pure `#fff` in light, `--ink-800` in dark; sharks recolour with the theme (`PALETTES.blue` / `PALETTES.blueNight`) via a 300ms crossfade matching the kit's theme transition.
+- **Reasoning:** Ambient, decorative, seen once per visit — so it never reacts to scroll, pauses off-screen and on hidden tabs, renders a still frame under reduced motion, and caps DPR at 2. The copy sits on a solid `--hero-bg` plate: a full-opacity navy tile behind `#181815` text measures ~1.6:1, and lowering shark opacity was ruled out. The hero left `<Stagger>` for a CSS-only entrance (visible without JS, no hydration wait); it holds for the first-visit intro only when the head script stamps `data-intro-pending`.
+
+### Theme toggle moves out of the nav pill
+- **Decision:** `components/ThemeToggle.tsx`, fixed top-right in its own glass pill, mounted in `app/layout.tsx`; removed from `components/Nav.tsx`. Both icons render and CSS picks one from `data-theme`, so there's no mount placeholder.
+- **Reasoning:** Asked for explicitly (top-right). With the hero copy centred, a separate control reads cleaner than a fifth item in the centred pill.
+
+### One accent hue for the whole site, set by a slider
+- **Decision:** `lib/accent.ts` builds every accent colour from one hue in OKLCH at the brand lime's lightness (L 0.839, C 0.212, gamut-fit by lowering chroma). It writes `--accent`, `--accent-hover`, `--accent-rgb` and overrides the kit's `--lime-400/500`, so the CTA, dots, links, focus ring, selection, cursor glow, nav wash and the tile sharks all share it. A vertical hue slider (`components/AccentSlider.tsx`) sits under the theme toggle (`components/SiteControls.tsx`); the choice persists in localStorage and is applied before paint. Default hue 126 = `#A8E10C`, so the site looks unchanged until someone moves it. Home on the slider returns to lime.
+- **Reasoning:** Asked for explicitly: animals and CTA must match, one control recolours all of it. Equal OKLCH lightness keeps dark-on-accent text at AA for every hue. The lime is still the brand default; the slider makes it a preference, not a rebrand. Remaining fixed lime: the intro sphere's CSS texture and the kit's unused surface classes.
+
+### Hero copy is lifted, not carded
+- **Decision:** Dropped the solid plate behind the hero copy. `.hero-lift` puts a stacked halo of the page colour around the glyphs plus a faint drop; sharks swim freely and dim only right around the letters.
+- **Reasoning:** The plate sliced sharks with a visible rectangle edge. The halo keeps the letter edges readable without a box. Trade-off: at a shark's darkest tiles the area between letter strokes is still tinted — check if it ever reads poorly.
+
+---
+
+## 2026-10-21 · Sharks steer around the copy; curated palettes; Bencho blocks
+
+### Sharks avoid the hero copy instead of passing behind it
+- **Decision:** No backing and no halo. The copy column (`[data-shark-avoid]`) is an obstacle for the shark canvas, padded by 0.3× the largest shark's length (bigger than its body thickness) plus each body's own fin reach. `lib/tile-art/motion.ts` (pure, testable) looks ahead along each shark's heading; if the path or body would reach the obstacle, the shark commits to a side and its turn rate eases (0.0005 rad/frame²) toward a cap sized to its length (turning radius 0.9 body lengths), so it reads as a calm swerve and the tail follows the nose. The side is sticky until the path is clear for 40 frames, so there's no jitter. A safety wall at half the pad nudges a body outward by ≤2px/frame on the rare frames steering alone would fall short. Sharks already inside (mount, resize) step out vertically.
+- **Reasoning:** The halo still let dark tiles tint the text, and the plate sliced sharks with a box edge. Avoidance keeps full contrast with nothing visible around the text. Headless sim (40 runs × 5 min per width at 1440/768/390, uneven frame times): 0 frames with a body over the text, 1 quick side-switch total, 0 trapped sharks; the wall engaged on ~1% of frames. Live canvas sampling in Chrome confirmed 0 tiles under the copy in both themes at all three widths.
+
+### Pause/play control on the hero
+- **Decision:** `components/home/HeroSharks.tsx` adds a quiet icon button bottom-right of the hero, wired to the canvas's `paused` prop; label switches "Pause animation"/"Play animation"; choice persists in localStorage; hidden under reduced motion (the canvas is already still there).
+- **Reasoning:** WCAG 2.2.2 — motion longer than 5s alongside content needs a pause.
+
+### theme-color follows the toggle
+- **Decision:** Dropped the media-query `themeColor` from `viewport`; one `<meta name="theme-color">` is set before paint by the head script and on toggle (`#ffffff` light — the hero band at the top — and `#181815` dark).
+
+### Colour control snaps to curated palettes (Bencho Wake slider)
+- **Decision:** The continuous hue slider is replaced by Bencho's Wake slider (MIT, adapted in `components/bencho/wake-slider/`), snapping to four palettes in `lib/accent.ts`: lime (default, brand), blue (prototype), slate, and lavender (proposed — the kit's own `--lavender-400`). Each palette's third shading stop is the accent, so CTA and sharks are one colour; dark-theme stops lift the back/flank in OKLCH. Dark text on every accent ≥ 6:1.
+- **Reasoning:** Asked for explicitly; curated options keep every combination on-brand where a free hue range didn't. Lavender pending approval.
+
+### 404 wordmark (Bencho Heat map)
+- **Decision:** `components/bencho/heat-word/` (MIT notice kept) draws `shrey.lab` on the 404: grey at rest, melting into the active accent palette under the pointer. Shape cycling on click removed (role="img"); no melt-in under reduced motion.
+- **Reasoning:** The 404 is where the brand allows play (CLAUDE.md voice rules); the heat colours come from the accent so it isn't a second colour system.
+
+---
+
+## 2026-11-01 · Phase 1: fix what loses visitors
+
+Audience is now founders and teams hiring for project work (mostly via X DMs and outreach); the goal is to show how I think and build. No prices anywhere.
+
+### Everything visible on first paint
+- **Decision:** Removed the first-visit intro overlay (IntroGate/Intro, GSAP sequence, head-script gate, glass-sphere CSS). Stagger and FadeUp are CSS, and every entrance (hero, sections) is transform-only — content is readable on the first frame, with or without JavaScript (verified with scripts disabled at 390 and 1440).
+- **Reasoning:** Visitors from an X link on a phone saw an overlay, then sections that stayed blank until hydration.
+
+### Numbers strip renders real values
+- **Decision:** Removed the count-up; the strip is a server component and the HTML holds "~50%", "18%", "$20K". It can't show 0.
+
+### One source for who I am and how to reach me
+- **Decision:** `lib/site.ts` holds the name, role ("Product Associate at Amber, joining super.money as APM"), email, X and the booking URL. Hero, `<title>`, description, About, the new OG image (`app/opengraph-image.tsx`; the old `/api/og` never existed) and contact all read from it. "Product manager" is gone everywhere.
+- **Booking:** Cal.com placeholder (`BOOKING_URL`, flagged `REPLACE-ME`) — must be replaced before deploying.
+
+### Hidden until real
+- **Decision:** In-progress case studies (both Amber cards) are filtered out (`PUBLISHED_CASE_STUDIES`). /writing, /now and /tools return 404, and their homepage sections, footer links, the 404's writing link and the "currently building" pill are gone. The nav's Resume button is removed: /resume.pdf doesn't exist, so it opened an empty modal.
+- **Reasoning:** CLAUDE.md: no "coming soon". Old pages are in git history at 7f46f2e.
+
+---
+
+## 2026-11-01 · Hero: dinosaur footprints replace the sharks
+
+### Tile footprints (style B)
+- **Decision:** Two theropods walk the hero in opposite directions (`lib/tile-art/footprints.ts`), drawn in the hero's small rounded tiles (5px). The big one (58px prints) steps every 1.1s and travels 72px per step; the small one (38px) every 0.72s and 48px per step. Prints alternate feet with a slight toe-out, land with a press (scale 1.05→1 + fade-in over 220ms) and fade out behind, about 10 per trail. A walker that leaves the hero respawns from its edge at a new height, in a lane that crosses without meeting an obstacle.
+- **Steering:** walkers reuse the shark obstacle logic (`lib/tile-art/motion.ts`); each walker's steered body covers the prints it lays. Clearance: 48px around the copy, 12px around the nav and colour pill. Obstacles whose free corridor is narrower than 1.5 bodies merge (otherwise a walker can wedge between the nav and the copy). Stronger level-out bias so trails cross rather than detour.
+- **Verified:** headless sim, 3 × 6 runs × 5 min at 1440/768/390 — 0 prints over the copy or under the chrome, ~9–10 prints per trail, headings within ~37° of horizontal 99% of the time. Live in Chrome: 0 tiles under the copy in both themes at 1440 and 390; reduced motion holds two still trails; 60fps (p95 frame 16.8ms) at 1440.
+- **Renderer:** generalised to scenes (`TileScene`); the shark shape and components are removed.
+- **Trade-off:** at desktop sizes the colour pill closes the lane above the headline, so both trails use the band under the button.
+
+---
+
+## 2026-11-01 · Type: Fraunces + Switzer; de-slop pass
+
+### Fraunces for headings, Switzer for body
+- **Decision:** h1–h3 in Fraunces (SOFT 100, WONK 0, optical size auto, tracking −0.025 to −0.03em), self-hosted via next/font. Body in Switzer from Fontshare's CDN with a metric-matched Arial fallback. Geist, Geist Mono and Instrument Serif are gone; mono is the system stack, for code only.
+- **Reasoning:** Picked from the /kit/type specimen (pairing A over Sentient + General Sans and Gloock + Switzer). Fontshare's licence forbids the files in a public repo, so Switzer loads from their CDN rather than the repo. The specimen route and Gloock were removed once the pick was made.
+
+### De-slop: removed the generated-looking patterns
+- **Decision:** Removed every `//` mono eyebrow and caption, mono-as-style, pill badges and tag pills, the cursor glow, the hero text-shadow glow, frosted glass on the floating controls (the nav keeps it), the one-italic-serif-word-per-heading device, the footer's duplicate nav, and the "coming soon" lines on About. /work now uses the same one-card-per-study layout as the homepage; CaseStudyCard, FeaturedWork, OutcomesStrip, StatusPill, ResumeButton, CursorField and lib/work.ts are deleted.
+- **Reasoning:** Each read as default model output rather than a choice. Playfulness comes from the footprints, the copy and small hover moments (the tile icons lifting), not from decoration.
+
+## 2026-11-02 · Founder sales page
+
+### Footprints stay in the 5px glass tiles
+- **Decision:** Hero prints keep the small rounded tiles (5px, with gaps and per-tile shade jitter) that give the hero its texture. The prints get the new shape (rounded heel, three tapered toes, claw points) at 60px and 40px so the toes resolve in tiles, ~1.5x faster, on wandering paths that start from random edges.
+- **Reasoning:** Flat shapes were briefly picked, then reversed by Shreyas the same day: the tile texture is the point. The renderer keeps a 'flat' mode, unused.
+
+### One visual system for case-study art
+- **Decision:** Every case-study image sits in the same frame (accent-tinted backdrop from the hue slider, 12px corners, the same padding, a plain sheet), drawn in our own fonts: Felix's Slack exchange recreated, Pune Bookies' live homepage, Hubble's before/after redrawn. Teardown cards use the same frame.
+- **Reasoning:** The old images each had their own palette and type; approved side by side.
+
+### Cards measured against onepercentclub.io
+- **Decision:** 10px corners, 40px padding, 40/49 text-to-image columns with an 11% gap, 1.55 images, 20px between cards; a card is 54% of the viewport at 1440.
+- **Reasoning:** Measured at 1440; proportions matched, not the brand.
+
+### Teardowns shown, labelled as teardowns
+- **Decision:** Jar (2025), Swiggy Dineout (2022) and Neosurge (2022) appear in "How I think", each labelled "Unsolicited teardown. Not affiliated with…", with its real year and a link to the Figma prototype.
+- **Reasoning:** Overrides the CLAUDE.md ban on these as case studies, at Shreyas's request. They're presented as what they are, not as client work.
+
+### No booking link
+- **Decision:** Every action is email or an X DM. Cal.com, the "Book 20 minutes" buttons and "How I work" are out.
+- **Reasoning:** Shreyas would rather people simply reach out.
+
+### Facts settled
+- Amber ticketing figure is ₹20 lakh a year, not $20K. Worded as "about ₹20 lakh a year in tool costs", which holds whether the saving is realised or projected.
+- Rada is 300+ members across 4 countries, 40+ gatherings; the About page's "600+" is corrected.
+
 ## Template for future entries
 
 ```

@@ -33,6 +33,14 @@ const config: Config = {
         mono: '-0.02em', // --tracking-mono
         tightest: '-0.02em', // brand heading tracking (--tracking-tight)
       },
+      // Switzer (body, Fontshare CDN) + Fraunces (display, next/font) — see
+      // app/layout.tsx and app/fonts. Mono is the system stack and is for
+      // code only; no webfont is loaded for it.
+      fontFamily: {
+        sans: ['Switzer', 'Switzer Fallback', 'Arial', 'sans-serif'],
+        display: ['var(--font-fraunces)', 'Times New Roman', 'serif'],
+        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+      },
     },
   },
 };

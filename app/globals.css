@@ -11,6 +11,36 @@
 
 @import '../shrey-lab/tokens/tokens.css';
 
+/* Font wiring. Body: Switzer, loaded from Fontshare's CDN (app/layout.tsx),
+   falling back to an Arial face resized to Switzer's metrics so the swap
+   doesn't move text (values computed the way next/font does). Display:
+   Fraunces via next/font (app/fonts). Mono is the system stack, code only. */
+@font-face {
+  font-family: 'Switzer Fallback';
+  src: local('Arial');
+  ascent-override: 96.67%;
+  descent-override: 24.66%;
+  line-gap-override: 8.88%;
+  size-adjust: 101.38%;
+}
+:root {
+  --font-sans: 'Switzer', 'Switzer Fallback', Arial, sans-serif;
+  --font-display: var(--font-fraunces), 'Times New Roman', serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* Headings in Fraunces: soft terminals, no wonky glyphs, optical size
+   following the rendered size, tight tracking. Body copy stays in Switzer. */
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 420;
+  font-variation-settings: 'SOFT' 100, 'WONK' 0;
+  font-optical-sizing: auto;
+  letter-spacing: -0.025em;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -19,6 +49,176 @@
    SITE-SPECIFIC OVERRIDES
    Add here only what isn't in the brand kit. Default to keeping this empty.
    ============================================================================ */
+
+/* Hero lime line — the cinematic-load moment (tokens.css §cinematic). Plays
+   at first paint. Reduced motion: the kit's global rule snaps animations to
+   their end state, so the line simply appears — no draw. */
+.hero-lime-line {
+  height: 2px;
+  background: var(--accent);
+  transform-origin: left;
+  animation: lime-line-draw 600ms var(--ease-out) both;
+}
+/* Centred hero: the rule draws out from its middle. */
+.hero-lime-line--center {
+  transform-origin: center;
+}
+
+/* Native UI (scrollbars, form controls) follows the toggled theme, not just
+   the OS — without this a manual dark choice kept light scrollbars. */
+[data-theme='light'] {
+  color-scheme: light;
+}
+[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+/* ============================================================================
+   ACCENT — one hue for the whole site (lib/accent.ts)
+   The colour control writes both themes' values for the chosen hue onto
+   <html> as --accent-l/-d (+ hover, + rgb); this block picks the active
+   theme's pair. Defaults below are hue 126 (the brand lime's hue) at the fixed
+   per-theme OKLCH lightness, so first paint is right with no stored choice.
+   The kit's --lime-400/500 point at the accent, so links, focus ring and
+   switches follow; its hardcoded lime rgba()s are re-pointed below.
+   ============================================================================ */
+:root {
+  --accent-l: #567500;
+  --accent-hover-l: #486300;
+  --accent-rgb-l: 86 117 0;
+  --accent-d: #92bc3d;
+  --accent-hover-d: #a4d053;
+  --accent-rgb-d: 146 188 61;
+
+  --accent: var(--accent-l);
+  --accent-hover: var(--accent-hover-l);
+  --accent-rgb: var(--accent-rgb-l);
+  --accent-fg: #ffffff; /* label on the accent — white in light, ≥ 5.1:1 */
+  --lime-400: var(--accent);
+  --lime-500: var(--accent-hover);
+}
+[data-theme='dark'] {
+  --accent: var(--accent-d);
+  --accent-hover: var(--accent-hover-d);
+  --accent-rgb: var(--accent-rgb-d);
+  --accent-fg: var(--ink-900); /* ink label in dark, ≥ 7.7:1 */
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --accent: var(--accent-d);
+    --accent-hover: var(--accent-hover-d);
+    --accent-rgb: var(--accent-rgb-d);
+    --accent-fg: var(--ink-900);
+  }
+}
+/* Selection: a tint, not a solid accent block (ink on the dark light-theme
+   accent would fail contrast). */
+::selection {
+  background: rgb(var(--accent-rgb) / 0.22);
+  color: inherit;
+}
+@keyframes pulse-lime {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(var(--accent-rgb) / 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgb(var(--accent-rgb) / 0);
+  }
+}
+.lab-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgb(var(--accent-rgb) / 0.18);
+}
+
+.accent-swatch {
+  transition: transform 160ms ease-out;
+}
+.accent-swatch:active {
+  transform: scale(0.95);
+}
+
+/* ============================================================================
+   HOME HERO — tile footprint band
+   --hero-bg is the colour the footprint canvas paints (keep in step with
+   LIGHT_BG / DARK_BG in components/home/HeroFootprints.tsx): pure white in light,
+   warm charcoal (--ink-800) in dark. Opaque, so the site dot-grid stays out.
+   ============================================================================ */
+:root {
+  --hero-bg: #ffffff;
+}
+[data-theme='dark'] {
+  --hero-bg: var(--ink-800);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --hero-bg: var(--ink-800);
+  }
+}
+.hero-band {
+  background: var(--hero-bg);
+  transition: background-color 300ms var(--ease-out);
+}
+/* Pause/play for the footprint canvas — quiet until hovered or focused. Hidden
+   under reduced motion: the canvas is already a still frame there. */
+.hero-motion-toggle {
+  transition:
+    color 160ms ease-out,
+    background-color 160ms ease-out,
+    transform 160ms ease-out;
+}
+.hero-motion-toggle:active {
+  transform: scale(0.95);
+}
+@media (hover: hover) and (pointer: fine) {
+  .hero-motion-toggle:hover {
+    color: var(--fg);
+    background-color: rgb(var(--accent-rgb) / 0.14);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-motion-toggle {
+    display: none;
+  }
+}
+
+/* Entrance — headline, sentence, button settle 16px into place, 70ms apart.
+   Transform only: the copy is readable on the very first frame (no opacity
+   from 0), so a slow phone never shows a blank hero. Reduced motion: the
+   kit's global rule snaps it, i.e. no movement. */
+@keyframes hero-rise {
+  from {
+    transform: translateY(16px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+.hero-enter {
+  animation: hero-rise 400ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+
+/* Primary button — press feedback everywhere, hover only on real pointers. */
+.hero-btn {
+  transition:
+    transform 160ms ease-out,
+    background-color 160ms ease-out;
+}
+.hero-btn:active {
+  transform: scale(0.97);
+}
+.hero-btn-arrow {
+  transition: transform 160ms ease-out;
+}
+@media (hover: hover) and (pointer: fine) {
+  .hero-btn:hover {
+    background-color: var(--accent-hover);
+  }
+  .hero-btn:hover .hero-btn-arrow {
+    transform: translateX(2px);
+  }
+}
 
 /* Skip-to-content link — accessibility requirement (BRAND.md §12).
    Visible on focus, hidden otherwise. Brand kit doesn't define this since
@@ -32,38 +232,13 @@
   padding: 12px 16px;
   border: 1px solid var(--border-strong);
   border-radius: 8px;
-  font-family: 'Geist Mono', monospace;
+  font-family: var(--font-sans);
   font-size: 14px;
   z-index: 100;
   transition: top 200ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 .skip-to-content:focus-visible {
   top: 16px;
-}
-
-/* ============================================================================
-   TYPOGRAPHY — brand classes
-   The `//` mono eyebrow. Ported verbatim from the brand styleguide (which the
-   Next app doesn't load), so every `className="eyebrow"` across the site renders
-   as the intended Geist Mono technical label instead of silently falling back to
-   default Geist sans. Per-element `mb-*` utilities still control spacing.
-   ============================================================================ */
-.eyebrow {
-  font-family: var(--font-mono);
-  font-size: var(--text-2xs); /* 12px */
-  letter-spacing: var(--tracking-wide); /* 0.04em */
-  color: var(--fg-muted);
-  text-transform: lowercase;
-}
-
-/* The signature editorial break — one Instrument Serif italic phrase per heading
-   (BRAND.md). Used in ~11 headings via className="italic-break" but, like
-   .eyebrow, never defined in the app — so emphasis words were silently rendering
-   as plain Geist sans. This restores the serif-italic voice everywhere at once. */
-.italic-break {
-  font-family: var(--font-display); /* Instrument Serif */
-  font-style: italic;
-  font-weight: 400;
 }
 
 /* Lenis smooth scroll — recommended baseline styles. Lenis adds the `lenis`
@@ -141,124 +316,80 @@ html.lenis body {
   }
 }
 
-/* Active-route tint — faint lime wash behind the current link. Lime = accent only. */
-.nav-link-active {
-  background: rgba(168, 225, 12, 0.12); /* --lime-400 at low alpha */
-}
-
-/* ============================================================================
-   FROSTED GLASS SURFACE (.lab-glass)
-   Reusable theme-aware frosted panel for content surfaces (cards, contact
-   panels, pills, badges) — the same glass language as the nav, sitting over
-   the dot-grid canvas. Derived from the brand glass tokens. Brutalist surfaces
-   (/now, /tools) and dashed "coming soon" placeholders intentionally stay
-   opaque — that contrast is part of the brand.
-   ============================================================================ */
-:root {
-  --lab-glass-bg: rgba(255, 255, 255, 0.7); /* light: warm-paper glass */
-  --lab-glass-border: rgba(24, 24, 21, 0.1);
-}
-[data-theme='dark'] {
-  --lab-glass-bg: rgba(24, 24, 21, 0.58); /* dark: warm-charcoal glass */
-  --lab-glass-border: rgba(255, 255, 255, 0.12);
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --lab-glass-bg: rgba(24, 24, 21, 0.58);
-    --lab-glass-border: rgba(255, 255, 255, 0.12);
+/* Theme toggle pill (components/ThemeToggle.tsx) — same entrance as the nav,
+   without the nav's -50% centring. */
+@keyframes nav-enter-fade {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
-.lab-glass {
-  background: var(--lab-glass-bg);
-  border: 1px solid var(--lab-glass-border);
-  -webkit-backdrop-filter: var(--glass-blur); /* blur(20px) saturate(1.4) */
-  backdrop-filter: var(--glass-blur);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14); /* subtle top highlight */
-}
-
-/* ============================================================================
-   INTRO GLASS SPHERE — skin for the lime ball (texture only; GSAP untouched).
-   Same glass language as .lab-glass (soft top highlight, rim, inner depth), in
-   CSS only (no canvas/particles). #A8E10C stays the dominant color. The whole
-   overlay fades out during EXPAND so the sphere resolves to flat lime.
-   ============================================================================ */
-.intro-ball-texture {
-  position: absolute;
-  inset: 0;
-  border-radius: 9999px;
-  overflow: hidden; /* clips the drifting sheen to the sphere */
-  pointer-events: none;
-}
-.intro-ball-glass {
-  position: absolute;
-  inset: 0;
-  border-radius: 9999px;
-  background:
-    radial-gradient(circle at 30% 26%, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 18%), /* crisp specular */
-    radial-gradient(circle at 36% 32%, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 48%), /* soft top-left light */
-    radial-gradient(circle at 70% 80%, rgba(34, 48, 0, 0.5) 0%, rgba(34, 48, 0, 0) 58%); /* bottom-right volume */
-  box-shadow:
-    inset 5px 7px 14px rgba(255, 255, 255, 0.35), /* inner top-left light */
-    inset -8px -10px 20px rgba(26, 38, 0, 0.5), /* inner bottom-right shadow */
-    inset 0 0 0 1px rgba(255, 255, 255, 0.2); /* rim light */
-}
-.intro-ball-sheen {
-  position: absolute;
-  left: -28%;
-  top: -28%;
-  width: 78%;
-  height: 78%;
-  border-radius: 9999px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 60%);
-  animation: intro-sheen 7s ease-in-out infinite; /* slow, restrained internal sheen */
-}
-@keyframes intro-sheen {
-  0% {
-    transform: translate(0, 0);
-    opacity: 0.45;
-  }
-  50% {
-    transform: translate(42%, 40%);
-    opacity: 0.8;
-  }
-  100% {
-    transform: translate(0, 0);
-    opacity: 0.45;
-  }
+.nav-enter-fade {
+  animation: nav-enter-fade 400ms var(--ease-out) both;
 }
 @media (prefers-reduced-motion: reduce) {
-  .intro-ball-sheen {
+  .nav-enter-fade {
     animation: none;
   }
 }
+/* Icons stack; data-theme picks one, so the first paint is already right.
+   The swap is a quick rotate + scale crossfade (never from scale 0). */
+.theme-toggle {
+  transition:
+    color 160ms ease-out,
+    transform 160ms ease-out;
+}
+.theme-toggle:active {
+  transform: scale(0.95);
+}
+@media (hover: hover) and (pointer: fine) {
+  .theme-toggle:hover {
+    color: var(--fg);
+  }
+}
+.theme-toggle svg {
+  position: absolute;
+  transition:
+    opacity 200ms cubic-bezier(0.23, 1, 0.32, 1),
+    transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.theme-toggle-sun {
+  opacity: 0;
+  transform: rotate(-45deg) scale(0.6);
+}
+[data-theme='dark'] .theme-toggle-moon {
+  opacity: 0;
+  transform: rotate(45deg) scale(0.6);
+}
+[data-theme='dark'] .theme-toggle-sun {
+  opacity: 1;
+  transform: none;
+}
+
+/* Active-route tint — faint lime wash behind the current link. Lime = accent only. */
+.nav-link-active {
+  background: rgb(var(--accent-rgb) / 0.12); /* accent at low alpha */
+}
+
+/* Solid surface for the floating controls (theme toggle, colour slider):
+   plain elevated colour and a hairline, no frosting. Only the nav keeps
+   glass, since it sits over moving content. */
+.control-surface {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+}
 
 /* ============================================================================
-   HERO TYPE DEPTH + CANVAS TEXTURE (the "expensive landing" pass — BUG-004)
+   CANVAS TEXTURE (the "expensive landing" pass — BUG-004)
    Theme-aware, derived from brand ink/lime tokens, very low contrast. The
    texture sits behind content (z-index:-10), so text color is unchanged and AA
    contrast is preserved in both themes (verified). No image assets — the grain
    is an inline, generated SVG (feTurbulence) data URI, not a file.
    ============================================================================ */
-
-/* Soft, low-opacity depth behind the hero heading. Not a hard drop-shadow:
-   light = faint warm-ink shadow; dark = soft lift + a whisper of lime glow. */
-.hero-depth {
-  text-shadow:
-    0 1px 1px rgba(24, 24, 21, 0.05),
-    0 12px 32px rgba(24, 24, 21, 0.06);
-}
-[data-theme='dark'] .hero-depth {
-  text-shadow:
-    0 1px 24px rgba(255, 255, 255, 0.06),
-    0 2px 44px rgba(168, 225, 12, 0.05);
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) .hero-depth {
-    text-shadow:
-      0 1px 24px rgba(255, 255, 255, 0.06),
-      0 2px 44px rgba(168, 225, 12, 0.05);
-  }
-}
 
 /* Canvas texture vars — flip per theme (same selector tokens.css uses).
    Tuned to be clearly perceptible (Higgsfield-style grid), biased slightly
@@ -308,4 +439,32 @@ body {
   inset: 0;
   opacity: var(--canvas-grain-opacity);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* 404 wordmark (Bencho Heat map) — scales down to fit narrow screens. */
+.nf-heat .heat {
+  max-width: 100%;
+  height: auto !important;
+  aspect-ratio: 420 / 150;
+}
+.nf-heat .heat-canvas {
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* FadeUp (components/motion/FadeUp.tsx) and Stagger (Stagger.tsx) — CSS so
+   they never depend on hydration, and transform only so content is readable
+   on the first frame. Under reduced motion the kit's global rule makes them
+   instant. */
+@keyframes settle-12 {
+  from {
+    transform: translateY(12px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+.fade-up,
+.stagger-item {
+  animation: settle-12 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }

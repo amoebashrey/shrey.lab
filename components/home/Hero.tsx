@@ -1,38 +1,75 @@
+import Link from 'next/link';
+import type { CSSProperties } from 'react';
+import { HeroFootprints, type FootprintLook } from './HeroFootprints';
+import { EMAIL, HERO_LINE, NAME, PROOF_LINE } from '@/lib/site';
+
 /**
- * Hero — large noun + supporting italic sentence. Restraint, then context.
+ * Hero — centred name in Fraunces + one plain sentence + one action, with
+ * two dinosaurs' tile footprints walking around it.
  *
- * The <h1> carries the identity at display scale: "Product manager."
- * Below it, a single italic Instrument Serif sentence at body-display size
- * carries the supporting line. Lets the page breathe inside the first fold;
- * Persona 1 (60s skim) gets the noun first, the texture second.
+ * The band is full-bleed and paints --hero-bg (pure white in light, warm
+ * charcoal in dark). No card behind the copy: the walkers treat the copy
+ * column ([data-tile-avoid]) as an obstacle and swerve around it, so the
+ * text always sits on clean page colour at full contrast. A quiet pause/play
+ * control sits bottom-right (HeroFootprints).
  *
- * No body paragraph below this. No CTAs in this position — those live in
- * HeroCTAs. Biographical / current-state content lives in the rolling
- * status pill mounted between Hero and HeroCTAs in app/page.tsx.
+ * Entrance (globals.css .hero-enter): headline → sentence → button settle
+ * 16px into place, 70ms apart. Pure CSS and transform only, so the copy is
+ * readable on the first frame with or without JavaScript.
  *
- * Locked structure per docs/PROJECT_BRIEF.md (v0.2 update).
  */
-export function Hero() {
+const enter = (i: number) => ({ '--i': i }) as CSSProperties;
+
+export function Hero({ look }: { look?: FootprintLook } = {}) {
   return (
     <section
       aria-labelledby="hero-heading"
-      className="relative pt-16 md:pt-24 pb-16 md:pb-20"
+      // -mt-8 cancels <main>'s pt-8 so the band starts at the top edge,
+      // under the floating nav, instead of leaving a paper strip above it.
+      className="hero-band relative isolate -mt-8 overflow-hidden"
     >
-      <div className="mx-auto max-w-[1280px] px-6 md:px-8">
-        <p className="eyebrow mb-6 md:mb-8" aria-hidden="true">
-          // product manager · pune
-        </p>
+      <HeroFootprints avoidSelector="[data-tile-avoid]" look={look} />
 
-        <h1
-          id="hero-heading"
-          className="hero-depth text-fg font-medium text-[clamp(48px,7vw,96px)] leading-[0.98] tracking-tightest"
-        >
-          Product manager.
-        </h1>
+      <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-[1280px] items-center justify-center px-4 pb-48 pt-28 sm:min-h-[clamp(560px,88svh,820px)] sm:pb-16 md:px-8 md:pt-32">
+        <div data-tile-avoid="" className="flex flex-col items-center text-center">
+          {/* Cinematic load (tokens.css §cinematic) — a short accent rule that
+              draws out from the centre at first paint. */}
+          <div className="hero-lime-line hero-lime-line--center mb-8 w-16" aria-hidden="true" />
 
-        <p className="mt-6 md:mt-8 max-w-[38ch] font-display italic font-normal text-fg text-[clamp(20px,2.4vw,32px)] leading-[1.25] tracking-snug">
-          I build internal tools, AI agents, and systems that help product teams move.
-        </p>
+          <h1
+            id="hero-heading"
+            className="hero-enter text-balance text-[clamp(52px,7.5vw,96px)] leading-none tracking-[-0.03em] text-fg"
+            style={enter(0)}
+          >
+            {NAME}.
+          </h1>
+
+          <p
+            className="hero-enter mt-6 max-w-[38ch] text-balance text-[clamp(17px,1.5vw,20px)] leading-normal text-fg-muted md:mt-7"
+            style={enter(1)}
+          >
+            {HERO_LINE}
+          </p>
+          <p className="hero-enter mt-3 text-balance text-sm text-fg-muted" style={enter(1)}>
+            {PROOF_LINE}
+          </p>
+
+          {/* One action: get in touch. The work is a quiet link, not a second button. */}
+          <div className="hero-enter mt-9 flex flex-col items-center gap-4 sm:flex-row sm:gap-6" style={enter(2)}>
+            <a
+              href={`mailto:${EMAIL}`}
+              className="hero-btn inline-flex h-11 items-center gap-2 rounded-md bg-accent px-5 text-sm font-medium text-[var(--accent-fg)]"
+            >
+              Email me
+              <span className="hero-btn-arrow inline-block" aria-hidden="true">
+                →
+              </span>
+            </a>
+            <Link href="#work" className="lab-link text-sm text-fg">
+              See the work <span aria-hidden="true">↓</span>
+            </Link>
+          </div>
+        </div>
       </div>
     </section>
   );

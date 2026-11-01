@@ -1,40 +1,31 @@
-'use client';
-
-import { motion, useReducedMotion } from 'framer-motion';
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 /**
- * FadeUp — fades content up +12px over ~500ms on mount.
+ * FadeUp — settles content 12px into place over ~500ms on load (no fade:
+ * it is readable on the first frame).
  *
- * Reduced motion: renders instantly as a plain <div> — no transform, no opacity
- * transition, no delay.
+ * Pure CSS (globals.css .fade-up), transform only, not framer-motion: the old version rendered
+ * `opacity:0` on the server and swapped to a plain <div> under reduced motion
+ * on the client — React doesn't patch attribute mismatches during hydration,
+ * so the server's opacity:0 stuck and the whole block (e.g. a case study's
+ * body) never appeared for reduced-motion visitors. CSS needs no hydration,
+ * and the kit's reduced-motion rule snaps it straight to visible.
  *
- * `delay` lets a caller offset the start (seconds). `as` is intentionally not
- * exposed; this always renders a block-level div wrapper.
+ * `delay` offsets the start (seconds).
  */
 export function FadeUp({
   children,
-  className,
+  className = '',
   delay = 0,
 }: {
   children: ReactNode;
   className?: string;
   delay?: number;
 }) {
-  const reduceMotion = useReducedMotion();
-
-  if (reduceMotion) {
-    return <div className={className}>{children}</div>;
-  }
-
+  const style = delay ? ({ animationDelay: `${delay}s` } as CSSProperties) : undefined;
   return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay }}
-    >
+    <div className={`fade-up ${className}`} style={style}>
       {children}
-    </motion.div>
+    </div>
   );
 }
