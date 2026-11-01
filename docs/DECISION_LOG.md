@@ -294,9 +294,9 @@ Audience is now founders and teams hiring for project work (mostly via X DMs and
 
 ## 2026-11-02 · Founder sales page
 
-### Flat footprints
-- **Decision:** Hero prints render as crisp flat shapes (rounded heel, three tapered toes, claw points) instead of tiles. 52px and 34px prints, ~1.5x faster, wandering paths that start from random edges.
-- **Reasoning:** Picked over 3px and 4px tiles on a side-by-side page: tiles blurred the toes into arrows or blobs.
+### Footprints stay in the 5px glass tiles
+- **Decision:** Hero prints keep the small rounded tiles (5px, with gaps and per-tile shade jitter) that give the hero its texture. The prints get the new shape (rounded heel, three tapered toes, claw points) at 60px and 40px so the toes resolve in tiles, ~1.5x faster, on wandering paths that start from random edges.
+- **Reasoning:** Flat shapes were briefly picked, then reversed by Shreyas the same day: the tile texture is the point. The renderer keeps a 'flat' mode, unused.
 
 ### One visual system for case-study art
 - **Decision:** Every case-study image sits in the same frame (accent-tinted backdrop from the hue slider, 12px corners, the same padding, a plain sheet), drawn in our own fonts: Felix's Slack exchange recreated, Pune Bookies' live homepage, Hubble's before/after redrawn. Teardown cards use the same frame.

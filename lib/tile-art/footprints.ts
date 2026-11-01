@@ -41,10 +41,11 @@ export interface WalkerSpec {
   step: number;
 }
 
-/** Big walker: 52px prints. Small one: 34px. Both ~100px/s. */
+/** Big walker: 60px prints. Small one: 40px — large enough that the toes
+    resolve in 5px tiles. Both ~100px/s. */
 export const DEFAULT_WALKERS: readonly WalkerSpec[] = [
-  { foot: 52, every: 800, step: 78 },
-  { foot: 34, every: 520, step: 51 },
+  { foot: 60, every: 900, step: 90 },
+  { foot: 40, every: 600, step: 60 },
 ];
 
 interface Walker {

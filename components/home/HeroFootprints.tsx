@@ -30,7 +30,7 @@ const LIGHT_BG: RGB = [255, 255, 255];
 const DARK_BG: RGB = [24, 24, 21]; // --ink-800
 const THEME_FADE_MS = 300; // --theme-transition in tokens.css
 const ACCENT_FADE_MS = 200;
-const TILE = 5; // only used if a caller asks for tiles
+const TILE = 5;
 const INTENSITY = { light: 0.55, dark: 0.7 }; // subtle: behind the headline
 const JITTER = 0.14;
 const TEXT_PAD = 48; // clearance between any print and the copy
@@ -62,9 +62,9 @@ export function HeroFootprints({
   fixedObstacleSelector?: string;
   look?: FootprintLook;
 }) {
-  // Flat crisp prints by default (picked over 3/4px tiles, 2026-11-02): the
-  // toes and claws only read at full resolution.
-  const render = look.render ?? 'flat';
+  // The hero's small rounded glass tiles (5px) are the look; 'flat' stays
+  // available in the renderer but isn't used.
+  const render = look.render ?? 'tiles';
   const tile = look.tile ?? TILE;
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [paused, setPaused] = useState(false);
