@@ -1,6 +1,6 @@
 import { Hero } from '@/components/home/Hero';
-import { OutcomesStrip } from '@/components/home/OutcomesStrip';
-import { FeaturedWork } from '@/components/home/FeaturedWork';
+import { Outcomes } from '@/components/home/Outcomes';
+import { SelectedWork } from '@/components/home/SelectedWork';
 import { AboutTeaser } from '@/components/home/AboutTeaser';
 import { Stagger } from '@/components/motion/Stagger';
 import { CursorField } from '@/components/CursorField';
@@ -22,8 +22,8 @@ export default function HomePage() {
       <CursorField />
       <Hero />
       <Stagger>
-        <OutcomesStrip />
-        <FeaturedWork />
+        <Outcomes />
+        <SelectedWork />
         <AboutTeaser />
       </Stagger>
     </>

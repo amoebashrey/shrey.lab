@@ -1,0 +1,121 @@
+/* Case study cards (CaseStudyFeature.tsx) and the outcomes fold
+   (Outcomes.tsx). No shadows at rest: white cards sit on a soft tone. */
+
+.cs-section,
+.oc-section {
+  background: var(--bg-sunken);
+}
+
+/* Dotted rule between rows; the open row's rule fills with the accent while
+   the card auto-steps. */
+.cs-rule {
+  position: relative;
+  height: 1px;
+  background-image: linear-gradient(to right, var(--border-strong) 50%, transparent 50%);
+  background-size: 6px 1px;
+}
+.cs-progress {
+  position: absolute;
+  left: 0;
+  top: -1px;
+  height: 3px;
+  width: 100%;
+  border-radius: 2px;
+  background: var(--accent);
+  transform-origin: left;
+  animation-name: cs-progress;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+@keyframes cs-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.cs-trigger {
+  transition: color 160ms ease-out;
+}
+.cs-trigger:focus-visible,
+.oc-dot:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* A plus that turns into a cross. */
+.cs-icon {
+  position: relative;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  transition: transform 220ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.cs-icon::before,
+.cs-icon::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 16px;
+  height: 1.5px;
+  border-radius: 1px;
+  background: currentColor;
+  transform: translate(-50%, -50%);
+}
+.cs-icon::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+.cs-icon[data-open] {
+  transform: rotate(45deg);
+}
+@media (hover: hover) and (pointer: fine) {
+  .cs-trigger:hover .cs-icon {
+    color: var(--accent);
+  }
+}
+
+/* Outcomes: the story card cross-fades between slides. */
+.oc-slide {
+  transition: opacity 300ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.oc-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--border-strong);
+  transition: background-color 160ms ease-out, width 220ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+[aria-current='true'] > .oc-dot {
+  width: 22px;
+  background: var(--fg);
+}
+/* The stat card for the story on show is marked with an accent hairline. */
+.oc-stat {
+  box-shadow: inset 0 0 0 1px transparent;
+  transition: box-shadow 220ms ease-out;
+}
+.oc-stat[data-active] {
+  box-shadow: inset 0 0 0 1.5px rgb(var(--accent-rgb) / 0.55);
+}
+/* Small hover moment: the tile icon's tiles lift one by one. */
+@media (hover: hover) and (pointer: fine) {
+  .oc-stat:hover .tile-icon rect[style] {
+    transform: translateY(-2px);
+  }
+}
+.tile-icon rect {
+  transition: transform 220ms cubic-bezier(0.23, 1, 0.32, 1);
+  transition-delay: calc(var(--d, 0) * 18ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  .cs-progress {
+    display: none;
+  }
+  .tile-icon rect {
+    transition: none;
+  }
+}
