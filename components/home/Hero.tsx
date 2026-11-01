@@ -1,16 +1,16 @@
 import Link from 'next/link';
 import type { CSSProperties } from 'react';
-import { TileSharkBackground } from './TileSharkBackground';
+import { HeroSharks } from './HeroSharks';
 
 /**
  * Hero — centred noun + supporting italic sentence + one action, with tile
  * sharks drifting around it.
  *
  * The band is full-bleed and paints --hero-bg (pure white in light, warm
- * charcoal in dark); the canvas sits behind the copy and the sharks swim
- * freely under it. The copy is "lifted" (globals.css .hero-lift): a soft halo
- * of the page colour hugs the glyphs, so a passing shark dims behind the
- * letters instead of cutting through them — no card, no box edge.
+ * charcoal in dark). No card behind the copy: the sharks treat the copy
+ * column ([data-shark-avoid]) as an obstacle and swerve around it, so the
+ * text always sits on clean page colour at full contrast. A quiet pause/play
+ * control sits bottom-right (HeroSharks).
  *
  * Entrance (globals.css .hero-enter): headline → sentence → button, 70ms
  * apart, rising 16px. Pure CSS, so the copy never depends on hydration; a
@@ -30,15 +30,15 @@ export function Hero() {
       // under the floating nav, instead of leaving a paper strip above it.
       className="hero-band relative isolate -mt-8 overflow-hidden"
     >
-      <TileSharkBackground />
+      <HeroSharks avoidSelector="[data-shark-avoid]" />
       <noscript
         dangerouslySetInnerHTML={{
           __html: '<style>.hero-enter{animation:none!important}</style>',
         }}
       />
 
-      <div className="relative z-10 mx-auto flex min-h-[clamp(560px,88svh,820px)] max-w-[1280px] items-center justify-center px-4 pb-16 pt-28 md:px-8 md:pt-32">
-        <div className="hero-lift flex flex-col items-center text-center">
+      <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-[1280px] items-center justify-center px-4 pb-48 pt-28 sm:min-h-[clamp(560px,88svh,820px)] sm:pb-16 md:px-8 md:pt-32">
+        <div data-shark-avoid="" className="flex flex-col items-center text-center">
           {/* Cinematic load (tokens.css §cinematic) — a short lime rule that
               draws out from the centre once the intro has finished. */}
           <div className="hero-lime-line hero-lime-line--center mb-8 w-16" aria-hidden="true" />

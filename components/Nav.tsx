@@ -65,6 +65,7 @@ export function Nav() {
   return (
     <nav
       aria-label="Primary"
+      data-shark-obstacle=""
       className="nav-glass nav-enter fixed left-1/2 top-5 z-[100] -translate-x-1/2 rounded-full px-2 py-1.5"
     >
       <div className="flex items-center gap-1">

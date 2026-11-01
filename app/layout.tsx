@@ -48,10 +48,6 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#FBFAF7' },
-    { media: '(prefers-color-scheme: dark)', color: '#181815' },
-  ],
   width: 'device-width',
   initialScale: 1,
 };
@@ -72,6 +68,10 @@ const themeScript = `
       var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       var theme = stored || (prefersDark ? 'dark' : 'light');
       document.documentElement.setAttribute('data-theme', theme);
+      // Browser chrome follows the chosen theme, not just the OS (ThemeToggle
+      // updates it too). Matches the hero band at the top of the page.
+      var meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', theme === 'dark' ? '#181815' : '#ffffff');
     } catch (e) {}
     // Accent hue from the colour slider (lib/accent.ts writes both keys).
     // Only well-formed "--name:value" pairs are applied.
@@ -110,6 +110,9 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        {/* theme-color: one tag, set to the toggled theme by the script below
+            (and by ThemeToggle). Default matches the light hero band. */}
+        <meta name="theme-color" content="#ffffff" suppressHydrationWarning />
         {/* Instrument Serif (italic display) is the only webfont from Google
             Fonts — Geist + Geist Mono are self-hosted via next/font above.
             Sansita Swashed / VT323 were unused downloads; add back per-page

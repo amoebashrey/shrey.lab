@@ -1,5 +1,6 @@
 import type { Palette, RGB } from './palettes';
 import type { Creature, ShapeFn } from './types';
+import { BODY_REACH, evictCreatures, mergeObstacles, newSteer, stepCreatures, type Obstacle, type Steer } from './motion';
 
 /**
  * Tile renderer — framework-free. Draws creatures as smooth silhouettes into a
@@ -24,6 +25,9 @@ export interface TileRenderer {
   setTileSize(size: number): void;
   /** Replaces the creature list (positions included). */
   setCreatures(creatures: readonly Creature[]): void;
+  /** Areas creatures steer around (CSS px, canvas space), each kept `pad` px
+      clear of their bodies. Creatures already inside are moved out. */
+  setObstacles(obstacles: readonly Obstacle[]): void;
   /** Recolours palette + background; crossfades over `duration` ms (0 = snap). */
   setColors(palette: Palette, background: RGB, duration?: number): void;
   start(): void;
@@ -85,6 +89,8 @@ export function createTileRenderer(
   let cols = 0;
   let rows = 0;
   let creatures = opts.creatures.map((c) => ({ ...c }));
+  let steer: Steer[] = creatures.map(newSteer);
+  let obstacles: readonly Obstacle[] = [];
 
   // Colour state. `shown*` is what's on screen; during a crossfade it moves
   // from `from*` to `to*`. Fill strings are rebuilt only when colours change.
@@ -124,18 +130,8 @@ export function createTileRenderer(
   }
 
   function step(dt: number) {
-    const k = dt / FRAME_MS;
     simT += dt;
-    for (const s of creatures) {
-      s.x += Math.cos(s.a) * s.v * k;
-      s.y += Math.sin(s.a) * s.v * k;
-      s.a += Math.sin(simT * 0.00035 + s.p) * 0.0012 * k;
-      const m = s.L * 1.4;
-      if (s.x > W + m) s.x = -m;
-      if (s.x < -m) s.x = W + m;
-      if (s.y > H + m) s.y = -m;
-      if (s.y < -m) s.y = H + m;
-    }
+    stepCreatures(creatures, steer, dt / FRAME_MS, simT, W, H, obstacles);
   }
 
   function draw() {
@@ -225,6 +221,15 @@ export function createTileRenderer(
     },
     setCreatures(list) {
       creatures = list.map((c) => ({ ...c }));
+      steer = creatures.map(newSteer);
+      evictCreatures(creatures, obstacles);
+    },
+    setObstacles(list) {
+      // Touching clearance zones become one block, so there are no pockets.
+      const reach = BODY_REACH * Math.max(0, ...creatures.map((c) => c.L));
+      obstacles = mergeObstacles(list, reach);
+      evictCreatures(creatures, obstacles);
+      if (!running) draw();
     },
     setColors(palette, background, duration = 0) {
       // Start from whatever is on screen, so a mid-fade toggle doesn't jump.

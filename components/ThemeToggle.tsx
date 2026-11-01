@@ -23,6 +23,10 @@ export function ThemeToggle() {
     setDark(next);
     const theme = next ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', theme);
+    // Browser chrome (mobile address bar) follows the toggle, not the OS.
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute('content', next ? '#181815' : '#ffffff');
     try {
       localStorage.setItem('theme', theme);
     } catch {

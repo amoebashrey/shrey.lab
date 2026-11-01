@@ -227,6 +227,29 @@
 
 ---
 
+## 2026-10-21 · Sharks steer around the copy; curated palettes; Bencho blocks
+
+### Sharks avoid the hero copy instead of passing behind it
+- **Decision:** No backing and no halo. The copy column (`[data-shark-avoid]`) is an obstacle for the shark canvas, padded by 0.3× the largest shark's length (bigger than its body thickness) plus each body's own fin reach. `lib/tile-art/motion.ts` (pure, testable) looks ahead along each shark's heading; if the path or body would reach the obstacle, the shark commits to a side and its turn rate eases (0.0005 rad/frame²) toward a cap sized to its length (turning radius 0.9 body lengths), so it reads as a calm swerve and the tail follows the nose. The side is sticky until the path is clear for 40 frames, so there's no jitter. A safety wall at half the pad nudges a body outward by ≤2px/frame on the rare frames steering alone would fall short. Sharks already inside (mount, resize) step out vertically.
+- **Reasoning:** The halo still let dark tiles tint the text, and the plate sliced sharks with a box edge. Avoidance keeps full contrast with nothing visible around the text. Headless sim (40 runs × 5 min per width at 1440/768/390, uneven frame times): 0 frames with a body over the text, 1 quick side-switch total, 0 trapped sharks; the wall engaged on ~1% of frames. Live canvas sampling in Chrome confirmed 0 tiles under the copy in both themes at all three widths.
+
+### Pause/play control on the hero
+- **Decision:** `components/home/HeroSharks.tsx` adds a quiet icon button bottom-right of the hero, wired to the canvas's `paused` prop; label switches "Pause animation"/"Play animation"; choice persists in localStorage; hidden under reduced motion (the canvas is already still there).
+- **Reasoning:** WCAG 2.2.2 — motion longer than 5s alongside content needs a pause.
+
+### theme-color follows the toggle
+- **Decision:** Dropped the media-query `themeColor` from `viewport`; one `<meta name="theme-color">` is set before paint by the head script and on toggle (`#ffffff` light — the hero band at the top — and `#181815` dark).
+
+### Colour control snaps to curated palettes (Bencho Wake slider)
+- **Decision:** The continuous hue slider is replaced by Bencho's Wake slider (MIT, adapted in `components/bencho/wake-slider/`), snapping to four palettes in `lib/accent.ts`: lime (default, brand), blue (prototype), slate, and lavender (proposed — the kit's own `--lavender-400`). Each palette's third shading stop is the accent, so CTA and sharks are one colour; dark-theme stops lift the back/flank in OKLCH. Dark text on every accent ≥ 6:1.
+- **Reasoning:** Asked for explicitly; curated options keep every combination on-brand where a free hue range didn't. Lavender pending approval.
+
+### 404 wordmark (Bencho Heat map)
+- **Decision:** `components/bencho/heat-word/` (MIT notice kept) draws `shrey.lab` on the 404: grey at rest, melting into the active accent palette under the pointer. Shape cycling on click removed (role="img"); no melt-in under reduced motion.
+- **Reasoning:** The 404 is where the brand allows play (CLAUDE.md voice rules); the heat colours come from the accent so it isn't a second colour system.
+
+---
+
 ## Template for future entries
 
 ```

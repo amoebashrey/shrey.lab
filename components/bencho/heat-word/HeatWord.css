@@ -1,0 +1,12 @@
+/* Adapted from Bencho's "Heat map" (MIT, © 2026 Lorenzo Cabra — full notice
+   in HeatWord.tsx). */
+/* ══ Heat word ═════════════════════════════════════════════ */
+.heat {
+  position: relative;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;}
+
+.heat-canvas { display: block; }
