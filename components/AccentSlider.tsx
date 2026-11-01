@@ -35,7 +35,7 @@ export function AccentSlider() {
   return (
     <div className="flex flex-col items-end gap-2">
       {/* Phones: swatch that reveals the bars */}
-      <div className="nav-glass nav-enter-fade rounded-full p-1.5 sm:hidden">
+      <div className="control-surface nav-enter-fade rounded-full p-1.5 sm:hidden">
         <button
           type="button"
           onClick={() => setOpen((o) => !o)}
@@ -50,7 +50,7 @@ export function AccentSlider() {
 
       <div
         id="accent-control"
-        className={`${open ? 'flex' : 'hidden'} nav-glass nav-enter-fade h-14 items-center rounded-full sm:flex`}
+        className={`${open ? 'flex' : 'hidden'} control-surface nav-enter-fade h-14 items-center rounded-full sm:flex`}
       >
         <HueWake value={hue} onChange={change} colors={BARS} label="Accent colour" />
       </div>

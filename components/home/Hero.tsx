@@ -4,8 +4,8 @@ import { HeroFootprints } from './HeroFootprints';
 import { HERO_LINE, NAME } from '@/lib/site';
 
 /**
- * Hero — centred noun + supporting italic sentence + one action, with tile
- * two dinosaurs' footprints walking around it.
+ * Hero — centred name in Fraunces + one plain sentence + one action, with
+ * two dinosaurs' tile footprints walking around it.
  *
  * The band is full-bleed and paints --hero-bg (pure white in light, warm
  * charcoal in dark). No card behind the copy: the walkers treat the copy
@@ -17,7 +17,6 @@ import { HERO_LINE, NAME } from '@/lib/site';
  * 16px into place, 70ms apart. Pure CSS and transform only, so the copy is
  * readable on the first frame with or without JavaScript.
  *
- * data-cursor-off: CursorField fades its lime glow out over this band.
  */
 const enter = (i: number) => ({ '--i': i }) as CSSProperties;
 
@@ -25,7 +24,6 @@ export function Hero() {
   return (
     <section
       aria-labelledby="hero-heading"
-      data-cursor-off=""
       // -mt-8 cancels <main>'s pt-8 so the band starts at the top edge,
       // under the floating nav, instead of leaving a paper strip above it.
       className="hero-band relative isolate -mt-8 overflow-hidden"
@@ -40,14 +38,14 @@ export function Hero() {
 
           <h1
             id="hero-heading"
-            className="hero-enter hero-depth text-balance font-medium text-fg text-[clamp(48px,7vw,88px)] leading-[0.98] tracking-tightest"
+            className="hero-enter text-balance text-[clamp(52px,7.5vw,96px)] leading-none tracking-[-0.03em] text-fg"
             style={enter(0)}
           >
             {NAME}.
           </h1>
 
           <p
-            className="hero-enter mt-6 max-w-[34ch] text-balance font-display text-[clamp(20px,2.4vw,32px)] font-normal italic leading-[1.25] tracking-snug text-fg md:mt-8"
+            className="hero-enter mt-6 max-w-[38ch] text-balance text-[clamp(17px,1.5vw,20px)] leading-normal text-fg-muted md:mt-7"
             style={enter(1)}
           >
             {HERO_LINE}

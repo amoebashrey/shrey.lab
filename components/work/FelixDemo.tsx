@@ -8,8 +8,8 @@ import { useEffect, useRef, useState } from 'react';
  * inference at runtime — it replays Felix's real example tickets + responses
  * (verbatim from heyfelix.vercel.app) to illustrate the logic.
  *
- * Cohesion: reuses the site's type scale, the `//` mono eyebrow, the .lab-glass
- * surface, and brand colors — lime/lavender/rust map to Resolve/Ask/Escalate.
+ * Cohesion: reuses the site's type scale, the elevated card surface, and
+ * brand colors — lime/lavender/rust map to Resolve/Ask/Escalate.
  * No new fonts or one-off patterns.
  *
  * Reduced motion: the "thinking" beat is skipped — the resolved end-state shows
@@ -64,7 +64,7 @@ function Avatar({ label, accent = false }: { label: string; accent?: boolean }) 
     <span
       aria-hidden="true"
       className={[
-        'inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-2xs font-mono',
+        'inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-xs font-medium',
         accent ? 'bg-accent text-[var(--accent-fg)]' : 'bg-bg-sunken text-fg-muted border border-border',
       ].join(' ')}
     >
@@ -99,12 +99,12 @@ export function FelixDemo() {
 
   return (
     <section aria-label="Watch Felix triage (scripted)" className="mt-4">
-      <p className="eyebrow mb-3">// illustrative · scripted re-enactment</p>
-      <h2 className="text-2xl md:text-3xl font-medium tracking-tight text-fg mb-2">
-        Watch Felix <span className="italic-break text-fg-muted">triage</span>
+      <h2 className="text-2xl md:text-3xl tracking-tight text-fg mb-2">
+        Watch Felix triage
       </h2>
       <p className="text-base text-fg-muted leading-relaxed mb-6">
-        Pick a ticket. This replays Felix’s real example responses — it doesn’t run inference.
+        Pick a ticket. This is a scripted replay of Felix’s real example responses, so
+        nothing runs live.
       </p>
 
       {/* Example picker */}
@@ -116,9 +116,9 @@ export function FelixDemo() {
             onClick={() => pick(i)}
             aria-pressed={i === active}
             className={[
-              'inline-flex h-9 items-center gap-2 rounded-full px-3.5 text-2xs font-mono tracking-mono transition-colors duration-fast',
+              'inline-flex h-9 items-center gap-2 rounded-md px-3.5 text-sm transition-colors duration-fast',
               i === active
-                ? 'lab-glass text-fg'
+                ? 'bg-fg text-bg'
                 : 'border border-border text-fg-muted hover:text-fg',
             ].join(' ')}
           >
@@ -129,14 +129,14 @@ export function FelixDemo() {
       </div>
 
       {/* Slack-style thread */}
-      <div className="lab-glass rounded-lg p-5 md:p-6">
+      <div className="rounded-[20px] bg-bg-elevated p-5 md:p-6">
         {/* incoming ticket */}
         <div className="flex items-start gap-3">
           <Avatar label={ex.ticketAuthor.slice(0, 2)} />
           <div className="min-w-0">
             <p className="text-sm">
               <span className="font-medium text-fg">{ex.ticketAuthor}</span>{' '}
-              <span className="text-3xs font-mono text-fg-muted tracking-mono">#support</span>
+              <span className="text-xs text-fg-muted">in #support</span>
             </p>
             <p className="text-sm text-fg-muted leading-relaxed">{ex.ticketText}</p>
           </div>
@@ -146,7 +146,7 @@ export function FelixDemo() {
         <div className="mt-5 flex items-start gap-3">
           <Avatar label="fx" accent />
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-medium text-fg mb-2">felix</p>
+            <p className="text-sm font-medium text-fg mb-2">Felix</p>
 
             {thinking ? (
               <span className="inline-flex items-center gap-1.5 text-fg-subtle" aria-label="Felix is evaluating">
@@ -162,12 +162,12 @@ export function FelixDemo() {
               <>
                 {/* path decision + similarity framing */}
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-3">
-                  <span className="inline-flex items-center gap-2 text-2xs font-mono tracking-mono text-fg">
+                  <span className="inline-flex items-center gap-2 text-sm font-medium text-fg">
                     <span className={`h-2 w-2 rounded-full ${ex.dot}`} aria-hidden="true" />
                     {ex.pathLabel}
                   </span>
-                  <span className="text-2xs font-mono tracking-mono text-fg-muted">
-                    // {ex.decision}
+                  <span className="text-sm text-fg-muted">
+                    {ex.decision}
                   </span>
                 </div>
                 {/* scripted response */}

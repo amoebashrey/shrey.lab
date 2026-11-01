@@ -17,22 +17,22 @@ export function AboutTeaser() {
   return (
     <section
       aria-labelledby="about-teaser-heading"
-      className="py-16 md:py-24 border-t border-border"
+      className="py-20 md:py-28"
     >
-      <div className="mx-auto max-w-[1280px] px-6 md:px-8">
+      <div className="mx-auto max-w-[1180px] px-4 md:px-8">
         <div className="max-w-2xl">
-          <p className="eyebrow mb-4">// about</p>
-
-          <h2 id="about-teaser-heading" className="sr-only">
-            About Shreyas
+          <h2
+            id="about-teaser-heading"
+            className="mb-6 text-balance text-4xl tracking-tight text-fg md:text-5xl"
+          >
+            Before product, kombucha
           </h2>
 
           <p className="text-lg md:text-xl text-fg leading-relaxed">
-            Before Amber, I built a kombucha brand from the kitchen counter, ran a 600-attendee discussion
-            community across four countries, and taught fermentation at engineering colleges. Different
-            surfaces, same instinct: ship, talk to people, fix what&apos;s broken. These days I do that
-            for a global student housing marketplace, and the kombucha kit lives in storage,{' '}
-            <span className="italic-break text-fg-muted">mostly</span>.
+            In college I brewed and sold kombucha from home (₹1L+ in revenue), grew a discussion
+            community from five people to 600+ across four countries, and taught fermentation at
+            engineering colleges. Now I build product for a global student housing marketplace.
+            The kombucha kit is in storage, mostly.
           </p>
 
           <Link

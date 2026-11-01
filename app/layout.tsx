@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { GeistSans } from 'geist/font/sans';
-import { GeistMono } from 'geist/font/mono';
+import { fraunces } from './fonts';
 import './globals.css';
 import { Nav } from '@/components/Nav';
 import { NAME, ROLE, X_HANDLE } from '@/lib/site';
@@ -99,21 +98,21 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${GeistSans.variable} ${GeistMono.variable} bg-bg`}
+      className={`${fraunces.variable} bg-bg`}
       suppressHydrationWarning
     >
       <head>
         {/* theme-color: one tag, set to the toggled theme by the script below
             (and by ThemeToggle). Default matches the light hero band. */}
         <meta name="theme-color" content="#ffffff" suppressHydrationWarning />
-        {/* Instrument Serif (italic display) is the only webfont from Google
-            Fonts — Geist + Geist Mono are self-hosted via next/font above.
-            Sansita Swashed / VT323 were unused downloads; add back per-page
-            if a page ever actually uses font-playful / font-pixel. */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Body face: Switzer from Fontshare's CDN (its licence keeps the files
+            out of a public repo). font-display swap, with a metric-matched
+            Arial fallback in globals.css so the swap doesn't move text.
+            Fraunces (display) is self-hosted via next/font above. */}
+        <link rel="preconnect" href="https://api.fontshare.com" />
+        <link rel="preconnect" href="https://cdn.fontshare.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap"
+          href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600&display=swap"
           rel="stylesheet"
         />
         {/* Theme script must run before paint — inline, not external */}
@@ -121,8 +120,7 @@ export default function RootLayout({
       </head>
       <body className="text-fg antialiased">
         {/* Fixed canvas texture (dot-grid + grain) — behind all content, inert.
-            CursorField lives on the homepage only (app/page.tsx) — BRAND §9
-            reserves the cursor glow for the home hero, one moment per site. */}
+            No cursor glow: the hero's footprints are the site's one moment. */}
         <div className="site-texture" aria-hidden="true" />
         <a href="#main" className="skip-to-content">
           Skip to content

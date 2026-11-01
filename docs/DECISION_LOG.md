@@ -282,6 +282,16 @@ Audience is now founders and teams hiring for project work (mostly via X DMs and
 
 ---
 
+## 2026-11-01 · Type: Fraunces + Switzer; de-slop pass
+
+### Fraunces for headings, Switzer for body
+- **Decision:** h1–h3 in Fraunces (SOFT 100, WONK 0, optical size auto, tracking −0.025 to −0.03em), self-hosted via next/font. Body in Switzer from Fontshare's CDN with a metric-matched Arial fallback. Geist, Geist Mono and Instrument Serif are gone; mono is the system stack, for code only.
+- **Reasoning:** Picked from the /kit/type specimen (pairing A over Sentient + General Sans and Gloock + Switzer). Fontshare's licence forbids the files in a public repo, so Switzer loads from their CDN rather than the repo. The specimen route and Gloock were removed once the pick was made.
+
+### De-slop: removed the generated-looking patterns
+- **Decision:** Removed every `//` mono eyebrow and caption, mono-as-style, pill badges and tag pills, the cursor glow, the hero text-shadow glow, frosted glass on the floating controls (the nav keeps it), the one-italic-serif-word-per-heading device, the footer's duplicate nav, and the "coming soon" lines on About. /work now uses the same one-card-per-study layout as the homepage; CaseStudyCard, FeaturedWork, OutcomesStrip, StatusPill, ResumeButton, CursorField and lib/work.ts are deleted.
+- **Reasoning:** Each read as default model output rather than a choice. Playfulness comes from the footprints, the copy and small hover moments (the tile icons lifting), not from decoration.
+
 ## Template for future entries
 
 ```

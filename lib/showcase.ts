@@ -1,6 +1,7 @@
 /**
  * Homepage case-study cards: one per study, each told as the problem, what I
- * built, and what happened. Facts only from lib/work.ts and docs/COPY.md; no
+ * built, and what happened. Used on the homepage and /work. Facts only from
+ * the case studies and docs/COPY.md; no
  * numbers that aren't confirmed (Hubble's saving stays off until it is).
  */
 

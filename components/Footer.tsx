@@ -1,134 +1,54 @@
-import Link from 'next/link';
 import { EMAIL, X_URL } from '@/lib/site';
 
 /**
- * Footer — locked structure from PROJECT_BRIEF.md.
+ * Footer — the wordmark, one dry line, and the ways to reach me.
  *
- * Left column: monogram + wordmark + "built by shrey · {year}" in mono,
- * plus the pulsing "currently building" StatusPill — the alive-and-shipping
- * signal (Problem 5, BRAND §9). One pulsing dot per page lives here.
- * Middle column: secondary nav (Work, Writing, About, Tools, Now, RSS, Resume).
- * Right column: contact (email with lime dot replacing @) + social + view source.
- *
- * The "View source" link is intentional — it's a craft signal to the persona-1
- * hiring manager who clicks. Repo flips to public at launch.
+ * No second copy of the nav: the floating nav is always on screen. No section
+ * labels: a row of links called Email, X and LinkedIn explains itself.
  */
+const LINKS = [
+  { label: 'Email', href: `mailto:${EMAIL}` },
+  { label: 'X', href: X_URL, external: true },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/shreyasjadhav53/', external: true },
+  { label: 'GitHub', href: 'https://github.com/amoebashrey', external: true },
+  { label: 'View source', href: 'https://github.com/amoebashrey/shrey.lab', external: true },
+];
+
 export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer
-      role="contentinfo"
-      className="mt-30 border-t border-border bg-bg"
-    >
-      <div className="mx-auto max-w-[1280px] px-6 md:px-8 py-12 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
-          {/* Left column — signature */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              {/* Monogram square — soft-cornered charcoal with italic s + lime dot */}
-              <span
-                className="inline-flex items-center justify-center w-8 h-8 rounded-md bg-fg text-bg"
-                aria-hidden="true"
-              >
-                <span className="font-display italic text-base leading-none mr-px">s</span>
-                <span className="w-1 h-1 rounded-full bg-accent" />
-              </span>
-              <span className="font-sans font-medium text-base">
-                shrey<span className="inline-block w-1.5 h-1.5 rounded-full bg-accent mx-0.5 align-middle" aria-hidden="true" />lab
-              </span>
-            </div>
-            <p className="text-2xs font-mono text-fg-muted tracking-mono">
-              built by shrey · {year}
-            </p>
-            <p className="text-sm text-fg-muted max-w-xs leading-relaxed">
-              A studio for shipping useful, considered tools.
-            </p>
-          </div>
-
-          {/* Middle column — secondary nav */}
-          <nav aria-label="Footer" className="space-y-3">
-            <p className="eyebrow">// pages</p>
-            <ul className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-              {/* RSS removed (no feed/articles yet) and the raw Resume PDF link
-                  removed (redundant with the persistent nav Resume button + the
-                  /contact resume; the PDF asset is also currently missing — see
-                  report). Re-add both when their content/asset lands. */}
-              {[
-                { label: 'Work', href: '/work' },
-                { label: 'About', href: '/about' },
-                { label: 'Contact', href: '/contact' },
-              ].map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className="text-fg-muted hover:text-fg transition-colors duration-fast"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          {/* Right column — contact + social + view source */}
-          <div className="space-y-3">
-            <p className="eyebrow">// elsewhere</p>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <a
-                  href={`mailto:${EMAIL}`}
-                  aria-label={`Email ${EMAIL}`}
-                  className="text-fg-muted hover:text-fg transition-colors duration-fast inline-flex items-center"
-                >
-                  shreyasjadhav531
-                  <span className="inline-block w-1 h-1 rounded-full bg-accent mx-1.5" aria-hidden="true" />
-                  gmail.com
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://www.linkedin.com/in/shreyasjadhav53/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-fg-muted hover:text-fg transition-colors duration-fast"
-                >
-                  LinkedIn ↗
-                </a>
-              </li>
-              <li>
-                <a
-                  href={X_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-fg-muted hover:text-fg transition-colors duration-fast"
-                >
-                  X ↗
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/amoebashrey"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-fg-muted hover:text-fg transition-colors duration-fast"
-                >
-                  GitHub ↗
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/amoebashrey/shrey.lab"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-mono text-2xs text-fg-muted hover:text-fg transition-colors duration-fast"
-                >
-                  // view source
-                </a>
-              </li>
-            </ul>
-          </div>
+    <footer className="border-t border-border bg-bg">
+      <div className="mx-auto flex max-w-[1180px] flex-col gap-8 px-4 py-12 md:flex-row md:items-end md:justify-between md:px-8 md:py-14">
+        <div className="space-y-2">
+          <p className="flex items-center gap-2 text-base font-medium text-fg">
+            <span
+              className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-fg text-bg"
+              aria-hidden="true"
+            >
+              <span className="font-display text-lg leading-none">s</span>
+            </span>
+            shrey.lab
+          </p>
+          <p className="text-sm text-fg-muted">
+            Made in Pune, {year}. The dinosaurs are doing fine.
+          </p>
         </div>
+
+        <ul className="flex flex-wrap gap-x-6 gap-y-3 text-sm">
+          {LINKS.map((l) => (
+            <li key={l.label}>
+              <a
+                href={l.href}
+                {...(l.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                className="text-fg-muted transition-colors duration-fast hover:text-fg"
+              >
+                {l.label}
+                {l.external && <span aria-hidden="true"> ↗</span>}
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
     </footer>
   );

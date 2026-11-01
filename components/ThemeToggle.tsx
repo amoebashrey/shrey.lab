@@ -35,7 +35,7 @@ export function ThemeToggle() {
   }
 
   return (
-    <div className="nav-glass nav-enter-fade rounded-full p-1.5">
+    <div className="control-surface nav-enter-fade rounded-full p-1.5">
       <button
         type="button"
         onClick={toggle}

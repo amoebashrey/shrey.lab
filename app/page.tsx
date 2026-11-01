@@ -3,7 +3,6 @@ import { Outcomes } from '@/components/home/Outcomes';
 import { SelectedWork } from '@/components/home/SelectedWork';
 import { AboutTeaser } from '@/components/home/AboutTeaser';
 import { Stagger } from '@/components/motion/Stagger';
-import { CursorField } from '@/components/CursorField';
 
 /**
  * Homepage.
@@ -18,8 +17,6 @@ import { CursorField } from '@/components/CursorField';
 export default function HomePage() {
   return (
     <>
-      {/* Cursor glow — homepage only per BRAND §9; fades out over the hero. */}
-      <CursorField />
       <Hero />
       <Stagger>
         <Outcomes />

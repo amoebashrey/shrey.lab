@@ -1,7 +1,7 @@
 /**
  * HubbleArchitecture — a static, on-brand technical diagram for the Hubble case
  * study: the event path as inherited (flaky) beside the target V1 (safe). Built
- * from the existing type system — mono labels, brand tokens, the .lab-glass
+ * from the existing type system — sans labels, brand tokens, the elevated card
  * surface — not raw ASCII and not a new visual language. No motion (nothing to
  * reduce); stacks to one column under 380px.
  */
@@ -21,7 +21,7 @@ function Node({
         : 'border-border';
   return (
     <div
-      className={`rounded-md border ${ring} bg-bg-elevated px-3 py-2 text-2xs font-mono tracking-mono text-fg`}
+      className={`rounded-md border ${ring} bg-bg px-3 py-2 text-sm text-fg`}
     >
       {children}
     </div>
@@ -31,7 +31,7 @@ function Node({
 function Arrow({ label }: { label?: string }) {
   return (
     <div className="flex flex-col items-center py-1 text-fg-subtle" aria-hidden="true">
-      {label && <span className="text-3xs font-mono tracking-mono mb-0.5">{label}</span>}
+      {label && <span className="mb-0.5 text-xs">{label}</span>}
       <span className="leading-none">↓</span>
     </div>
   );
@@ -40,7 +40,7 @@ function Arrow({ label }: { label?: string }) {
 function Note({ tone, children }: { tone: 'fix' | 'defect'; children: React.ReactNode }) {
   const color = tone === 'fix' ? 'text-accent' : 'text-rust-400';
   return (
-    <p className={`text-3xs font-mono tracking-mono leading-relaxed ${color}`}>{children}</p>
+    <p className={`text-xs leading-relaxed ${color}`}>{children}</p>
   );
 }
 
@@ -54,9 +54,9 @@ function Column({
   children: React.ReactNode;
 }) {
   return (
-    <div className="lab-glass rounded-lg p-4 md:p-5">
-      <p className="eyebrow mb-1">{label}</p>
-      <p className="text-2xs font-mono tracking-mono text-fg-muted mb-4">{caption}</p>
+    <div className="rounded-[20px] bg-bg-elevated p-4 md:p-5">
+      <p className="text-base font-medium text-fg">{label}</p>
+      <p className="mb-4 text-sm text-fg-muted">{caption}</p>
       <div className="flex flex-col">{children}</div>
     </div>
   );
@@ -67,7 +67,7 @@ export function HubbleArchitecture() {
     <figure className="mt-6" aria-label="Hubble event path: as inherited versus the target V1">
       <div className="grid gap-5 sm:grid-cols-2">
         {/* As inherited */}
-        <Column label="// current" caption="as inherited — flaky">
+        <Column label="As inherited" caption="Flaky">
           <Node>Slack event</Node>
           <Arrow label="3s ack required" />
           <Node>Flask · Slack Bolt</Node>
@@ -83,7 +83,7 @@ export function HubbleArchitecture() {
         </Column>
 
         {/* Target V1 */}
-        <Column label="// target · v1" caption="low-risk, no rewrite">
+        <Column label="Target, v1" caption="Low risk, no rewrite">
           <Node>Slack event</Node>
           <Arrow label="ack < 1s" />
           <Node tone="fix">Flask · Bolt — ack first, work in background</Node>
@@ -100,8 +100,8 @@ export function HubbleArchitecture() {
           </div>
         </Column>
       </div>
-      <figcaption className="eyebrow mt-3">
-        // event path — as inherited vs. target v1
+      <figcaption className="mt-3 text-sm text-fg-muted">
+        The event path, as inherited and as targeted for v1.
       </figcaption>
     </figure>
   );

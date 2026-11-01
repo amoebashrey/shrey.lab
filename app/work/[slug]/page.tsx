@@ -9,9 +9,9 @@ import { HubbleArchitecture } from '@/components/work/HubbleArchitecture';
 /**
  * /work/[slug] — individual case study.
  *
- * Cohesion is the point: this reuses the site's type scale, the `//` mono
- * eyebrow, the section spacing rhythm, and fg/fg-muted tokens — no new fonts,
- * no one-off components, no new visual patterns. Content is hand-written and
+ * Cohesion is the point: this reuses the site's type scale, the section
+ * spacing rhythm, and fg/fg-muted tokens — no new fonts, no one-off
+ * components, no new visual patterns. Content is hand-written and
  * sourced from the real repos (lib/work.ts is the card-level source of truth;
  * this is the long form). Each page links to the live product.
  *
@@ -19,7 +19,8 @@ import { HubbleArchitecture } from '@/components/work/HubbleArchitecture';
  */
 
 interface Section {
-  eyebrow: string;
+  /** Short name; the heading when the section has none of its own. */
+  label: string;
   heading?: string;
   body: string[];
 }
@@ -52,15 +53,15 @@ const WORK_DETAIL: Record<string, WorkDetail> = {
     image: '/work/felix-hero.png',
     imageAlt:
       'Felix in Slack: a support question from Riya P. — “CRM session timed out again” — and Felix’s reply, “On it.”',
-    imageCaption: '// felix in slack — the live triage surface',
+    imageCaption: 'Felix in Slack, answering a support question.',
     meta: [
-      { label: 'role', value: 'Solo — design, build, ship' },
-      { label: 'stack', value: 'Python · Flask · Slack Bolt · Supabase · Groq' },
-      { label: 'year', value: '2026' },
+      { label: 'Role', value: 'Solo — design, build, ship' },
+      { label: 'Stack', value: 'Python · Flask · Slack Bolt · Supabase · Groq' },
+      { label: 'Year', value: '2026' },
     ],
     sections: [
       {
-        eyebrow: '// the problem',
+        label: 'The problem',
         heading: 'Answer, or get out of the way',
         body: [
           'Internal support channels fill up with the same questions, and the answers usually already exist somewhere. A bot that tries to answer everything is worse than no bot — a confidently wrong answer costs more than a slow human one.',
@@ -68,14 +69,14 @@ const WORK_DETAIL: Record<string, WorkDetail> = {
         ],
       },
       {
-        eyebrow: '// the decision',
+        label: 'The decision',
         heading: 'Three paths',
         body: [
           'Felix takes one of three paths on every message: Resolve — answer directly from the knowledge base; Ask — request the one clarifying detail it needs; or Escalate — hand the thread to a human. Letting it escalate is the whole point: the bot is allowed to not know.',
         ],
       },
       {
-        eyebrow: '// how it works',
+        label: 'How it works',
         heading: 'Retrieval before generation',
         body: [
           'The knowledge base is 27 curated sections. Each incoming question is embedded with a BGE model and matched against the base by cosine similarity. Felix only resolves when the best match clears a 0.65 threshold; below it, it asks or escalates rather than guess.',
@@ -83,7 +84,7 @@ const WORK_DETAIL: Record<string, WorkDetail> = {
         ],
       },
       {
-        eyebrow: '// shipped',
+        label: 'Shipped',
         heading: 'Three weeks to production',
         body: [
           'Built solo — the retrieval, the triage logic, and the Slack integration — with a first working version running in production in under three weeks. It’s live; there’s no paid adoption behind it yet. This is the honest version of what it does today.',
@@ -101,22 +102,22 @@ const WORK_DETAIL: Record<string, WorkDetail> = {
     image: '/work/pune-bookies-hero.png',
     imageAlt:
       'Pune Bookies homepage: an illustrated gulmohar tree above the “Pune Bookies” wordmark and the line “We read together. Every Sunday, eight to ten, under a tree somewhere in Pune.”',
-    imageCaption: '// pune-bookies.vercel.app — the homepage',
+    imageCaption: 'The Pune Bookies homepage.',
     meta: [
-      { label: 'role', value: 'Built it — design, build, ship; partnerships, ops & community' },
-      { label: 'stack', value: 'Astro · Sanity CMS · Vercel' },
-      { label: 'year', value: '2026' },
+      { label: 'Role', value: 'Built it — design, build, ship; partnerships, ops & community' },
+      { label: 'Stack', value: 'Astro · Sanity CMS · Vercel' },
+      { label: 'Year', value: '2026' },
     ],
     sections: [
       {
-        eyebrow: '// the brief',
+        label: 'The brief',
         heading: 'A site the team can actually run',
         body: [
           'Pune Bookies is a reading community in Pune. It needed a site that was fast, that read like the community feels, and — the part that usually gets skipped — one the people running the group could edit themselves, without waiting on a developer for every copy change.',
         ],
       },
       {
-        eyebrow: '// the build',
+        label: 'The build',
         heading: 'Designed and built from scratch in Astro',
         body: [
           'I designed and built it from the ground up: a reader-facing site for the community and a separate brands/partnerships page for the people who want to work with it, sharing one component system. Astro keeps it static and fast; the structure is a base layout and around two dozen components.',
@@ -124,7 +125,7 @@ const WORK_DETAIL: Record<string, WorkDetail> = {
         ],
       },
       {
-        eyebrow: '// the result',
+        label: 'The result',
         body: [
           'Near-perfect Lighthouse — 100 on accessibility, best practices, and SEO, 93 on performance — with zero layout shift, reduced-motion support, and layouts verified down to 375px. Day to day I also run partnerships, ops, and community for the group; this was the engineering side of the same work.',
         ],
@@ -141,14 +142,14 @@ const WORK_DETAIL: Record<string, WorkDetail> = {
       'Owned and led Hubble end-to-end — scoped it, diagnosed the failures, directed the build, and shipped it into live use.',
     lead: 'Slack-native internal ticketing: a thread becomes a ticket, logged to Google Sheets — built to replace a paid third-party tool.',
     meta: [
-      { label: 'role', value: 'Internal-platforms product owner — led the rehabilitation' },
-      { label: 'stack', value: 'Python · Flask · Slack Bolt · Google Sheets API · Render' },
-      { label: 'year', value: 'Built 2025 · rehabilitated 2026' },
-      { label: 'status', value: 'Shipped · internal' },
+      { label: 'Role', value: 'Internal-platforms product owner — led the rehabilitation' },
+      { label: 'Stack', value: 'Python · Flask · Slack Bolt · Google Sheets API · Render' },
+      { label: 'Year', value: 'Built 2025 · rehabilitated 2026' },
+      { label: 'Status', value: 'Shipped · internal' },
     ],
     sections: [
       {
-        eyebrow: '// the problem',
+        label: 'The problem',
         heading: 'Trusted just often enough to be a problem',
         body: [
           'Slack was the de-facto intake point for requests across several teams, but Slack has no native structure for ownership, status, or priority. A paid third-party tool filled that gap at a recurring per-seat cost. An earlier in-house replacement existed to retire that cost — but it was unreliable: a single message could spawn duplicate tickets, there were no tests, two competing code paths handled interactions, and the docs had gone stale.',
@@ -156,7 +157,7 @@ const WORK_DETAIL: Record<string, WorkDetail> = {
         ],
       },
       {
-        eyebrow: '// the approach',
+        label: 'The approach',
         heading: 'Owned the judgement, not the keystrokes',
         body: [
           'I did not write the original code; I owned the product and led the rescue — the calls, the sequencing, and the verification. Implementation ran through AI coding agents under my direction and review, and every ship/rollback decision was mine.',
@@ -164,14 +165,14 @@ const WORK_DETAIL: Record<string, WorkDetail> = {
         ],
       },
       {
-        eyebrow: '// the architecture',
+        label: 'The architecture',
         heading: 'From flaky to safe, without a rewrite',
         body: [
           'The fix wasn’t a new system — it was a disciplined reshaping of the path an event already took. Acknowledge Slack first and do the work in the background; guard against retries; make ticket creation idempotent; read the sheet once; collapse two interaction paths into one.',
         ],
       },
       {
-        eyebrow: '// the bug',
+        label: 'The bug',
         heading: 'One message, several tickets',
         body: [
           'The duplicate-ticket bug wasn’t a mysterious “AI hallucination” — there’s no model in that path. It was a textbook distributed-systems issue. Slack requires an acknowledgement within three seconds or it retries the event. The bot did all its work — including re-reading the entire Google Sheet several times — before acknowledging, so it blew the window. Slack retried; with no de-duplication, each retry ran the full creation path and an in-memory counter handed out a fresh ID — so one message became several tickets.',
@@ -179,7 +180,7 @@ const WORK_DETAIL: Record<string, WorkDetail> = {
         ],
       },
       {
-        eyebrow: '// honest outcomes',
+        label: 'Honest outcomes',
         heading: 'What shipped, and what hasn’t',
         body: [
           'Shipped and verified in production: the duplicate-ticket fix (one message → one ticket), a full structural audit that ranked every major reliability risk into a phased plan, and repo hygiene — restructured docs, dead code removed, the product renamed throughout.',
@@ -187,7 +188,7 @@ const WORK_DETAIL: Record<string, WorkDetail> = {
         ],
       },
       {
-        eyebrow: '// lessons',
+        label: 'Lessons',
         body: [
           'Three things carried over. Documentation rots faster than code — I treated the inherited docs as history, not truth, and verified against the running system. “It compiles” is not “it works” — the most valuable habit was refusing to mark anything done without a live test. And the cheapest fix is often the one you decide not to build — half the value was choosing what not to do this week: no rewrite, no database migration, no touching the high-risk channels yet.',
         ],
@@ -228,14 +229,14 @@ export default function CaseStudyPage({ params }: PageProps) {
       <FadeUp className="mx-auto max-w-[760px] px-6 md:px-8">
         <Link
           href="/work"
-          className="eyebrow inline-block text-fg-muted hover:text-fg transition-colors duration-fast"
+          className="inline-block text-sm text-fg-muted transition-colors duration-fast hover:text-fg"
         >
-          // ← work
+          ← All work
         </Link>
 
         <header className="mt-6 mb-12 md:mb-16">
-          <p className="eyebrow mb-4">
-            // case study · {detail.year} · {detail.client}
+          <p className="mb-4 text-sm text-fg-muted">
+            {detail.client} · {detail.year}
           </p>
           <h1 className="text-4xl md:text-5xl font-medium tracking-tightest text-fg mb-6 leading-[1.05]">
             {detail.title}
@@ -250,7 +251,7 @@ export default function CaseStudyPage({ params }: PageProps) {
           <dl className="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-5 border-t border-border pt-6">
             {detail.meta.map((m) => (
               <div key={m.label}>
-                <dt className="eyebrow mb-1.5">// {m.label}</dt>
+                <dt className="mb-1 text-sm text-fg-muted">{m.label}</dt>
                 <dd className="text-sm text-fg">{m.value}</dd>
               </div>
             ))}
@@ -261,15 +262,15 @@ export default function CaseStudyPage({ params }: PageProps) {
               href={detail.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="group mt-8 inline-flex items-center gap-2 h-11 px-5 rounded-md bg-accent text-[var(--accent-fg)] font-medium text-sm transition-all duration-fast hover:bg-accent-hover hover:-translate-y-px"
+              className="group mt-8 inline-flex items-center gap-2 h-11 px-5 rounded-md bg-accent text-[var(--accent-fg)] font-medium text-sm transition-colors duration-fast hover:bg-accent-hover"
             >
               {visitLabel}
               <span className="lab-arrow" aria-hidden="true">↗</span>
             </a>
           ) : (
-            // Internal tool — no public link. State it plainly in the mono register.
-            <p className="eyebrow mt-8 inline-flex items-center gap-2 text-fg-muted">
-              // internal tool · no public link
+            // Internal tool — no public link. Say so plainly.
+            <p className="mt-8 text-sm text-fg-muted">
+              An internal tool, so there’s no public link.
             </p>
           )}
         </header>
@@ -295,27 +296,24 @@ export default function CaseStudyPage({ params }: PageProps) {
               />
             </div>
             {detail.imageCaption && (
-              <figcaption className="eyebrow mt-3">{detail.imageCaption}</figcaption>
+              <figcaption className="mt-3 text-sm text-fg-muted">{detail.imageCaption}</figcaption>
             )}
           </figure>
         )}
 
         <div className="space-y-12 md:space-y-16">
           {detail.sections.map((section) => (
-            <section key={section.eyebrow}>
-              <p className="eyebrow mb-3">{section.eyebrow}</p>
-              {section.heading && (
-                <h2 className="text-2xl md:text-3xl font-medium tracking-tight text-fg mb-4">
-                  {section.heading}
-                </h2>
-              )}
+            <section key={section.label}>
+              <h2 className="mb-4 text-balance text-2xl tracking-tight text-fg md:text-3xl">
+                {section.heading ?? section.label}
+              </h2>
               <div className="space-y-4 text-base md:text-lg text-fg-muted leading-relaxed">
                 {section.body.map((para, i) => (
                   <p key={i}>{para}</p>
                 ))}
               </div>
               {/* Architecture diagram sits inside its narrative section — Hubble only */}
-              {params.slug === 'hubble' && section.eyebrow === '// the architecture' && (
+              {params.slug === 'hubble' && section.label === 'The architecture' && (
                 <HubbleArchitecture />
               )}
             </section>
@@ -329,25 +327,16 @@ export default function CaseStudyPage({ params }: PageProps) {
           </div>
         )}
 
-        {/* Tags */}
-        <div className="mt-12 flex flex-wrap gap-2">
-          {detail.tags.map((tag) => (
-            <span
-              key={tag}
-              className="px-3 py-1 rounded-full border border-border text-2xs font-mono text-fg-muted tracking-mono"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
+        {/* Tags — one plain line, not a row of pills */}
+        <p className="mt-12 text-sm text-fg-muted">{detail.tags.join(' · ')}</p>
 
         {/* Bottom mini-bar — back + live + contact (solves wrong-landing-page) */}
         <div className="mt-12 pt-6 border-t border-border flex flex-wrap items-center justify-between gap-4">
           <Link
             href="/work"
-            className="text-sm font-mono text-fg-muted hover:text-fg transition-colors duration-fast tracking-mono"
+            className="text-sm text-fg-muted transition-colors duration-fast hover:text-fg"
           >
-            ← all work
+            ← All work
           </Link>
           <div className="flex items-center gap-5">
             {detail.href && (
@@ -355,16 +344,16 @@ export default function CaseStudyPage({ params }: PageProps) {
                 href={detail.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-mono text-fg-muted hover:text-fg transition-colors duration-fast tracking-mono"
+                className="text-sm text-fg-muted transition-colors duration-fast hover:text-fg"
               >
-                visit live ↗
+                Visit live ↗
               </a>
             )}
             <Link
               href="/contact"
-              className="text-sm font-mono text-fg-muted hover:text-fg transition-colors duration-fast tracking-mono"
+              className="text-sm text-fg-muted transition-colors duration-fast hover:text-fg"
             >
-              contact →
+              Get in touch →
             </Link>
           </div>
         </div>
