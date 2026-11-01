@@ -5,8 +5,13 @@
 
 export const NAME = 'Shreyas Jadhav';
 
-/** Current role, exactly as it should read everywhere. */
+/** Current role, exactly as it should read. Used on About and in the meta
+    tags (title, description, share image); not in the hero. */
 export const ROLE = 'Product Associate at Amber, joining super.money as APM';
+
+/** The hero's one line under the name. */
+export const HERO_LINE =
+  'I build internal tools and AI agents, find where users drop off, and ship the fix.';
 
 export const EMAIL = 'shreyasjadhav531@gmail.com';
 

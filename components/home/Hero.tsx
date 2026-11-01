@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { CSSProperties } from 'react';
 import { HeroFootprints } from './HeroFootprints';
-import { NAME, ROLE } from '@/lib/site';
+import { HERO_LINE, NAME } from '@/lib/site';
 
 /**
  * Hero — centred noun + supporting italic sentence + one action, with tile
@@ -50,8 +50,7 @@ export function Hero() {
             className="hero-enter mt-6 max-w-[34ch] text-balance font-display text-[clamp(20px,2.4vw,32px)] font-normal italic leading-[1.25] tracking-snug text-fg md:mt-8"
             style={enter(1)}
           >
-            {ROLE}. I build internal tools, AI agents, and systems that help product
-            teams move.
+            {HERO_LINE}
           </p>
 
           {/* One primary action only — work-first. */}
