@@ -318,6 +318,10 @@ Audience is now founders and teams hiring for project work (mostly via X DMs and
 - Amber ticketing figure is ₹20 lakh a year, not $20K. Worded as "about ₹20 lakh a year in tool costs", which holds whether the saving is realised or projected.
 - Rada is 300+ members across 4 countries, 40+ gatherings; the About page's "600+" is corrected.
 
+### Swish and District as concept builds
+- **Decision:** Both lead "How I think" as larger cards: the question each answers, the live demo's phone screen, links to the demo (and the Swish deck), and an "Unofficial concept, not affiliated, made-up people and data" line. District shows no year until confirmed.
+- **Reasoning:** They're working builds of a real app with proposed changes, so they prove more than a Figma teardown, but they have no real users, so they stay out of "Built from zero".
+
 ## Template for future entries
 
 ```

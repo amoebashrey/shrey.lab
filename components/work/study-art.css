@@ -196,3 +196,28 @@
   outline-offset: 4px;
   border-radius: 10px;
 }
+
+/* ─── Concept builds: the question beside the live app's screen ─── */
+.cb-art {
+  display: grid;
+  height: 100%;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 5cqw;
+  padding-left: 7cqw;
+}
+.cb-q {
+  font-size: clamp(16px, 5.4cqw, 30px);
+}
+/* The screen rises from the bottom edge of the sheet, cropped there. */
+.cb-phone {
+  position: relative;
+  align-self: end;
+  height: 88%;
+  width: 82%;
+  overflow: hidden;
+  border-radius: 3.4cqw 3.4cqw 0 0;
+  border: 1px solid var(--border);
+  border-bottom: 0;
+  box-shadow: 0 0.6cqw 2.4cqw rgb(0 0 0 / 0.08);
+}
