@@ -250,6 +250,27 @@
 
 ---
 
+## 2026-11-01 · Phase 1: fix what loses visitors
+
+Audience is now founders and teams hiring for project work (mostly via X DMs and outreach); the goal is to show how I think and build. No prices anywhere.
+
+### Everything visible on first paint
+- **Decision:** Removed the first-visit intro overlay (IntroGate/Intro, GSAP sequence, head-script gate, glass-sphere CSS). Stagger and FadeUp are CSS, and every entrance (hero, sections) is transform-only — content is readable on the first frame, with or without JavaScript (verified with scripts disabled at 390 and 1440).
+- **Reasoning:** Visitors from an X link on a phone saw an overlay, then sections that stayed blank until hydration.
+
+### Numbers strip renders real values
+- **Decision:** Removed the count-up; the strip is a server component and the HTML holds "~50%", "18%", "$20K". It can't show 0.
+
+### One source for who I am and how to reach me
+- **Decision:** `lib/site.ts` holds the name, role ("Product Associate at Amber, joining super.money as APM"), email, X and the booking URL. Hero, `<title>`, description, About, the new OG image (`app/opengraph-image.tsx`; the old `/api/og` never existed) and contact all read from it. "Product manager" is gone everywhere.
+- **Booking:** Cal.com placeholder (`BOOKING_URL`, flagged `REPLACE-ME`) — must be replaced before deploying.
+
+### Hidden until real
+- **Decision:** In-progress case studies (both Amber cards) are filtered out (`PUBLISHED_CASE_STUDIES`). /writing, /now and /tools return 404, and their homepage sections, footer links, the 404's writing link and the "currently building" pill are gone. The nav's Resume button is removed: /resume.pdf doesn't exist, so it opened an empty modal.
+- **Reasoning:** CLAUDE.md: no "coming soon". Old pages are in git history at 7f46f2e.
+
+---
+
 ## Template for future entries
 
 ```

@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { FadeUp } from '@/components/motion/FadeUp';
 import { AboutPortrait } from '@/components/about/AboutPortrait';
+import { NAME, ROLE } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'About',
-  description:
-    'Shreyas Jadhav — product manager, operator, sometime kombucha brewer. Pune.',
+  description: `${NAME}: ${ROLE}. Operator, sometime kombucha brewer. Pune.`,
 };
 
 /**
@@ -46,7 +46,8 @@ export default function AboutPage() {
 
             <div className="space-y-5 text-base md:text-lg text-fg leading-relaxed">
               <p>
-                I&apos;m a product manager at Amber, a global student housing marketplace.
+                I&apos;m a Product Associate at Amber, a global student housing marketplace,
+                and I&apos;m joining super.money as an APM.
                 Day to day, I work on growth, conversion, and internal tooling — research,
                 discovery, PRDs, the occasional Friday spent reading session recordings to
                 figure out why a perfectly fine listing isn&apos;t booking.

@@ -180,7 +180,13 @@ export const CASE_STUDIES: CaseStudy[] = [
   },
 ];
 
-/** Featured case studies for the homepage, in source order. */
-export const FEATURED_CASE_STUDIES: CaseStudy[] = CASE_STUDIES.filter(
-  (cs) => cs.featured
+/**
+ * Case studies a visitor can see: anything still 'in-progress' (no page, no
+ * write-up behind the number) stays hidden until it's real — no "coming soon".
+ */
+export const PUBLISHED_CASE_STUDIES: CaseStudy[] = CASE_STUDIES.filter(
+  (cs) => cs.status !== 'in-progress'
 );
+
+/** Homepage selection: every published study (3 today), in source order. */
+export const FEATURED_CASE_STUDIES: CaseStudy[] = PUBLISHED_CASE_STUDIES;

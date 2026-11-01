@@ -1,24 +1,21 @@
 import type { Metadata } from 'next';
-import { ResumeButton } from '@/components/ResumeButton';
+import type { ReactNode } from 'react';
 import { FadeUp } from '@/components/motion/FadeUp';
+import { BOOKING_URL, EMAIL, X_HANDLE, X_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Contact',
-  description: 'Get in touch. Hiring conversations welcome.',
+  description: 'Email, a 20-minute call, or a DM on X. Project work and product chats welcome.',
 };
 
 /**
- * /contact — quiet conversion page.
- *
- * Three options presented equally per PROJECT_BRIEF.md:
- *   1. Email
- *   2. Calendly (15-min intro slot, embedded once URL is provided)
- *   3. Resume (PDF) — same modal as homepage CTA
- *
- * No form. Forms on personal sites are noise.
+ * /contact — three ways in, equally weighted: email (a real mailto link, the
+ * address itself is clickable), a 20-minute call (Cal.com — BOOKING_URL in
+ * lib/site.ts), and X. No form. No resume card until the PDF exists.
  */
 
-const CALENDLY_URL = 'https://calendly.com/shreyasjadhav531/intro'; // placeholder; locks once confirmed
+const SECONDARY =
+  'inline-flex items-center gap-2 h-11 px-5 rounded-md border border-border hover:border-border-strong text-fg font-medium text-sm transition-colors duration-fast';
 
 export default function ContactPage() {
   return (
@@ -30,73 +27,59 @@ export default function ContactPage() {
             Get in <span className="italic-break text-fg-muted">touch</span>
           </h1>
           <p className="text-lg text-fg-muted leading-relaxed">
-            Hiring conversations, referrals, and product chats — all welcome.
-            I usually reply within a day or two.
+            Project work, referrals and product chats are all welcome. I usually reply
+            within a day or two.
           </p>
         </header>
 
         <div className="space-y-6">
-          {/* Email */}
+          {/* Email — the address itself is the link */}
           <ContactCard
             label="// email"
-            title="shreyasjadhav531@gmail.com"
-            note="Best for hiring conversations, links, and longer context."
+            title={
+              <a href={`mailto:${EMAIL}`} className="lab-link break-all">
+                {EMAIL}
+              </a>
+            }
+            note="Best for project briefs, links, and longer context."
             action={
               <a
-                href="mailto:shreyasjadhav531@gmail.com"
-                className="inline-flex items-center gap-2 h-11 px-5 rounded-md bg-accent text-[var(--accent-fg)] font-medium text-sm hover:bg-accent-hover hover:-translate-y-px transition-all duration-fast"
+                href={`mailto:${EMAIL}`}
+                className="inline-flex items-center gap-2 h-11 px-5 rounded-md bg-accent text-[var(--accent-fg)] font-medium text-sm hover:bg-accent-hover transition-colors duration-fast"
               >
-                Open email →
+                Write an email →
               </a>
             }
           />
 
-          {/* Calendly */}
+          {/* Booking (Cal.com) */}
           <ContactCard
-            label="// calendar"
-            title="15-min intro call"
-            note="Pick a slot. No prep needed — just show up."
+            label="// call"
+            title="20-minute intro call"
+            note="Pick a slot that suits you. Bring the problem; no prep needed."
             action={
-              <a
-                href={CALENDLY_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 h-11 px-5 rounded-md border border-border hover:border-border-strong hover:-translate-y-px text-fg font-medium text-sm transition-all duration-fast"
-              >
-                Book a slot ↗
+              <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className={SECONDARY}>
+                Book 20 minutes ↗
               </a>
             }
-          />
-
-          {/* Resume */}
-          <ContactCard
-            label="// resume"
-            title="PDF, one page"
-            note="Open in a modal. Download if you want a copy."
-            action={<ResumeButton variant="ghost" />}
           />
 
           {/* X */}
           <ContactCard
             label="// x"
-            title="@shreyasinpublic"
-            note="Working in public — product notes, and open DMs."
+            title={
+              <a href={X_URL} target="_blank" rel="noopener noreferrer" className="lab-link">
+                {X_HANDLE}
+              </a>
+            }
+            note="DMs are open. Product notes in public."
             action={
-              <a
-                href="https://x.com/shreyasinpublic"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 h-11 px-5 rounded-md border border-border hover:border-border-strong hover:-translate-y-px text-fg font-medium text-sm transition-all duration-fast"
-              >
-                Open X ↗
+              <a href={X_URL} target="_blank" rel="noopener noreferrer" className={SECONDARY}>
+                Message on X ↗
               </a>
             }
           />
         </div>
-
-        <p className="mt-16 text-sm text-fg-muted text-center font-mono tracking-mono">
-          // whichever door — i reply within a day or two.
-        </p>
       </FadeUp>
     </div>
   );
@@ -109,9 +92,9 @@ function ContactCard({
   action,
 }: {
   label: string;
-  title: string;
+  title: ReactNode;
   note: string;
-  action: React.ReactNode;
+  action: ReactNode;
 }) {
   return (
     <div className="lab-glass rounded-lg p-6 md:p-7 flex flex-col md:flex-row md:items-center md:justify-between gap-5">

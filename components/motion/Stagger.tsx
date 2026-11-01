@@ -1,28 +1,17 @@
-'use client';
-
-import { motion, useReducedMotion, type Variants } from 'framer-motion';
-import { Children, type ReactNode } from 'react';
+import { Children, type CSSProperties, type ReactNode } from 'react';
 
 /**
- * Stagger — orchestrates direct children with a 60ms delay between each, each
- * child fading up +12px (~500ms).
+ * Stagger — settles direct children into place one after another, 60ms apart.
  *
- * Reduced motion: renders instantly as a plain <div>, children untouched — no
- * transform, no per-child delay.
+ * CSS only (globals.css .stagger-item). The old framer-motion version rendered
+ * every section at opacity 0 on the server and only revealed them after
+ * hydration, so on a slow phone the page below the hero was blank until the JS
+ * arrived. Now the content is readable on the first frame: the entrance moves
+ * it 12px into place without hiding it, and reduced motion drops the motion.
  *
- * Each child is wrapped in a block-level motion.div. Pass section-level blocks
- * as children (not inline elements).
+ * Pass section-level blocks as children (each is wrapped in a block div).
  */
-const STAGGER_SECONDS = 0.06; // 60ms between children
-
-const childVariants: Variants = {
-  hidden: { opacity: 0, y: 12 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
-  },
-};
+const STAGGER_MS = 60;
 
 export function Stagger({
   children,
@@ -31,24 +20,16 @@ export function Stagger({
   children: ReactNode;
   className?: string;
 }) {
-  const reduceMotion = useReducedMotion();
-
-  if (reduceMotion) {
-    return <div className={className}>{children}</div>;
-  }
-
   return (
-    <motion.div
-      className={className}
-      initial="hidden"
-      animate="show"
-      variants={{
-        show: { transition: { staggerChildren: STAGGER_SECONDS } },
-      }}
-    >
-      {Children.map(children, (child) => (
-        <motion.div variants={childVariants}>{child}</motion.div>
+    <div className={className}>
+      {Children.map(children, (child, i) => (
+        <div
+          className="stagger-item"
+          style={{ animationDelay: `${i * STAGGER_MS}ms` } as CSSProperties}
+        >
+          {child}
+        </div>
       ))}
-    </motion.div>
+    </div>
   );
 }

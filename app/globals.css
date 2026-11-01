@@ -31,21 +31,14 @@
    Add here only what isn't in the brand kit. Default to keeping this empty.
    ============================================================================ */
 
-/* Hero lime line — the cinematic-load moment (tokens.css §cinematic).
-   When the first-visit intro is going to play (layout.tsx's head script
-   stamps data-intro-pending before paint), the draw holds until IntroGate
-   stamps data-intro-done, so it isn't wasted under the overlay. Otherwise
-   it plays at first paint. Reduced motion: the kit's global rule snaps
-   animations to their end state, so the line simply appears — no draw. */
+/* Hero lime line — the cinematic-load moment (tokens.css §cinematic). Plays
+   at first paint. Reduced motion: the kit's global rule snaps animations to
+   their end state, so the line simply appears — no draw. */
 .hero-lime-line {
   height: 2px;
   background: var(--accent);
   transform-origin: left;
   animation: lime-line-draw 600ms var(--ease-out) both;
-}
-html[data-intro-pending]:not([data-intro-done]) .hero-lime-line,
-html[data-intro-pending]:not([data-intro-done]) .hero-enter {
-  animation-play-state: paused;
 }
 /* Centred hero: the rule draws out from its middle. */
 .hero-lime-line--center {
@@ -170,38 +163,21 @@ html[data-intro-pending]:not([data-intro-done]) .hero-enter {
   }
 }
 
-/* Entrance — headline, sentence, button; 70ms apart; transform + opacity
-   only. `both` holds the start state during the delay. Held for the intro by
-   the same gate as the lime line (above). */
+/* Entrance — headline, sentence, button settle 16px into place, 70ms apart.
+   Transform only: the copy is readable on the very first frame (no opacity
+   from 0), so a slow phone never shows a blank hero. Reduced motion: the
+   kit's global rule snaps it, i.e. no movement. */
 @keyframes hero-rise {
   from {
-    opacity: 0;
     transform: translateY(16px);
   }
   to {
-    opacity: 1;
     transform: translateY(0);
-  }
-}
-@keyframes hero-fade {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
   }
 }
 .hero-enter {
   animation: hero-rise 400ms cubic-bezier(0.23, 1, 0.32, 1) both;
   animation-delay: calc(var(--i, 0) * 70ms);
-}
-/* Reduced motion: fade only, no rise. The class selector + !important beats
-   the kit's universal 0.01ms override (tokens.css), which would snap it. */
-@media (prefers-reduced-motion: reduce) {
-  .hero-enter {
-    animation-name: hero-fade !important;
-    animation-duration: 400ms !important;
-  }
 }
 
 /* Primary button — press feedback everywhere, hover only on real pointers. */
@@ -436,62 +412,6 @@ html.lenis body {
 }
 
 /* ============================================================================
-   INTRO GLASS SPHERE — skin for the lime ball (texture only; GSAP untouched).
-   Same glass language as .lab-glass (soft top highlight, rim, inner depth), in
-   CSS only (no canvas/particles). #A8E10C stays the dominant color. The whole
-   overlay fades out during EXPAND so the sphere resolves to flat lime.
-   ============================================================================ */
-.intro-ball-texture {
-  position: absolute;
-  inset: 0;
-  border-radius: 9999px;
-  overflow: hidden; /* clips the drifting sheen to the sphere */
-  pointer-events: none;
-}
-.intro-ball-glass {
-  position: absolute;
-  inset: 0;
-  border-radius: 9999px;
-  background:
-    radial-gradient(circle at 30% 26%, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 18%), /* crisp specular */
-    radial-gradient(circle at 36% 32%, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 48%), /* soft top-left light */
-    radial-gradient(circle at 70% 80%, rgba(34, 48, 0, 0.5) 0%, rgba(34, 48, 0, 0) 58%); /* bottom-right volume */
-  box-shadow:
-    inset 5px 7px 14px rgba(255, 255, 255, 0.35), /* inner top-left light */
-    inset -8px -10px 20px rgba(26, 38, 0, 0.5), /* inner bottom-right shadow */
-    inset 0 0 0 1px rgba(255, 255, 255, 0.2); /* rim light */
-}
-.intro-ball-sheen {
-  position: absolute;
-  left: -28%;
-  top: -28%;
-  width: 78%;
-  height: 78%;
-  border-radius: 9999px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 60%);
-  animation: intro-sheen 7s ease-in-out infinite; /* slow, restrained internal sheen */
-}
-@keyframes intro-sheen {
-  0% {
-    transform: translate(0, 0);
-    opacity: 0.45;
-  }
-  50% {
-    transform: translate(42%, 40%);
-    opacity: 0.8;
-  }
-  100% {
-    transform: translate(0, 0);
-    opacity: 0.45;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .intro-ball-sheen {
-    animation: none;
-  }
-}
-
-/* ============================================================================
    HERO TYPE DEPTH + CANVAS TEXTURE (the "expensive landing" pass — BUG-004)
    Theme-aware, derived from brand ink/lime tokens, very low contrast. The
    texture sits behind content (z-index:-10), so text color is unchanged and AA
@@ -580,18 +500,19 @@ body {
   height: auto !important;
 }
 
-/* FadeUp (components/motion/FadeUp.tsx) — CSS so it never depends on
-   hydration. Under reduced motion the kit's global rule makes it instant. */
-@keyframes fade-up-12 {
+/* FadeUp (components/motion/FadeUp.tsx) and Stagger (Stagger.tsx) — CSS so
+   they never depend on hydration, and transform only so content is readable
+   on the first frame. Under reduced motion the kit's global rule makes them
+   instant. */
+@keyframes settle-12 {
   from {
-    opacity: 0;
     transform: translateY(12px);
   }
   to {
-    opacity: 1;
     transform: translateY(0);
   }
 }
-.fade-up {
-  animation: fade-up-12 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
+.fade-up,
+.stagger-item {
+  animation: settle-12 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }

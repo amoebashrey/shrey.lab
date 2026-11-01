@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { StatusPill } from '@/components/StatusPill';
+import { EMAIL, X_URL } from '@/lib/site';
 
 /**
  * Footer — locked structure from PROJECT_BRIEF.md.
@@ -44,7 +44,6 @@ export function Footer() {
             <p className="text-sm text-fg-muted max-w-xs leading-relaxed">
               A studio for shipping useful, considered tools.
             </p>
-            <StatusPill text="currently building · shrey.lab" />
           </div>
 
           {/* Middle column — secondary nav */}
@@ -57,10 +56,7 @@ export function Footer() {
                   report). Re-add both when their content/asset lands. */}
               {[
                 { label: 'Work', href: '/work' },
-                { label: 'Writing', href: '/writing' },
                 { label: 'About', href: '/about' },
-                { label: 'Tools', href: '/tools' },
-                { label: 'Now', href: '/now' },
                 { label: 'Contact', href: '/contact' },
               ].map((item) => (
                 <li key={item.href}>
@@ -81,7 +77,8 @@ export function Footer() {
             <ul className="space-y-2 text-sm">
               <li>
                 <a
-                  href="mailto:shreyasjadhav531@gmail.com"
+                  href={`mailto:${EMAIL}`}
+                  aria-label={`Email ${EMAIL}`}
                   className="text-fg-muted hover:text-fg transition-colors duration-fast inline-flex items-center"
                 >
                   shreyasjadhav531
@@ -101,7 +98,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="https://x.com/shreyasinpublic"
+                  href={X_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-fg-muted hover:text-fg transition-colors duration-fast"

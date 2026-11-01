@@ -15,8 +15,12 @@ const KEY = 'hero-paused';
 
 export function HeroSharks({ avoidSelector }: { avoidSelector?: string }) {
   const [paused, setPaused] = useState(false);
+  // The control only works once the canvas is running, so it isn't rendered
+  // before then (or at all without JavaScript).
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    setReady(true);
     try {
       setPaused(localStorage.getItem(KEY) === '1');
     } catch {
@@ -41,7 +45,8 @@ export function HeroSharks({ avoidSelector }: { avoidSelector?: string }) {
         avoidSelector={avoidSelector}
         fixedObstacleSelector="[data-shark-obstacle]"
       />
-      <button
+      {ready && (
+        <button
         type="button"
         onClick={toggle}
         aria-label={paused ? 'Play animation' : 'Pause animation'}
@@ -57,7 +62,8 @@ export function HeroSharks({ avoidSelector }: { avoidSelector?: string }) {
             <rect x="14" y="4" width="5" height="16" rx="1.5" />
           </svg>
         )}
-      </button>
+        </button>
+      )}
     </>
   );
 }

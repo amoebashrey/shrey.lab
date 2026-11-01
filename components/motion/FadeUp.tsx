@@ -1,9 +1,10 @@
 import type { CSSProperties, ReactNode } from 'react';
 
 /**
- * FadeUp — fades content up +12px over ~500ms on load.
+ * FadeUp — settles content 12px into place over ~500ms on load (no fade:
+ * it is readable on the first frame).
  *
- * Pure CSS (globals.css .fade-up), not framer-motion: the old version rendered
+ * Pure CSS (globals.css .fade-up), transform only, not framer-motion: the old version rendered
  * `opacity:0` on the server and swapped to a plain <div> under reduced motion
  * on the client — React doesn't patch attribute mismatches during hydration,
  * so the server's opacity:0 stuck and the whole block (e.g. a case study's

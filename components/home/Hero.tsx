@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { CSSProperties } from 'react';
 import { HeroSharks } from './HeroSharks';
+import { NAME, ROLE } from '@/lib/site';
 
 /**
  * Hero — centred noun + supporting italic sentence + one action, with tile
@@ -12,10 +13,9 @@ import { HeroSharks } from './HeroSharks';
  * text always sits on clean page colour at full contrast. A quiet pause/play
  * control sits bottom-right (HeroSharks).
  *
- * Entrance (globals.css .hero-enter): headline → sentence → button, 70ms
- * apart, rising 16px. Pure CSS, so the copy never depends on hydration; a
- * <noscript> override keeps it visible if JS never runs. Gated on
- * html[data-intro-done] like the lime line, so it plays after the intro.
+ * Entrance (globals.css .hero-enter): headline → sentence → button settle
+ * 16px into place, 70ms apart. Pure CSS and transform only, so the copy is
+ * readable on the first frame with or without JavaScript.
  *
  * data-cursor-off: CursorField fades its lime glow out over this band.
  */
@@ -31,37 +31,30 @@ export function Hero() {
       className="hero-band relative isolate -mt-8 overflow-hidden"
     >
       <HeroSharks avoidSelector="[data-shark-avoid]" />
-      <noscript
-        dangerouslySetInnerHTML={{
-          __html: '<style>.hero-enter{animation:none!important}</style>',
-        }}
-      />
 
       <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-[1280px] items-center justify-center px-4 pb-48 pt-28 sm:min-h-[clamp(560px,88svh,820px)] sm:pb-16 md:px-8 md:pt-32">
         <div data-shark-avoid="" className="flex flex-col items-center text-center">
-          {/* Cinematic load (tokens.css §cinematic) — a short lime rule that
-              draws out from the centre once the intro has finished. */}
+          {/* Cinematic load (tokens.css §cinematic) — a short accent rule that
+              draws out from the centre at first paint. */}
           <div className="hero-lime-line hero-lime-line--center mb-8 w-16" aria-hidden="true" />
-          <p className="eyebrow mb-6" aria-hidden="true">
-            // shreyas jadhav · amber · pune
-          </p>
 
           <h1
             id="hero-heading"
             className="hero-enter hero-depth text-balance font-medium text-fg text-[clamp(48px,7vw,88px)] leading-[0.98] tracking-tightest"
             style={enter(0)}
           >
-            Product manager.
+            {NAME}.
           </h1>
 
           <p
             className="hero-enter mt-6 max-w-[34ch] text-balance font-display text-[clamp(20px,2.4vw,32px)] font-normal italic leading-[1.25] tracking-snug text-fg md:mt-8"
             style={enter(1)}
           >
-            I build internal tools, AI agents, and systems that help product teams move.
+            {ROLE}. I build internal tools, AI agents, and systems that help product
+            teams move.
           </p>
 
-          {/* One primary action only — work-first. Resume lives in the nav. */}
+          {/* One primary action only — work-first. */}
           <div className="hero-enter mt-10" style={enter(2)}>
             <Link
               href="/work"

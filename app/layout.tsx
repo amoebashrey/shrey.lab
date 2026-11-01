@@ -3,6 +3,7 @@ import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import './globals.css';
 import { Nav } from '@/components/Nav';
+import { NAME, ROLE, X_HANDLE } from '@/lib/site';
 import { SiteControls } from '@/components/SiteControls';
 import { Footer } from '@/components/Footer';
 import { SmoothScroll } from '@/components/SmoothScroll';
@@ -11,20 +12,20 @@ import { SmoothScroll } from '@/components/SmoothScroll';
  * Root metadata. Per-page metadata (case studies, articles) overrides this
  * via `generateMetadata` in their respective page.tsx files.
  *
- * The OG image at /api/og generates dynamically per page — see app/api/og/route.tsx.
+ * The share image is app/opengraph-image.tsx (same title as below, from
+ * lib/site.ts, so the role can't drift between them).
  */
 export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || 'https://shrey-lab.vercel.app'
   ),
   title: {
-    default: 'shrey.lab — Shreyas Jadhav, Product Manager',
+    default: `shrey.lab · ${NAME}, ${ROLE}`,
     template: '%s · shrey.lab',
   },
-  description:
-    'Product manager at Amber Student. Shipped university white-label, conversion lifts, internal tooling. Based in Pune.',
-  authors: [{ name: 'Shreyas Jadhav' }],
-  creator: 'Shreyas Jadhav',
+  description: `${ROLE}. I build internal tools, AI agents and working prototypes. Based in Pune.`,
+  authors: [{ name: NAME }],
+  creator: NAME,
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    creator: '@shreyasinpublic',
+    creator: X_HANDLE,
   },
   robots: {
     index: true,
@@ -87,14 +88,6 @@ const themeScript = `
         root.setAttribute('data-accent-hue', hue);
       }
     } catch (e) {}
-    // Mirror IntroGate's decision before paint: only when the first-visit
-    // intro will actually play does the hero hold its entrance for it.
-    // Everyone else gets the entrance at first paint, not after hydration.
-    var played = false;
-    try { played = localStorage.getItem('intro-played') === '1'; } catch (e) {}
-    if (!played && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      document.documentElement.setAttribute('data-intro-pending', '');
-    }
   })();
 `;
 

@@ -43,10 +43,10 @@ export default function NotFound() {
             → work
           </Link>
           <Link
-            href="/writing"
+            href="/about"
             className="text-fg-muted hover:text-fg transition-colors duration-fast"
           >
-            → writing
+            → about
           </Link>
         </nav>
       </div>

@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { ResumeButton } from '@/components/ResumeButton';
 // The theme toggle lives outside the pill, fixed top-right (components/ThemeToggle.tsx).
 
 // Writing is intentionally NOT in the primary nav while it's empty — the #1
@@ -96,10 +95,6 @@ export function Nav() {
           })}
         </ul>
 
-        {/* Persistent Resume — quiet outline pill, after the links. Collapses
-            into the mobile dropdown below the sm breakpoint. Reuses the modal. */}
-        <ResumeButton variant="nav" className="hidden sm:inline-flex" />
-
         {/* Menu affordance — only on small screens */}
         <button
           type="button"
@@ -146,10 +141,6 @@ export function Nav() {
               </li>
             );
           })}
-          {/* Resume as a dropdown row on mobile — same modal, full-width. */}
-          <li>
-            <ResumeButton variant="nav-row" />
-          </li>
         </ul>
       )}
     </nav>

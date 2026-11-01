@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { CaseStudyCard } from '@/components/work/CaseStudyCard';
 import { FadeUp } from '@/components/motion/FadeUp';
-import { CASE_STUDIES } from '@/lib/work';
+import { PUBLISHED_CASE_STUDIES } from '@/lib/work';
 
 export const metadata: Metadata = {
   title: 'Work',
@@ -35,7 +35,7 @@ export default function WorkIndexPage() {
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {CASE_STUDIES.map((cs) => (
+          {PUBLISHED_CASE_STUDIES.map((cs) => (
             <CaseStudyCard key={cs.slug} study={cs} />
           ))}
         </div>
