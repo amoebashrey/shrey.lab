@@ -154,6 +154,17 @@ Heading
 Lead
   Before you hire me to look at your product, see me look at others. These are unsolicited teardowns with clickable Figma prototypes. None of these companies asked me to; the years are when I did them.
 
+Concept builds (larger, first; added 2026-11-02)
+  Swish · concept build · 2026
+    Why do late orders keep happening?
+    As Swish tripled its orders, late or stuck orders went from 11% to 23% of its low-star reviews. I read 2,800+ reviews, traced where delays start, and built a working demo of the fixes for customers, the kitchen and riders.
+    Try the demo ↗ (swish-demo-phi.vercel.app) · Read the deck ↗ (Drive PDF)
+  District · concept build · [CONFIRM year]
+    Why do group plans die in the chat?
+    Friends want to go out together, but the plan dies in the group chat. "Go together" lets a crew vote on the movie or place and the time, inside District. A working copy of the app with the additions built in.
+    Try the demo ↗ (district-demo-alpha.vercel.app)
+  Each carries: Unofficial concept. Not affiliated with [company]. People and data in the demo are made up.
+
 Cards (small, newest first)
   Jar · 2025
     Gold savings for shopkeepers: how do you earn their trust faster? A custom flow for a persona the app wasn't built around.
@@ -255,4 +266,4 @@ OPEN QUESTIONS
   8. Your Cal.com link.
   9. Felix: is my one-line problem right?
   10. Headline: A, B or C.
-  11. Swish and District from the previous deck: still in or out? (Left out of this draft; no live links yet.)
+  11. Swish and District: added to How I think as concept builds (2026-11-02). District's year still to confirm.

@@ -16,6 +16,47 @@ export interface Teardown {
   href: string;
 }
 
+/**
+ * Concept builds — working, clickable copies of a real app with my proposed
+ * changes built in. Unofficial; people and data in them are made up.
+ */
+export interface ConceptBuild {
+  company: string;
+  /** Omitted when not confirmed. */
+  year?: number;
+  question: string;
+  summary: string;
+  /** Phone-width screenshot of the live demo (public/work). */
+  image: string;
+  imageAlt: string;
+  links: ReadonlyArray<{ label: string; href: string }>;
+}
+
+export const CONCEPTS: readonly ConceptBuild[] = [
+  {
+    company: 'Swish',
+    year: 2026,
+    question: 'Why do late orders keep happening?',
+    summary:
+      'As Swish tripled its orders, late or stuck orders went from 11% to 23% of its low-star reviews. I read 2,800+ reviews, traced where delays start, and built a working demo of the fixes for customers, the kitchen and riders.',
+    image: '/work/swish-demo.png',
+    imageAlt: 'The Swish concept demo on a phone: the app home with offers and food categories',
+    links: [
+      { label: 'Try the demo', href: 'https://swish-demo-phi.vercel.app/' },
+      { label: 'Read the deck', href: 'https://drive.google.com/file/d/1wdMxnAXnnVBEMlwFZet5pmuES2D1RNuz/view' },
+    ],
+  },
+  {
+    company: 'District',
+    question: 'Why do group plans die in the chat?',
+    summary:
+      'Friends want to go out together, but the plan dies in the group chat. “Go together” lets a crew vote on the movie or place and the time, inside District. A working copy of the app with the additions built in.',
+    image: '/work/district-demo.png',
+    imageAlt: 'The District concept demo on a phone: the home screen with a “Free this weekend? Plan a night with your crew” card',
+    links: [{ label: 'Try the demo', href: 'https://district-demo-alpha.vercel.app/' }],
+  },
+];
+
 export const TEARDOWNS: readonly Teardown[] = [
   {
     company: 'Jar',
